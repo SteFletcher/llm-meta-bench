@@ -94,26 +94,48 @@ def set_score(data: dict, model: str, benchmark: str, value: float, note: str | 
 # Adapters — each returns the number of scores it updated, or raises.
 # --------------------------------------------------------------------------
 
-# Benchmarks sourced from the Artificial Analysis API. Each maps our benchmark
-# id to (substrings matched against AA's per-model `evaluations` keys, the
-# citation URL). AA is the single source of truth for every benchmark listed
-# here — a keyed refresh overwrites those cells from one place. Tau2 lives here
-# so all its cells come from AA rather than a mix of sites; the leaderboard
-# page renders its table in JavaScript, but the API returns the raw per-model
-# numbers. `AA_URL` is the model board; the tau2 eval has its own page.
-AA_URL = "https://artificialanalysis.ai/leaderboards/models"
+# Benchmarks sourced from the Artificial Analysis API — our benchmark id ->
+# (AA `evaluations` field name, citation URL). AA is the single source of truth
+# for every benchmark listed here: a keyed refresh overwrites those cells from
+# one place. The AA leaderboard *page* renders its table in JavaScript (an
+# automated page-fetch sees only the top line), but the *API* returns raw
+# per-model numbers. Scoped to Tau2 for now; add rows (gpqa, hle, livecodebench,
+# terminalbench_v2_1, artificial_analysis_intelligence_index) to single-source
+# more benchmarks from AA.
 AA_EVAL_MAP = {
-    "aa-index": (("artificial_analysis_intelligence_index", "intelligence_index"), AA_URL),
-    "tau2-bench": (("tau2_bench_telecom", "tau2_telecom", "tau2"), "https://artificialanalysis.ai/evaluations/tau2-bench"),
+    "tau2-bench": ("tau2", "https://artificialanalysis.ai/evaluations/tau2-bench"),
 }
 
+# AA lists each model at several reasoning-effort tiers with different scores.
+# We compare models at their strongest published configuration, so we pick the
+# highest-effort variant that actually carries the eval. Ranked best-first.
+AA_EFFORT_ORDER = ["max", "xhigh", "x-high", "high", "medium", "low", "minimal", "non-reasoning", "none"]
 
-def _find_eval(evals: dict, substrings):
-    """Return the first eval value whose key contains any of the substrings."""
-    for k, v in evals.items():
-        kl = k.lower()
-        if v is not None and any(s in kl for s in substrings):
-            return v
+
+def _aa_effort_rank(name: str) -> int:
+    n = name.lower()
+    for i, kw in enumerate(AA_EFFORT_ORDER):
+        if kw in n:
+            return i
+    return len(AA_EFFORT_ORDER)
+
+
+def _aa_effort_label(name: str) -> str:
+    n = name.lower()
+    for kw in AA_EFFORT_ORDER:
+        if kw in n:
+            return kw
+    return "default"
+
+
+def _aa_model_id(name: str) -> str | None:
+    """Map an AA model name (which carries effort/variant suffixes, e.g.
+    'Claude Opus 4.8 (Adaptive Reasoning, Max Effort)') to our canonical id."""
+    base = re.sub(r"\(.*?\)", "", name).strip().lower()
+    base = re.sub(r"\s+", " ", base)
+    for alias in sorted(MODEL_ALIASES, key=len, reverse=True):  # longest first
+        if base == alias or base.startswith(alias + " "):
+            return MODEL_ALIASES[alias]
     return None
 
 
@@ -127,25 +149,30 @@ def refresh_artificial_analysis(data: dict) -> int:
         headers={"x-api-key": key},
     )
     payload = json.loads(body)
-    updated = 0
+
+    # group AA's per-effort variants under our canonical model ids
+    groups: dict[str, list] = {}
     for entry in payload.get("data", []):
-        model_id = canonical_model(entry.get("name", ""))
-        if not model_id:
-            continue
-        evals = entry.get("evaluations", {})
-        for bench_id, (substrings, url) in AA_EVAL_MAP.items():
-            raw = _find_eval(evals, substrings)
-            if raw is None:
+        mid = _aa_model_id(entry.get("name", ""))
+        if mid:
+            groups.setdefault(mid, []).append(entry)
+
+    updated = 0
+    for mid, variants in groups.items():
+        for bench_id, (field, url) in AA_EVAL_MAP.items():
+            have = [v for v in variants if (v.get("evaluations") or {}).get(field) is not None]
+            if not have:
                 continue
-            val = float(raw)
-            if val <= 1.0:  # AA reports pass-rate evals (tau2) as 0–1 fractions
-                val *= 100.0
-            set_score(data, model_id, bench_id, round(val, 1))
-            # keep the citation pinned to AA for these benchmarks
-            for row in data["scores"]:
-                if row["model"] == model_id and row["benchmark"] == bench_id:
+            best = min(have, key=lambda v: _aa_effort_rank(v["name"]))
+            raw = float(best["evaluations"][field])
+            if raw <= 1.0:  # AA reports pass-rate evals (tau2) as 0–1 fractions
+                raw *= 100.0
+            note = f"Artificial Analysis API; highest-effort published variant ({_aa_effort_label(best['name'])})."
+            set_score(data, mid, bench_id, round(raw, 1), note=note)
+            for row in data["scores"]:  # pin citation to AA, drop any proxy flag
+                if row["model"] == mid and row["benchmark"] == bench_id:
                     row["source_url"] = url
-                    row.pop("proxy", None)  # AA reports the current model directly
+                    row.pop("proxy", None)
                     break
             updated += 1
     return updated

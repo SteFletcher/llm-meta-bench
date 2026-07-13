@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-13T00:00:00Z",
+  "generated_at": "2026-07-13T19:56:28+00:00",
   "schema_version": 3,
   "sources": [
     {
@@ -14,7 +14,8 @@
       "name": "Artificial Analysis",
       "url": "https://artificialanalysis.ai/leaderboards/models",
       "method": "auto-with-key",
-      "notes": "Intelligence Index v4.x composite. Set AA_API_KEY to enable API fetch."
+      "notes": "Intelligence Index v4.x composite. Set AA_API_KEY to enable API fetch.",
+      "last_fetched": "2026-07-13T19:56:28+00:00"
     },
     {
       "id": "swebench",
@@ -222,7 +223,7 @@
       "source": "tau2",
       "url": "https://artificialanalysis.ai/evaluations/tau2-bench",
       "unit": "%",
-      "note": "Multi-turn tool-use agents, telecom split. Saturated: the whole frontier clusters at 98–99%, so it can't separate top models."
+      "note": "Multi-turn tool-use customer-service agents, single-sourced from the Artificial Analysis API at each model's highest published effort. The top cluster is tight (94–99%) but not flat — OpenAI's Sol/Terra sit ~10 points back at 85–86%."
     },
     {
       "id": "vending-bench-2",
@@ -346,24 +347,23 @@
     {
       "model": "opus-4-8",
       "benchmark": "tau2-bench",
-      "value": 99.3,
-      "proxy": "Claude Opus 4.6",
+      "value": 94.4,
       "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench",
-      "note": "Telecom split. Predecessor Opus 4.6 leads the board; Opus 4.8 not separately published."
+      "note": "Artificial Analysis API; highest-effort published variant (max)."
     },
     {
       "model": "glm-5-2",
       "benchmark": "tau2-bench",
       "value": 99.1,
       "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench",
-      "note": "Telecom split, top public snapshot as of 2026-07-08."
+      "note": "Artificial Analysis API; highest-effort published variant (max)."
     },
     {
       "model": "gpt-5-5",
       "benchmark": "tau2-bench",
-      "value": 98.0,
+      "value": 93.9,
       "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench",
-      "note": "Telecom split, no prompt tuning. Value cross-referenced pending the next keyed AA refresh, which pulls it directly from the AA API."
+      "note": "Artificial Analysis API; highest-effort published variant (xhigh)."
     },
     {
       "model": "opus-4-8",
@@ -613,6 +613,48 @@
       "benchmark": "hle",
       "value": 44.4,
       "source_url": "https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked"
+    },
+    {
+      "model": "gpt-5-6-sol",
+      "benchmark": "tau2-bench",
+      "value": 85.1,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench"
+    },
+    {
+      "model": "gpt-5-6-terra",
+      "benchmark": "tau2-bench",
+      "value": 86.3,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench"
+    },
+    {
+      "model": "gemini-3-1-pro",
+      "benchmark": "tau2-bench",
+      "value": 95.6,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench"
+    },
+    {
+      "model": "fable-5",
+      "benchmark": "tau2-bench",
+      "value": 98.5,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench"
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "benchmark": "tau2-bench",
+      "value": 96.2,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench"
+    },
+    {
+      "model": "kimi-k2-5",
+      "benchmark": "tau2-bench",
+      "value": 81.3,
+      "note": "Artificial Analysis API; highest-effort published variant (non-reasoning).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench"
     }
   ],
   "arena_meta": {
@@ -742,9 +784,12 @@
         "pillar": "Planning",
         "benchmark": "Tau2-bench",
         "unit": "%",
-        "a": null,
-        "b": null,
-        "note": "No published per-config figure for either model; the board is saturated (leader 99.1%)."
+        "a": 98.5,
+        "b": 84.8,
+        "a_src": "https://artificialanalysis.ai/evaluations/tau2-bench",
+        "b_src": "https://artificialanalysis.ai/evaluations/tau2-bench",
+        "winner": "a",
+        "note": "AA τ²-bench. Fable leads tool-use agents by ~14 points. Sol at xhigh (its 'Extra High'); Fable at max effort (its only published AA variant)."
       },
       {
         "pillar": "Planning",
@@ -774,7 +819,7 @@
     },
     "verdict": {
       "headline": "One real contest, two empty arenas.",
-      "body": "On the only pillar where both models have been measured head-to-head — Coding — the result splits: Fable owns hard repo-scale issues (SWE-bench Pro +15.7), Sol Pro owns the terminal (+8.8). On Security there is exactly one comparable data point and it favours Fable by default because Sol wasn't run. On Planning, neither model has a single published score. The honest conclusion is that this “flagship vs flagship” matchup is mostly unmeasured, and buyers picking on Planning or Security today are choosing on reputation, not evidence.",
+      "body": "Coding splits: Fable owns hard repo-scale issues (SWE-bench Pro +15.7), Sol Pro owns the terminal (+8.8). Planning has exactly one shared data point — AA's τ²-bench tool-use agents — and Fable leads it decisively, 98.5 to 84.8, though the other three planning benchmarks are still N/A for both. Security has one comparable point and it favours Fable only because Sol wasn't run. So Fable takes two of the three pillars on the evidence that exists, Sol takes the terminal, and everything outside coding rests on a single benchmark each — thin ground for a purchase decision.",
       "picks": [
         {
           "label": "Pick Fable 5 for",
@@ -785,8 +830,8 @@
           "body": "Terminal-driven agentic work at roughly half the token cost, where its Ultra-mode Terminal-Bench lead and price both matter."
         },
         {
-          "label": "Don't decide on",
-          "body": "Planning or Security from these numbers — both pillars are N/A for both models. Run your own eval on the tasks you actually care about."
+          "label": "Don't over-index on",
+          "body": "Planning or Security from one benchmark each — Tau2 is near-saturated and Endor only ran Fable. Run your own eval on the tasks you actually care about."
         }
       ]
     }
