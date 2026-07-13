@@ -1,0 +1,397 @@
+<title>LLM Meta-Bench — Planning · Security · Coding</title>
+<style>
+  :root {
+    --page: #f2f3f0;
+    --surface: #fcfcfb;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --hairline: #e1e0d9;
+    --baseline: #c3c2b7;
+    --ring: rgba(11,11,11,0.10);
+    --accent: #104281;
+    --accent-soft: #cde2fb;
+    --v-anthropic: #2a78d6;
+    --v-openai: #1baf7a;
+    --v-google: #eda100;
+    --v-xai: #008300;
+    --v-open: #4a3aa7;
+    --lead: #006300;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0d0d0d;
+      --surface: #1a1a19;
+      --ink: #ffffff;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --hairline: #2c2c2a;
+      --baseline: #383835;
+      --ring: rgba(255,255,255,0.10);
+      --accent: #86b6ef;
+      --accent-soft: #10284a;
+      --v-anthropic: #3987e5;
+      --v-openai: #199e70;
+      --v-google: #c98500;
+      --v-xai: #2e9e2e;
+      --v-open: #9085e9;
+      --lead: #0ca30c;
+    }
+  }
+  :root[data-theme="light"] {
+    --page: #f2f3f0; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e;
+    --muted: #898781; --hairline: #e1e0d9; --baseline: #c3c2b7;
+    --ring: rgba(11,11,11,0.10); --accent: #104281; --accent-soft: #cde2fb;
+    --v-anthropic: #2a78d6; --v-openai: #1baf7a; --v-google: #eda100;
+    --v-xai: #008300; --v-open: #4a3aa7; --lead: #006300;
+  }
+  :root[data-theme="dark"] {
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7;
+    --muted: #898781; --hairline: #2c2c2a; --baseline: #383835;
+    --ring: rgba(255,255,255,0.10); --accent: #86b6ef; --accent-soft: #10284a;
+    --v-anthropic: #3987e5; --v-openai: #199e70; --v-google: #c98500;
+    --v-xai: #2e9e2e; --v-open: #9085e9; --lead: #0ca30c;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font: 400 clamp(12px, 0.62vw + 7px, 15px)/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+
+  .slide {
+    background: var(--surface);
+    border: 1px solid var(--ring);
+    border-radius: 10px;
+    width: min(96vw, 178vh);
+    height: min(96vh, 54vw);
+    min-height: 640px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: clamp(16px, 2vh, 28px) clamp(18px, 2.2vw, 34px);
+    gap: clamp(10px, 1.4vh, 18px);
+    overflow: hidden;
+  }
+
+  /* ---- header ---- */
+  header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+           border-bottom: 1px solid var(--hairline); padding-bottom: clamp(8px, 1.2vh, 14px); }
+  .title-block h1 {
+    margin: 0; font-size: clamp(20px, 2.1vw, 32px); font-weight: 750;
+    letter-spacing: -0.02em; text-wrap: balance;
+  }
+  .title-block h1 .dim { color: var(--muted); font-weight: 500; }
+  .eyebrow {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--accent); margin: 0 0 4px;
+  }
+  .meta { text-align: right; color: var(--ink-2); font-size: 0.85em; }
+  .meta .big { color: var(--ink); font-weight: 650; font-variant-numeric: tabular-nums; }
+
+  /* ---- main grid ---- */
+  main { display: grid; grid-template-columns: 0.92fr 1.55fr 0.88fr; gap: clamp(14px, 1.6vw, 26px); min-height: 0; }
+  section { min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
+  h2 { margin: 0; font-size: 0.95em; font-weight: 700; letter-spacing: -0.01em; }
+  h2 .sub { color: var(--muted); font-weight: 450; font-size: 0.86em; margin-left: 6px; }
+
+  /* ---- pillar charts ---- */
+  .pillar-col { overflow-y: auto; }
+  .chart-block { border: 1px solid var(--hairline); border-radius: 8px; padding: 11px 13px 9px;
+                 display: flex; flex-direction: column; gap: 6px; }
+  .chart-block + .chart-block { margin-top: clamp(8px, 1.2vh, 14px); }
+  .pillar-label {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent);
+  }
+  .chart { display: flex; flex-direction: column; gap: 5px; }
+  .bar-row { display: grid; grid-template-columns: 8.2em 1fr 3.4em; align-items: center; gap: 8px; }
+  .bar-row .name { font-size: 0.82em; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-row .name sup { color: var(--muted); }
+  .bar-track { height: 13px; position: relative; }
+  .bar-fill { position: absolute; inset: 0 auto 0 0; border-radius: 0 4px 4px 0; min-width: 3px; }
+  .bar-fill.proxy { opacity: 0.55; }
+  .bar-row:hover .bar-fill { filter: brightness(1.12); }
+  .bar-row .val { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8em;
+                  font-variant-numeric: tabular-nums; text-align: right; }
+  .bar-row .val a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--baseline); }
+  .bar-row .val a:hover, .bar-row .val a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); outline: none; }
+  .chart-note { color: var(--muted); font-size: 0.75em; margin: 0; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 0.74em; color: var(--ink-2); margin-top: clamp(6px, 1vh, 10px); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .swatch { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+
+  /* ---- matrix table ---- */
+  .matrix-wrap { overflow: auto; border: 1px solid var(--hairline); border-radius: 8px; flex: 1; min-height: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.78em; }
+  th, td { padding: 4px 7px; text-align: right; white-space: nowrap; }
+  thead th { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; font-weight: 600;
+       text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted);
+       position: sticky; background: var(--surface); }
+  tr.groups th { top: 0; border-bottom: none; color: var(--accent); text-align: center;
+                 border-left: 1px solid var(--hairline); padding-top: 6px; }
+  tr.groups th:first-child { border-left: none; }
+  tr.cols th { top: 1.7em; border-bottom: 1px solid var(--baseline); }
+  th.gstart, td.gstart { border-left: 1px solid var(--hairline); }
+  th:first-child, td:first-child { text-align: left; }
+  td { border-bottom: 1px solid var(--hairline); font-variant-numeric: tabular-nums;
+       font-family: ui-monospace, "SF Mono", Menlo, monospace; color: var(--ink-2); }
+  tr:last-child td { border-bottom: none; }
+  td.model { font-family: inherit; color: var(--ink); font-weight: 550; }
+  td.model .dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; margin-right: 6px; }
+  td a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--baseline); }
+  td a:hover, td a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); outline: none; }
+  td.best, td.best a { color: var(--lead); font-weight: 700; }
+  td.na { color: var(--baseline); }
+  td sup { color: var(--muted); font-size: 0.85em; }
+  tbody tr:hover td { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+  .matrix-foot { color: var(--muted); font-size: 0.73em; margin: 2px 2px 0; }
+
+  /* ---- insights rail ---- */
+  .rail { overflow-y: auto; gap: clamp(8px, 1.1vh, 12px); padding-right: 2px; }
+  .callout {
+    border: 1px solid var(--hairline); border-left: 3px solid var(--accent);
+    border-radius: 6px; padding: 9px 11px;
+    background: color-mix(in srgb, var(--accent) 3%, transparent);
+  }
+  .callout .tag {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.66em; text-transform: uppercase; letter-spacing: 0.13em; color: var(--accent);
+  }
+  .callout h3 { margin: 3px 0 4px; font-size: 0.9em; font-weight: 700; letter-spacing: -0.01em; }
+  .callout p { margin: 0; font-size: 0.8em; color: var(--ink-2); }
+
+  /* ---- footer ---- */
+  footer { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+           border-top: 1px solid var(--hairline); padding-top: clamp(8px, 1.2vh, 12px);
+           font-size: 0.78em; color: var(--muted); }
+  .nav { display: flex; gap: 18px; }
+  .nav a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .nav a:hover, .nav a:focus-visible { text-decoration: underline; outline: none; }
+  .nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  .pageno { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+  @media (max-width: 980px) {
+    body { align-items: flex-start; }
+    .slide { height: auto; min-height: 100vh; width: 100vw; border-radius: 0; border: none; }
+    main { grid-template-columns: 1fr; }
+    .rail, .pillar-col { overflow-y: visible; }
+    tr.cols th { top: 0; }
+    tr.groups th { position: static; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<script id="benchmark-data" type="application/json">{"generated_at":"2026-07-13T00:00:00Z","schema_version":3,"sources":[{"id":"lmarena","name":"LMArena (Chatbot Arena)","url":"https://arena.ai/leaderboard/text","method":"auto","notes":"Crowd-sourced pairwise Elo. 7,274,904 votes across 374 models as of 2026-07-10."},{"id":"artificial-analysis","name":"Artificial Analysis","url":"https://artificialanalysis.ai/leaderboards/models","method":"auto-with-key","notes":"Intelligence Index v4.x composite. Set AA_API_KEY to enable API fetch."},{"id":"swebench","name":"SWE-bench Verified / Pro","url":"https://www.swebench.com","method":"auto","notes":"Verified: 500 human-reviewed GitHub issues. Pro: harder agentic-coding successor."},{"id":"terminal-bench","name":"Terminal-Bench 2.1","url":"https://www.tbench.ai","method":"manual","notes":"Agentic terminal task benchmark."},{"id":"livebench","name":"LiveBench / LiveCodeBench","url":"https://livebench.ai","method":"auto","notes":"Contamination-resistant rolling releases; latest release 2026-06-25."},{"id":"hle","name":"Humanity's Last Exam (Scale/CAIS)","url":"https://agi.safe.ai/","method":"manual","notes":"Frontier academic knowledge, 2,500 questions."},{"id":"endor","name":"Endor Labs Agent Security League","url":"https://www.endorlabs.com/research/ai-code-security-benchmark","method":"manual","notes":"200 real-world vulnerability-fix tasks across 108 projects and 77 CWE classes."},{"id":"tau2","name":"Tau2-bench (Sierra)","url":"https://pricepertoken.com/leaderboards/benchmark/tau2","method":"manual","notes":"Multi-turn tool-use agents in retail/airline/telecom customer service. 226 models ranked."},{"id":"andon","name":"Vending-Bench 2 (Andon Labs)","url":"https://andonlabs.com/evals/vending-bench-2","method":"manual","notes":"One simulated year running a vending business from a $500 float; score is final balance."},{"id":"hal","name":"GAIA (Princeton HAL)","url":"https://hal.cs.princeton.edu/","method":"manual","notes":"General assistant tasks in the HAL scaffold; harness alone moves scores ~7 points."},{"id":"cotool","name":"Cybench defensive subset (CoTool)","url":"https://www.cotool.ai/research/cybench","method":"manual","notes":"18 defensive tasks from Cybench's 40 professional CTF challenges (HackTheBox, SekaiCTF, Glacier, HKCert)."}],"vendors":[{"id":"anthropic","name":"Anthropic","slot":1},{"id":"openai","name":"OpenAI","slot":2},{"id":"google","name":"Google","slot":3},{"id":"xai","name":"xAI","slot":4},{"id":"open-weights","name":"Open weights","slot":5}],"models":[{"id":"mythos-5","name":"Claude Mythos 5","vendor":"anthropic","note":"Same model as Fable 5, safeguards lifted. Project Glasswing partners only."},{"id":"fable-5","name":"Claude Fable 5","vendor":"anthropic","note":"Mythos-class, generally available. $10/$50 per MTok."},{"id":"opus-4-8","name":"Claude Opus 4.8","vendor":"anthropic","note":"$5/$25 per MTok. Fable's designated fallback model."},{"id":"sonnet-5","name":"Claude Sonnet 5","vendor":"anthropic","note":"$3/$15 ($2/$10 intro)."},{"id":"gpt-5-6-sol","name":"GPT-5.6 Sol","vendor":"openai","note":"OpenAI flagship; 'Ultra' variant scores higher on Terminal-Bench."},{"id":"gpt-5-6-terra","name":"GPT-5.6 Terra","vendor":"openai","note":""},{"id":"gpt-5-5","name":"GPT-5.5","vendor":"openai","note":"Terminal-Bench score is the Codex CLI harness."},{"id":"gemini-3-1-pro","name":"Gemini 3.1 Pro","vendor":"google","note":"LiveCodeBench score is Gemini 3 Pro Preview."},{"id":"grok-4-5","name":"Grok 4.5","vendor":"xai","note":"HLE score is Grok 4 (predecessor)."},{"id":"deepseek-v4-pro","name":"DeepSeek V4 Pro","vendor":"open-weights","note":"Top open-weights model in the LMArena frontier cluster."},{"id":"glm-5-2","name":"GLM-5.2","vendor":"open-weights","note":"HLE score is with tools (40.5 without)."},{"id":"kimi-k2-5","name":"Kimi K2.5","vendor":"open-weights","note":"HLE score is with tools (31.5 without)."}],"pillars":[{"id":"planning","name":"Planning","benchmarks":["tau2-bench","vending-bench-2","gaia","arc-agi-2"],"flagship":"vending-bench-2"},{"id":"security","name":"Security","benchmarks":["cybench-defensive","endor-secpass"],"flagship":"cybench-defensive"},{"id":"coding","name":"Coding","benchmarks":["swe-pro","swe-verified","terminal-bench","livecodebench"],"flagship":"terminal-bench"}],"benchmarks":[{"id":"tau2-bench","name":"Tau2-bench","short":"Tau2","source":"tau2","url":"https://pricepertoken.com/leaderboards/benchmark/tau2","unit":"%","note":"Multi-turn tool-use customer-service agents. Near saturation — leader at 99.1%."},{"id":"vending-bench-2","name":"Vending-Bench 2","short":"VB-2","source":"andon","url":"https://andonlabs.com/evals/vending-bench-2","unit":"$","note":"Final balance after one simulated year of running a business from a $500 float."},{"id":"gaia","name":"GAIA (HAL)","short":"GAIA","source":"hal","url":"https://hal.cs.princeton.edu/","unit":"%","note":"General-assistant tasks. Harness choice alone moves the same model ~7 points."},{"id":"arc-agi-2","name":"ARC-AGI-2","short":"ARC-2","source":"livebench","url":"https://arcprize.org/leaderboard","unit":"%","note":"Novel abstract reasoning; resistant to memorization."},{"id":"cybench-defensive","name":"Cybench (defensive subset)","short":"Cybench-D","source":"cotool","url":"https://www.cotool.ai/research/cybench","unit":"%","note":"18 defensive tasks from 40 professional CTF challenges."},{"id":"endor-secpass","name":"Endor ASL SecPass","short":"SecPass","source":"endor","url":"https://www.endorlabs.com/research/ai-code-security-benchmark","unit":"%","note":"Share of vulnerability fixes that pass security tests (not just functional tests)."},{"id":"swe-pro","name":"SWE-bench Pro","short":"SWE-Pro","source":"swebench","url":"https://www.morphllm.com/swe-bench-pro","unit":"%","note":"Harder successor to Verified; the current agentic-coding discriminator."},{"id":"swe-verified","name":"SWE-bench Verified","short":"SWE-V","source":"swebench","url":"https://benchlm.ai/benchmarks/sweVerified","unit":"%","note":"OpenAI audit: 59.4% of the hardest unsolved problems have flawed test cases."},{"id":"terminal-bench","name":"Terminal-Bench 2.1","short":"T-Bench","source":"terminal-bench","url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","unit":"%","note":"Fable 5 was suspended 2026-06-12 and later reinstated."},{"id":"livecodebench","name":"LiveCodeBench","short":"LCB","source":"livebench","url":"https://pricepertoken.com/leaderboards/benchmark/livecodebench","unit":"%","note":"Rolling contamination-resistant coding problems."},{"id":"lmarena-elo","name":"LMArena Elo","short":"Elo","source":"lmarena","url":"https://www.swfte.com/lmarena","unit":"elo","note":"Text arena, thinking variants included."},{"id":"aa-index","name":"AA Intelligence Index","short":"AA idx","source":"artificial-analysis","url":"https://benchlm.ai/benchmarks/artificialAnalysis","unit":"index","note":"v4.x — versions v4.0 and v4.1 report different absolute values."},{"id":"gpqa-diamond","name":"GPQA Diamond","short":"GPQA-D","source":"livebench","url":"https://felloai.com/best-ai-models/","unit":"%","note":"PhD-level science QA. Near saturation at the frontier."},{"id":"hle","name":"Humanity's Last Exam","short":"HLE","source":"hle","url":"https://agi.safe.ai/","unit":"%","note":"Open-weights scores are tool-assisted."}],"scores":[{"model":"glm-5-2","benchmark":"tau2-bench","value":99.1,"source_url":"https://pricepertoken.com/leaderboards/benchmark/tau2","note":"Leaderboard top score as of 2026-07-08; benchmark near saturation."},{"model":"opus-4-8","benchmark":"vending-bench-2","value":8017.59,"proxy":"Claude Opus 4.6","source_url":"https://llm-stats.com/benchmarks/vending-bench-2","note":"Score is predecessor Claude Opus 4.6 — current leader; only 4 models evaluated."},{"model":"gemini-3-1-pro","benchmark":"vending-bench-2","value":5478.16,"proxy":"Gemini 3 Pro","source_url":"https://andonlabs.com/evals/vending-bench-2","note":"Score is predecessor Gemini 3 Pro."},{"model":"sonnet-5","benchmark":"gaia","value":74.6,"proxy":"Claude Sonnet 4.5 (HAL harness)","source_url":"https://hal.cs.princeton.edu/","note":"Predecessor Sonnet 4.5 leads the HAL scaffolded board; Anthropic holds the top six slots."},{"model":"gemini-3-1-pro","benchmark":"arc-agi-2","value":77.1,"source_url":"https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked"},{"model":"opus-4-8","benchmark":"cybench-defensive","value":61,"proxy":"Claude Opus 4.5","source_url":"https://www.cotool.ai/research/cybench","note":"Predecessor Claude Opus 4.5; tied for the ceiling with GPT-5.2 at ~3x the cost per task."},{"model":"gpt-5-5","benchmark":"cybench-defensive","value":61,"proxy":"GPT-5.2","source_url":"https://www.cotool.ai/research/cybench","note":"Predecessor GPT-5.2 — 61% at $2.62/task with 100% reliability."},{"model":"gemini-3-1-pro","benchmark":"cybench-defensive","value":44,"proxy":"Gemini 3.0 Pro","source_url":"https://www.cotool.ai/research/cybench","note":"Predecessor Gemini 3.0 Pro."},{"model":"sonnet-5","benchmark":"cybench-defensive","value":33,"proxy":"Claude Sonnet 4.5","source_url":"https://www.cotool.ai/research/cybench","note":"Predecessor Claude Sonnet 4.5."},{"model":"fable-5","benchmark":"endor-secpass","value":19.0,"source_url":"https://www.endorlabs.com/learn/claude-fable-5-mythos-grade-hype","note":"League-wide SecPass had previously peaked at 17.3% while FuncPass climbed to 84.4%."},{"model":"fable-5","benchmark":"swe-pro","value":80.3,"source_url":"https://www.anthropic.com/news/claude-fable-5-mythos-5"},{"model":"opus-4-8","benchmark":"swe-pro","value":69.2,"source_url":"https://www.morphllm.com/swe-bench-pro"},{"model":"mythos-5","benchmark":"swe-verified","value":95.5,"source_url":"https://benchlm.ai/benchmarks/sweVerified"},{"model":"fable-5","benchmark":"swe-verified","value":95.0,"source_url":"https://llm-stats.com/benchmarks/swe-bench-verified"},{"model":"opus-4-8","benchmark":"swe-verified","value":88.6,"source_url":"https://benchlm.ai/benchmarks/sweVerified"},{"model":"gpt-5-5","benchmark":"swe-verified","value":88.7,"source_url":"https://www.marc0.dev/en/leaderboard"},{"model":"gpt-5-6-sol","benchmark":"terminal-bench","value":88.8,"source_url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","note":"91.9 for the Ultra variant."},{"model":"gpt-5-6-terra","benchmark":"terminal-bench","value":87.4,"source_url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/"},{"model":"gpt-5-5","benchmark":"terminal-bench","value":83.4,"source_url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","note":"Codex CLI harness."},{"model":"fable-5","benchmark":"terminal-bench","value":83.1,"source_url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","note":"Suspended 2026-06-12, later reinstated."},{"model":"sonnet-5","benchmark":"terminal-bench","value":80.4,"source_url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","note":"~97% of Opus 4.8's score at 60% of the price."},{"model":"gemini-3-1-pro","benchmark":"livecodebench","value":91.7,"source_url":"https://pricepertoken.com/leaderboards/benchmark/livecodebench","note":"Gemini 3 Pro Preview."},{"model":"opus-4-8","benchmark":"lmarena-elo","value":1510,"source_url":"https://www.swfte.com/lmarena"},{"model":"gpt-5-5","benchmark":"lmarena-elo","value":1500,"source_url":"https://www.swfte.com/lmarena","note":"GPT-5.5 Pro; frontier cluster approx."},{"model":"gemini-3-1-pro","benchmark":"lmarena-elo","value":1500,"source_url":"https://www.swfte.com/lmarena","note":"Frontier cluster approx."},{"model":"deepseek-v4-pro","benchmark":"lmarena-elo","value":1495,"source_url":"https://www.swfte.com/lmarena","note":"Frontier cluster approx."},{"model":"gpt-5-6-sol","benchmark":"aa-index","value":58.9,"source_url":"https://benchlm.ai/benchmarks/artificialAnalysis"},{"model":"opus-4-8","benchmark":"aa-index","value":55.7,"source_url":"https://benchlm.ai/benchmarks/artificialAnalysis"},{"model":"gpt-5-6-terra","benchmark":"aa-index","value":55.0,"source_url":"https://benchlm.ai/benchmarks/artificialAnalysis"},{"model":"grok-4-5","benchmark":"aa-index","value":54.0,"source_url":"https://benchlm.ai/"},{"model":"fable-5","benchmark":"aa-index","value":null,"source_url":"https://artificialanalysis.ai/","note":"AA reports Fable 5 (with Opus fallback) as its highest-intelligence model; exact index differs between v4.0 and v4.1."},{"model":"mythos-5","benchmark":"gpqa-diamond","value":94.6,"source_url":"https://felloai.com/best-ai-models/"},{"model":"gemini-3-1-pro","benchmark":"gpqa-diamond","value":94.3,"source_url":"https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked"},{"model":"mythos-5","benchmark":"hle","value":64.7,"source_url":"https://felloai.com/best-ai-models/"},{"model":"glm-5-2","benchmark":"hle","value":54.7,"source_url":"https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked","note":"With tools; 40.5 without."},{"model":"kimi-k2-5","benchmark":"hle","value":51.8,"source_url":"https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked","note":"With tools; 31.5 without."},{"model":"grok-4-5","benchmark":"hle","value":50.7,"source_url":"https://felloai.com/best-ai-models/","note":"Grok 4 (predecessor)."},{"model":"gemini-3-1-pro","benchmark":"hle","value":44.4,"source_url":"https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked"}],"arena_meta":{"votes":7274904,"models_ranked":374,"as_of":"2026-07-10","frontier_spread_elo":55},"insights":[{"title":"Coding is measured. Planning isn't.","body":"Coding has four live, regularly refreshed leaderboards covering the whole frontier. Long-horizon planning has a 4-model sample (Vending-Bench 2) and a saturated tool-use board (Tau2's leader sits at 99.1%). The pillar everyone claims to care about has the weakest evidence base.","tag":"coverage"},{"title":"Security scores collapse when it matters","body":"The frontier tops out at 61% on defensive CTF tasks — and when agents write actual vulnerability fixes, only 19% survive security tests (Fable 5, the current best). Over 80% of functionally-correct agent code ships with vulnerabilities. Passing CI is not passing security.","tag":"security"},{"title":"Nobody has tested the current frontier","body":"Every Cybench and Vending-Bench entry is a predecessor generation — Opus 4.5/4.6, GPT-5.2, Gemini 3.0. Daggered (†) cells mark these proxies. The models you'd actually deploy today are unscored on two of the three pillars that matter.","tag":"staleness"},{"title":"Each pillar has a different champion","body":"Coding belongs to Anthropic (Fable 5's 80.3% SWE-Pro) and OpenAI's terminal agents (Sol 88.8%). Best planning evidence points to the Anthropic lineage (Vending-Bench leader, top six GAIA slots). Security's ceiling is a 61% tie — where GPT-5.2 matched Opus 4.5 at a third of the cost.","tag":"strategy"},{"title":"Why there's no single composite score","body":"Models are tested on different subsets — averaging Fable's SecPass against Opus's Cybench would compare different exams. We rank within each benchmark and refuse a blended number. The methodology page documents exactly what feeds each pillar.","tag":"method"},{"title":"Harnesses move scores as much as models","body":"The same Claude Opus 4 scores 64.9% on GAIA in one harness and 57.6% in another — a 7-point swing from scaffolding alone. Terminal-Bench scores are model+harness pairs. Treat every agentic number as a system score, not a model score.","tag":"measurement"}],"fable":{"release_date":"2026-06-09","pricing":{"input_per_mtok":10,"output_per_mtok":50},"context_window":1000000,"max_output":128000,"swe":{"swe_pro":80.3,"swe_pro_vs_opus":69.2,"swe_verified":95.0,"terminal_bench":83.1,"endor":{"func_pass":59.8,"sec_pass":19.0,"timeouts_over_40min":15,"cheating_total":38,"cheating_memorization":33,"cheating_workspace":4,"cheating_git":1,"hall_of_fame":[{"cve":"CVE-2023-27494","project":"Streamlit","class":"Reflected XSS","fix":"Stopped echoing user-controlled paths in error responses; routed detail to server-side logging."},{"cve":"CVE-2024-28102","project":"jwcrypto","class":"Decompression bomb","fix":"Added a 256 KB cap on compressed JWE payloads before decompression."},{"cve":"CVE-2021-43818","project":"lxml","class":"HTML cleaner XSS","fix":"Stripped SVG/XML image types from trusted data URLs."},{"cve":"CVE-2021-41124","project":"scrapy-splash","class":"Credential leakage","fix":"Separated Splash credentials from forwarded requests."}]},"anecdote":"Stripe reportedly compressed months of engineering into days — a codebase-wide migration on a 50-million-line Ruby project completed in one day."},"cyber":{"safeguard_trigger_rate":"< 5% of sessions","fallback_model":"Claude Opus 4.8","external_partner_finding":"Fable 5's safeguards against harmful cyber queries were the most robust of any model tested, including Opus 4.8 and 4.7.","defensive_refusals":"Zero safety refusals across all 200 security-relevant vulnerability-fix tasks (Endor Labs).","limitation":"Static analysis only — cannot verify exploitability against live systems or deployed configurations (MindFort).","mythos_note":"Mythos 5 — the same model with cyber safeguards lifted — is described as the strongest cybersecurity model in the world, restricted to Project Glasswing partners."}}}</script>
+
+<div class="slide" role="document">
+  <header>
+    <div class="title-block">
+      <p class="eyebrow">llm-meta-bench · planning / security / coding · 1 of 2</p>
+      <h1>The three pillars. <span class="dim">Every score links to where it came from.</span></h1>
+    </div>
+    <div class="meta">
+      <div><span class="big" id="meta-models">—</span> models · <span class="big" id="meta-benches">—</span> benchmarks · 3 pillars</div>
+      <div>data as of <span class="big" id="meta-date">—</span> · <sup>†</sup> = predecessor-model score</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="pillar-col" aria-label="Pillar headline charts" id="pillar-charts"></section>
+
+    <section aria-label="Benchmark matrix">
+      <h2>The matrix <span class="sub">click any score for its data origin · best per column in green</span></h2>
+      <div class="matrix-wrap">
+        <table id="matrix">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="matrix-foot">— = not reported. <sup>†</sup> = score belongs to that vendor's predecessor model (hover for which). No blended composite is shown — models are tested on different subsets, so we rank within benchmarks only (see methodology).</p>
+    </section>
+
+    <section class="rail" aria-label="Insights" id="insights">
+      <h2>What the numbers mean</h2>
+    </section>
+  </main>
+
+  <footer>
+    <div class="nav">
+      <a id="method-link" href="./methodology.html">How the 3 pillars are scored →</a>
+      <a id="fable-link" href="./fable.html">Fable 5 deep dive</a>
+    </div>
+    <div class="pageno">1 / 2 · → methodology</div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var data = JSON.parse(document.getElementById("benchmark-data").textContent || "{}");
+  if (!data.models) return;
+
+  var vendorVar = {
+    anthropic: "--v-anthropic", openai: "--v-openai", google: "--v-google",
+    xai: "--v-xai", "open-weights": "--v-open"
+  };
+  var modelById = {}, benchById = {};
+  data.models.forEach(function (m) { modelById[m.id] = m; });
+  data.benchmarks.forEach(function (b) { benchById[b.id] = b; });
+
+  function score(model, bench) {
+    return (data.scores || []).find(function (s) { return s.model === model && s.benchmark === bench; }) || null;
+  }
+  function color(modelId) {
+    var m = modelById[modelId];
+    return "var(" + (vendorVar[m && m.vendor] || "--muted") + ")";
+  }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;"); }
+  function originOf(s, bench) { return s.source_url || (bench && bench.url) || "#"; }
+  function fmt(v, unit) {
+    if (unit === "$") return Math.round(v).toLocaleString("en-US");
+    if (unit === "elo") return String(Math.round(v));
+    return v.toFixed(1);
+  }
+
+  // meta
+  var pillars = data.pillars || [];
+  var pillarBenchIds = [];
+  pillars.forEach(function (p) { pillarBenchIds = pillarBenchIds.concat(p.benchmarks); });
+  document.getElementById("meta-models").textContent = data.models.length;
+  document.getElementById("meta-benches").textContent = pillarBenchIds.length;
+  document.getElementById("meta-date").textContent = (data.generated_at || "").slice(0, 10);
+
+  // ---- pillar flagship charts ----
+  var chartNotes = {
+    planning: "Only 4 models ever evaluated; both entries are predecessor generations. Planning is the least-measured pillar.",
+    security: "Defensive CTF subset (18 tasks). All entries are predecessor models — the ceiling is a 61% tie.",
+    coding: "The richest pillar: current-generation models, live leaderboard, harness disclosed."
+  };
+  var chartsHost = document.getElementById("pillar-charts");
+  pillars.forEach(function (p) {
+    var bench = benchById[p.flagship];
+    var block = document.createElement("div");
+    block.className = "chart-block";
+    block.innerHTML = '<span class="pillar-label">' + p.name + "</span>" +
+      "<h2>" + bench.name + ' <span class="sub">' + (bench.unit === "$" ? "final balance, $" : "%") + "</span></h2>" +
+      '<div class="chart"></div>' +
+      '<p class="chart-note">' + (chartNotes[p.id] || "") + "</p>";
+    var chart = block.querySelector(".chart");
+    var rows = data.models.map(function (m) { return { id: m.id, s: score(m.id, p.flagship) }; })
+      .filter(function (r) { return r.s && r.s.value != null; })
+      .sort(function (a, b) { return b.s.value - a.s.value; });
+    var max = Math.max.apply(null, rows.map(function (r) { return r.s.value; }));
+    rows.forEach(function (r) {
+      var m = modelById[r.id];
+      var row = document.createElement("div");
+      row.className = "bar-row";
+      var tip = [];
+      if (r.s.proxy) tip.push("Predecessor score: " + r.s.proxy);
+      if (r.s.note) tip.push(r.s.note);
+      if (tip.length) row.title = tip.join(" — ");
+      row.innerHTML =
+        '<span class="name">' + m.name + (r.s.proxy ? "<sup>†</sup>" : "") + "</span>" +
+        '<span class="bar-track"><span class="bar-fill' + (r.s.proxy ? " proxy" : "") + '" style="width:' +
+        (r.s.value / max * 100).toFixed(1) + "%;background:" + color(r.id) + '"></span></span>' +
+        '<span class="val"><a href="' + esc(originOf(r.s, bench)) + '" target="_blank" rel="noopener">' +
+        fmt(r.s.value, bench.unit) + "</a></span>";
+      chart.appendChild(row);
+    });
+    chartsHost.appendChild(block);
+  });
+  var legend = document.createElement("div");
+  legend.className = "legend";
+  data.vendors.forEach(function (v) {
+    var span = document.createElement("span");
+    span.innerHTML = '<span class="swatch" style="background:var(' + vendorVar[v.id] + ')"></span>' + v.name;
+    legend.appendChild(span);
+  });
+  chartsHost.appendChild(legend);
+
+  // ---- matrix ----
+  var thead = document.querySelector("#matrix thead");
+  var groupRow = '<tr class="groups"><th></th>';
+  var colRow = '<tr class="cols"><th>Model</th>';
+  pillars.forEach(function (p) {
+    groupRow += '<th colspan="' + p.benchmarks.length + '">' + p.name + "</th>";
+    p.benchmarks.forEach(function (bid, i) {
+      var b = benchById[bid];
+      colRow += '<th' + (i === 0 ? ' class="gstart"' : "") + ' title="' + esc(b.note || b.name) + '">' +
+        (b.short || b.name) + "</th>";
+    });
+  });
+  thead.innerHTML = groupRow + "</tr>" + colRow + "</tr>";
+
+  var best = {};
+  pillarBenchIds.forEach(function (bid) {
+    var top = null;
+    data.models.forEach(function (m) {
+      var s = score(m.id, bid);
+      if (s && s.value != null && (top === null || s.value > top)) top = s.value;
+    });
+    best[bid] = top;
+  });
+
+  var tbody = document.querySelector("#matrix tbody");
+  data.models.forEach(function (m) {
+    var cells = "";
+    pillars.forEach(function (p) {
+      p.benchmarks.forEach(function (bid, i) {
+        var b = benchById[bid];
+        var s = score(m.id, bid);
+        var gs = i === 0 ? " gstart" : "";
+        if (!s || s.value == null) {
+          var t = s && s.note ? ' title="' + esc(s.note) + '"' : "";
+          cells += '<td class="na' + gs + '"' + t + ">—</td>";
+          return;
+        }
+        var cls = (s.value === best[bid] ? "best" : "") + gs;
+        var tip = [];
+        if (s.proxy) tip.push("Predecessor score: " + s.proxy);
+        if (s.note) tip.push(s.note);
+        tip.push("Source: " + originOf(s, b));
+        cells += '<td class="' + cls + '" title="' + esc(tip.join(" — ")) + '">' +
+          '<a href="' + esc(originOf(s, b)) + '" target="_blank" rel="noopener">' +
+          fmt(s.value, b.unit) + "</a>" + (s.proxy ? "<sup>†</sup>" : "") + "</td>";
+      });
+    });
+    var tr = document.createElement("tr");
+    tr.innerHTML = '<td class="model"' + (m.note ? ' title="' + esc(m.note) + '"' : "") +
+      '><span class="dot" style="background:' + color(m.id) + '"></span>' + m.name + "</td>" + cells;
+    tbody.appendChild(tr);
+  });
+
+  // ---- insights ----
+  var rail = document.getElementById("insights");
+  (data.insights || []).forEach(function (ins) {
+    var div = document.createElement("div");
+    div.className = "callout";
+    div.innerHTML = '<span class="tag">' + ins.tag + "</span><h3>" + ins.title + "</h3><p>" + ins.body + "</p>";
+    rail.appendChild(div);
+  });
+
+  // when hosted as a claude.ai artifact, point at the other artifacts
+  if (location.hostname.indexOf("claude.ai") !== -1) {
+    document.getElementById("method-link").href =
+      "https://claude.ai/code/artifact/d8bda057-c0ba-482f-be1e-f473ffc72d5d";
+    document.getElementById("fable-link").href =
+      "https://claude.ai/code/artifact/f07f8ecf-61bb-43d8-bc76-d86738c09ed2";
+  }
+
+  // slide-deck keyboard nav
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight" || e.key === " ") {
+      window.location.href = document.getElementById("method-link").href;
+    }
+  });
+})();
+</script>
