@@ -94,8 +94,31 @@ def set_score(data: dict, model: str, benchmark: str, value: float, note: str | 
 # Adapters — each returns the number of scores it updated, or raises.
 # --------------------------------------------------------------------------
 
+# Benchmarks sourced from the Artificial Analysis API. Each maps our benchmark
+# id to (substrings matched against AA's per-model `evaluations` keys, the
+# citation URL). AA is the single source of truth for every benchmark listed
+# here — a keyed refresh overwrites those cells from one place. Tau2 lives here
+# so all its cells come from AA rather than a mix of sites; the leaderboard
+# page renders its table in JavaScript, but the API returns the raw per-model
+# numbers. `AA_URL` is the model board; the tau2 eval has its own page.
+AA_URL = "https://artificialanalysis.ai/leaderboards/models"
+AA_EVAL_MAP = {
+    "aa-index": (("artificial_analysis_intelligence_index", "intelligence_index"), AA_URL),
+    "tau2-bench": (("tau2_bench_telecom", "tau2_telecom", "tau2"), "https://artificialanalysis.ai/evaluations/tau2-bench"),
+}
+
+
+def _find_eval(evals: dict, substrings):
+    """Return the first eval value whose key contains any of the substrings."""
+    for k, v in evals.items():
+        kl = k.lower()
+        if v is not None and any(s in kl for s in substrings):
+            return v
+    return None
+
+
 def refresh_artificial_analysis(data: dict) -> int:
-    """Artificial Analysis has a documented API; requires AA_API_KEY."""
+    """Pull every AA_EVAL_MAP benchmark per model from the AA API. Requires AA_API_KEY."""
     key = os.environ.get("AA_API_KEY")
     if not key:
         raise RuntimeError("AA_API_KEY not set — skipping (get one at artificialanalysis.ai)")
@@ -110,9 +133,20 @@ def refresh_artificial_analysis(data: dict) -> int:
         if not model_id:
             continue
         evals = entry.get("evaluations", {})
-        index = evals.get("artificial_analysis_intelligence_index")
-        if index is not None:
-            set_score(data, model_id, "aa-index", round(float(index), 1))
+        for bench_id, (substrings, url) in AA_EVAL_MAP.items():
+            raw = _find_eval(evals, substrings)
+            if raw is None:
+                continue
+            val = float(raw)
+            if val <= 1.0:  # AA reports pass-rate evals (tau2) as 0–1 fractions
+                val *= 100.0
+            set_score(data, model_id, bench_id, round(val, 1))
+            # keep the citation pinned to AA for these benchmarks
+            for row in data["scores"]:
+                if row["model"] == model_id and row["benchmark"] == bench_id:
+                    row["source_url"] = url
+                    row.pop("proxy", None)  # AA reports the current model directly
+                    break
             updated += 1
     return updated
 

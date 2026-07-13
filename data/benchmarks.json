@@ -53,10 +53,10 @@
     },
     {
       "id": "tau2",
-      "name": "Tau2-bench (Sierra)",
+      "name": "Tau2-bench (Sierra, via Artificial Analysis)",
       "url": "https://artificialanalysis.ai/evaluations/tau2-bench",
-      "method": "manual",
-      "notes": "Multi-turn tool-use agents in retail/airline/telecom customer service. Telecom split used here (the one with published frontier scores); JS-rendered leaderboards so scores are hand-entered with per-model citations."
+      "method": "auto-with-key",
+      "notes": "Multi-turn tool-use agents; telecom split. Single-sourced from the Artificial Analysis API (set AA_API_KEY): the AA leaderboard table is JS-rendered, but the API returns raw per-model numbers, so a keyed refresh pulls every Tau2 cell from AA in one call."
     },
     {
       "id": "andon",
@@ -362,8 +362,8 @@
       "model": "gpt-5-5",
       "benchmark": "tau2-bench",
       "value": 98.0,
-      "source_url": "https://www.vellum.ai/blog/everything-you-need-to-know-about-gpt-5-5",
-      "note": "Telecom split, no prompt tuning. Current-generation model."
+      "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench",
+      "note": "Telecom split, no prompt tuning. Value cross-referenced pending the next keyed AA refresh, which pulls it directly from the AA API."
     },
     {
       "model": "opus-4-8",
