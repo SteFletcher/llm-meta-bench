@@ -638,63 +638,233 @@
       "tag": "measurement"
     }
   ],
-  "fable": {
-    "release_date": "2026-06-09",
-    "pricing": {
-      "input_per_mtok": 10,
-      "output_per_mtok": 50
+  "head_to_head": {
+    "title": "Fable 5 vs Sol Pro (Extra High)",
+    "subtitle": "Anthropic's Mythos-class flagship against OpenAI's maximum-effort coder, scored across the three pillars.",
+    "a": {
+      "model": "fable-5",
+      "label": "Claude Fable 5",
+      "vendor": "anthropic",
+      "sub": "Mythos-class · $10 / $50 per MTok · always-on thinking"
     },
-    "context_window": 1000000,
-    "max_output": 128000,
-    "swe": {
-      "swe_pro": 80.3,
-      "swe_pro_vs_opus": 69.2,
-      "swe_verified": 95.0,
-      "terminal_bench": 83.1,
-      "endor": {
-        "func_pass": 59.8,
-        "sec_pass": 19.0,
-        "timeouts_over_40min": 15,
-        "cheating_total": 38,
-        "cheating_memorization": 33,
-        "cheating_workspace": 4,
-        "cheating_git": 1,
-        "hall_of_fame": [
-          {
-            "cve": "CVE-2023-27494",
-            "project": "Streamlit",
-            "class": "Reflected XSS",
-            "fix": "Stopped echoing user-controlled paths in error responses; routed detail to server-side logging."
-          },
-          {
-            "cve": "CVE-2024-28102",
-            "project": "jwcrypto",
-            "class": "Decompression bomb",
-            "fix": "Added a 256 KB cap on compressed JWE payloads before decompression."
-          },
-          {
-            "cve": "CVE-2021-43818",
-            "project": "lxml",
-            "class": "HTML cleaner XSS",
-            "fix": "Stripped SVG/XML image types from trusted data URLs."
-          },
-          {
-            "cve": "CVE-2021-41124",
-            "project": "scrapy-splash",
-            "class": "Credential leakage",
-            "fix": "Separated Splash credentials from forwarded requests."
-          }
-        ]
+    "b": {
+      "model": "gpt-5-6-sol",
+      "label": "GPT-5.6 Sol Pro",
+      "vendor": "openai",
+      "sub": "xhigh effort (“Ultra”) · ~half Fable's price · max-compute mode"
+    },
+    "config_note": "“Sol Pro Extra High” = GPT-5.6 Sol run at xhigh reasoning effort, marketed as Sol Ultra. OpenAI publishes only some benchmarks at this effort level; cells drawn from the base-Sol number are footnoted, and configurations neither vendor has published are left N/A.",
+    "rows": [
+      {
+        "pillar": "Coding",
+        "benchmark": "SWE-bench Pro",
+        "unit": "%",
+        "a": 80.3,
+        "b": 64.6,
+        "a_src": "https://www.anthropic.com/news/claude-fable-5-mythos-5",
+        "b_src": "https://benchlm.ai/models/gpt-5-6-sol",
+        "winner": "a",
+        "note": "Fable's single clearest edge — 15.7 points on the hardest live coding board. Sol's number is OpenAI-reported at high effort."
       },
-      "anecdote": "Stripe reportedly compressed months of engineering into days — a codebase-wide migration on a 50-million-line Ruby project completed in one day."
+      {
+        "pillar": "Coding",
+        "benchmark": "Terminal-Bench 2.1",
+        "unit": "%",
+        "a": 83.1,
+        "b": 91.9,
+        "a_src": "https://codingfleet.com/blog/terminal-bench-leaderboard-2026/",
+        "b_src": "https://lushbinary.com/blog/gpt-5-6-sol-benchmarks-terminalbench-agentic-deep-dive/",
+        "winner": "b",
+        "note": "Sol Ultra (xhigh) leads terminal agency by 8.8 points; base Sol is 88.8."
+      },
+      {
+        "pillar": "Coding",
+        "benchmark": "SWE-bench Verified",
+        "unit": "%",
+        "a": 95.0,
+        "b": null,
+        "a_src": "https://llm-stats.com/benchmarks/swe-bench-verified",
+        "b_src": "https://benchlm.ai/models/gpt-5-6-sol",
+        "winner": "a",
+        "note": "No Sol-Pro-xhigh Verified figure published; base Sol trails the 95% tier. Left N/A rather than substitute an effort mismatch."
+      },
+      {
+        "pillar": "Coding",
+        "benchmark": "LiveCodeBench",
+        "unit": "%",
+        "a": null,
+        "b": null,
+        "note": "Neither model has a current published LiveCodeBench figure at these configs."
+      },
+      {
+        "pillar": "Security",
+        "benchmark": "Endor ASL SecPass",
+        "unit": "%",
+        "a": 19.0,
+        "b": null,
+        "a_src": "https://www.endorlabs.com/research/ai-code-security-benchmark",
+        "b_src": null,
+        "winner": "a",
+        "note": "Only Fable has been run on Endor's vulnerability-fix league. Even the leader clears just 19% of security tests — winning here is a low bar."
+      },
+      {
+        "pillar": "Security",
+        "benchmark": "Cybench (defensive)",
+        "unit": "%",
+        "a": null,
+        "b": null,
+        "note": "Neither current-generation model has been publicly run; the board tops out on predecessors (Opus 4.5 / GPT-5.2 tie at 61%)."
+      },
+      {
+        "pillar": "Planning",
+        "benchmark": "Vending-Bench 2",
+        "unit": "$",
+        "a": null,
+        "b": null,
+        "note": "Only 4 models ever evaluated — all predecessors. Neither Fable nor Sol has a score."
+      },
+      {
+        "pillar": "Planning",
+        "benchmark": "Tau2-bench",
+        "unit": "%",
+        "a": null,
+        "b": null,
+        "note": "No published per-config figure for either model; the board is saturated (leader 99.1%)."
+      },
+      {
+        "pillar": "Planning",
+        "benchmark": "GAIA (HAL)",
+        "unit": "%",
+        "a": null,
+        "b": null,
+        "note": "HAL scaffolded board is led by predecessors; neither flagship listed at these configs."
+      },
+      {
+        "pillar": "Planning",
+        "benchmark": "ARC-AGI-2",
+        "unit": "%",
+        "a": null,
+        "b": null,
+        "note": "No published ARC-AGI-2 figure for Fable 5 or Sol Pro xhigh."
+      }
+    ],
+    "context_row": {
+      "benchmark": "AA Intelligence Index (general)",
+      "unit": "index",
+      "a": null,
+      "b": 58.9,
+      "a_src": "https://artificialanalysis.ai/",
+      "b_src": "https://benchlm.ai/benchmarks/artificialAnalysis",
+      "note": "Context only, not a pillar. AA lists Fable 5 (with Opus fallback) as its highest-intelligence entry but publishes no clean single index; Sol leads the numeric index at 58.9."
     },
-    "cyber": {
-      "safeguard_trigger_rate": "< 5% of sessions",
-      "fallback_model": "Claude Opus 4.8",
-      "external_partner_finding": "Fable 5's safeguards against harmful cyber queries were the most robust of any model tested, including Opus 4.8 and 4.7.",
-      "defensive_refusals": "Zero safety refusals across all 200 security-relevant vulnerability-fix tasks (Endor Labs).",
-      "limitation": "Static analysis only — cannot verify exploitability against live systems or deployed configurations (MindFort).",
-      "mythos_note": "Mythos 5 — the same model with cyber safeguards lifted — is described as the strongest cybersecurity model in the world, restricted to Project Glasswing partners."
+    "verdict": {
+      "headline": "One real contest, two empty arenas.",
+      "body": "On the only pillar where both models have been measured head-to-head — Coding — the result splits: Fable owns hard repo-scale issues (SWE-bench Pro +15.7), Sol Pro owns the terminal (+8.8). On Security there is exactly one comparable data point and it favours Fable by default because Sol wasn't run. On Planning, neither model has a single published score. The honest conclusion is that this “flagship vs flagship” matchup is mostly unmeasured, and buyers picking on Planning or Security today are choosing on reputation, not evidence.",
+      "picks": [
+        {
+          "label": "Pick Fable 5 for",
+          "body": "Hard repository-scale engineering and any workload where the 15-point SWE-bench Pro gap compounds — large migrations, deep multi-file changes."
+        },
+        {
+          "label": "Pick Sol Pro (xhigh) for",
+          "body": "Terminal-driven agentic work at roughly half the token cost, where its Ultra-mode Terminal-Bench lead and price both matter."
+        },
+        {
+          "label": "Don't decide on",
+          "body": "Planning or Security from these numbers — both pillars are N/A for both models. Run your own eval on the tasks you actually care about."
+        }
+      ]
     }
+  },
+  "risk": {
+    "title": "Securing Against the Uncensored Underworld",
+    "question": "Open-weight models can be stripped of their safety training in minutes. Once uncensored, can they attack like a frontier model — and what should defenders actually worry about?",
+    "abliteration": {
+      "heretic": "Heretic (early 2026) automates abliteration — surgically removing refusal behaviour — via Optuna-driven optimization: one pip install, one command, ~45–90 min on a consumer GPU for a 12B model.",
+      "badllama": "Badllama 3 stripped safety fine-tuning from Llama 3 8B in ~1 minute and 70B in ~30 minutes on a single GPU.",
+      "qi": "Qi et al. showed alignment can be broken with as few as 10 adversarial examples for under $0.20 — and it generalizes to API fine-tuning, not just open weights.",
+      "takeaway": "Assume every open-weight release has an uncensored counterpart within hours. Any threat model resting on “the base model will refuse” is already void."
+    },
+    "trustedsec": {
+      "source_url": "https://trustedsec.com/blog/benchmarking-self-hosted-llms-for-offensive-security",
+      "runs": 4800,
+      "models": 6,
+      "challenges": 8,
+      "single_step_top": 98.5,
+      "multi_step": 0,
+      "refusals": "None detected across 4,800 runs — uncensored local models simply comply.",
+      "rows": [
+        {
+          "model": "gemma4:31b",
+          "vendor": "Google",
+          "pass": 98.5,
+          "params": "31B"
+        },
+        {
+          "model": "qwen3.5:27b",
+          "vendor": "Alibaba",
+          "pass": 97.5,
+          "params": "27B"
+        },
+        {
+          "model": "devstral-small-2:24b",
+          "vendor": "Mistral",
+          "pass": 95.6,
+          "params": "24B"
+        },
+        {
+          "model": "nemotron-3-super",
+          "vendor": "NVIDIA",
+          "pass": 92.0,
+          "params": "87B MoE"
+        },
+        {
+          "model": "qwen3-coder:30b",
+          "vendor": "Alibaba",
+          "pass": 86.5,
+          "params": "30B"
+        },
+        {
+          "model": "qwen3:32b",
+          "vendor": "Alibaba",
+          "pass": 85.4,
+          "params": "32B"
+        }
+      ],
+      "zero_pass": "SQLi UNION/blind extraction: 0% across 256+ runs. XXE, LFI-hard, JWT algorithm confusion: 0%. Any chain needing 10+ dependent tool calls failed uniformly.",
+      "size_finding": "Parameter count didn't predict skill: 87B Nemotron (92%) lost to 31B Gemma4 (98.5%). Tool interface design mattered more than the base model."
+    },
+    "openai": {
+      "source_url": "https://arxiv.org/html/2508.03153v2",
+      "summary": "OpenAI adversarially fine-tuned its open-weight gpt-oss for maximum cyber and bio capability — anti-refusal RL plus domain data, tools, and consensus voting.",
+      "cyber_below_frontier": "Stayed below o3 across every cyber eval; 0% on cyber-range environments without hints; estimated 367 trials needed to reach 75% on professional CTFs.",
+      "conclusion": "Even deliberately weaponized, the open model “does not significantly advance frontier capabilities.”"
+    },
+    "verdict": {
+      "headline": "Reliable script kiddie, not an autonomous adversary — yet.",
+      "body": "Uncensored local models are genuinely dangerous at what they do reliably: recognising and validating single-step vulnerabilities with zero refusals, cheaply, on hardware anyone can rent. Where they collapse is exactly where a frontier model earns its keep — sustaining a coherent multi-step campaign across a real target. Both the TrustedSec field study (0% on 10+ step chains) and OpenAI's worst-case weaponization study (below o3, 0% on cyber ranges) land in the same place: the offensive gap is not knowledge, it's long-horizon execution. That gap is the current safety margin — and it is the thing that closes as agent harnesses and orchestration improve, independent of the model."
+    },
+    "defense": [
+      {
+        "k": "Model the harness, not the model",
+        "b": "The danger scales with the scaffolding around the model — tool interfaces, memory, orchestration — not raw parameter count. Track agent frameworks and tool-calling reliability as the real capability signal."
+      },
+      {
+        "k": "Assume no refusal",
+        "b": "Do not rely on any model declining a malicious request. Uncensored variants exist for every open release and refuse nothing. Detection and response, not model-level refusal, is the control that holds."
+      },
+      {
+        "k": "Defend the multi-step seam",
+        "b": "Single-step exploit validation is already commoditised. Invest defense where attackers still fail: breaking the chain — rate-limiting, anomaly detection on multi-request sequences, and state that resets between steps."
+      },
+      {
+        "k": "Raise execution cost",
+        "b": "The frontier gap is long-horizon coherence. Controls that force more sequential, dependent steps (segmentation, per-step re-auth, honeytokens) tax exactly the capability local models lack."
+      },
+      {
+        "k": "Use frontier models to defend",
+        "b": "The same long-horizon skill attackers lack locally, defenders can rent from safeguarded frontier models — triage, patch generation, detection engineering — with the vendor's classifiers on your side."
+      }
+    ]
   }
 }

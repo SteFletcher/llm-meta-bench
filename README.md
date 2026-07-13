@@ -17,8 +17,9 @@ set an `AA_API_KEY` repo secret to enable the Artificial Analysis adapter).
 data/benchmarks.json    canonical data store (sources, models, pillars, scores, insights)
 scripts/refresh_data.py refresh script — fetches sources, merges, re-injects
 site/index.html         PRIMARY: Planning / Security / Coding comparison (single slide)
-site/methodology.html   deep dive: how each pillar is scored, benchmark by benchmark
-site/fable.html         Claude Fable 5 deep dive
+site/methodology.html   how each pillar is scored, benchmark by benchmark
+site/headtohead.html    Fable 5 vs Sol Pro (Extra High) across the 3 pillars
+site/underworld.html    risk assessment: uncensored open-weight LLMs vs frontier attack capability
 ```
 
 The primary page groups benchmarks into three pillars (Planning: Tau2,
@@ -57,7 +58,15 @@ python3 scripts/refresh_data.py --only swebench,lmarena
 - **Methodology** (`methodology.html`) — the four comparison rules, then each
   benchmark per pillar: what it measures, how it scores, current data, caveats.
   `←` returns to the comparison.
-- **Fable deep dive** (`fable.html`) — how Claude Fable 5 holds up in the
-  field: SWE-bench Pro lead vs. the Endor Labs reality check (solve rates,
-  timeouts, contamination, hall-of-fame CVE fixes) and the cybersecurity
-  safeguard architecture.
+- **Head to head** (`headtohead.html`) — Claude Fable 5 vs GPT-5.6 Sol Pro
+  (xhigh / "Ultra") scored across all three pillars. Coding is the only pillar
+  with real two-sided data (it splits); Planning and Security are largely N/A
+  for both current models, which is the honest headline. Every present score
+  links to its origin.
+- **Uncensored underworld** (`underworld.html`) — risk assessment: with
+  abliteration now a one-command job, can uncensored open-weight models attack
+  like a frontier model? Two 2026 studies (TrustedSec's 4,800-run field
+  benchmark; OpenAI's worst-case weaponization of gpt-oss) converge: reliable
+  single-step exploit validation with zero refusals, but 0% on multi-step
+  chains — the frontier gap is long-horizon execution, not knowledge. Includes
+  a defender's control set.

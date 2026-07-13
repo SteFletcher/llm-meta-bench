@@ -1,390 +1,312 @@
-<title>LLM Meta-Bench — Planning · Security · Coding</title>
+<title>Securing Against the Uncensored Underworld</title>
 <style>
   :root {
-    --page: #f2f3f0;
-    --surface: #fcfcfb;
-    --ink: #0b0b0b;
-    --ink-2: #52514e;
-    --muted: #898781;
-    --hairline: #e1e0d9;
-    --baseline: #c3c2b7;
-    --ring: rgba(11,11,11,0.10);
-    --accent: #104281;
-    --accent-soft: #cde2fb;
-    --v-anthropic: #2a78d6;
-    --v-openai: #1baf7a;
-    --v-google: #eda100;
-    --v-xai: #008300;
-    --v-open: #4a3aa7;
-    --lead: #006300;
+    --page: #f4f2ee; --surface: #fbfaf7; --ink: #14110e; --ink-2: #55504a;
+    --muted: #8c877f; --hairline: #e4ddd2; --baseline: #cfc7b8; --ring: rgba(20,17,14,0.12);
+    --accent: #9a3412;      /* ember / terracotta-red — the "underworld" heat */
+    --accent-soft: #f3e0d6;
+    --danger: #b4261a;
+    --safe: #1f6f52;
+    --grid: #e9e2d6;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --page: #0d0d0d;
-      --surface: #1a1a19;
-      --ink: #ffffff;
-      --ink-2: #c3c2b7;
-      --muted: #898781;
-      --hairline: #2c2c2a;
-      --baseline: #383835;
-      --ring: rgba(255,255,255,0.10);
-      --accent: #86b6ef;
-      --accent-soft: #10284a;
-      --v-anthropic: #3987e5;
-      --v-openai: #199e70;
-      --v-google: #c98500;
-      --v-xai: #2e9e2e;
-      --v-open: #9085e9;
-      --lead: #0ca30c;
+      --page: #0c0a09; --surface: #16130f; --ink: #f6f1ea; --ink-2: #c4bcb0;
+      --muted: #8c877f; --hairline: #2a241d; --baseline: #3a332a; --ring: rgba(246,241,234,0.10);
+      --accent: #e8845c; --accent-soft: #2a1a12; --danger: #f0765f; --safe: #4fb98d; --grid: #241e17;
     }
   }
   :root[data-theme="light"] {
-    --page: #f2f3f0; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e;
-    --muted: #898781; --hairline: #e1e0d9; --baseline: #c3c2b7;
-    --ring: rgba(11,11,11,0.10); --accent: #104281; --accent-soft: #cde2fb;
-    --v-anthropic: #2a78d6; --v-openai: #1baf7a; --v-google: #eda100;
-    --v-xai: #008300; --v-open: #4a3aa7; --lead: #006300;
+    --page: #f4f2ee; --surface: #fbfaf7; --ink: #14110e; --ink-2: #55504a; --muted: #8c877f;
+    --hairline: #e4ddd2; --baseline: #cfc7b8; --ring: rgba(20,17,14,0.12); --accent: #9a3412;
+    --accent-soft: #f3e0d6; --danger: #b4261a; --safe: #1f6f52; --grid: #e9e2d6;
   }
   :root[data-theme="dark"] {
-    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7;
-    --muted: #898781; --hairline: #2c2c2a; --baseline: #383835;
-    --ring: rgba(255,255,255,0.10); --accent: #86b6ef; --accent-soft: #10284a;
-    --v-anthropic: #3987e5; --v-openai: #199e70; --v-google: #c98500;
-    --v-xai: #2e9e2e; --v-open: #9085e9; --lead: #0ca30c;
+    --page: #0c0a09; --surface: #16130f; --ink: #f6f1ea; --ink-2: #c4bcb0; --muted: #8c877f;
+    --hairline: #2a241d; --baseline: #3a332a; --ring: rgba(246,241,234,0.10); --accent: #e8845c;
+    --accent-soft: #2a1a12; --danger: #f0765f; --safe: #4fb98d; --grid: #241e17;
   }
 
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
-  body {
-    background: var(--page);
-    color: var(--ink);
-    font: 400 clamp(12px, 0.62vw + 7px, 15px)/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  body { background: var(--page); color: var(--ink);
+    font: 400 clamp(14px,0.4vw+12px,16px)/1.58 "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif; }
+  .ui { font-family: system-ui,-apple-system,"Segoe UI",sans-serif; }
+  .mono { font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 clamp(16px,4vw,44px) 72px; }
 
-  .slide {
-    background: var(--surface);
-    border: 1px solid var(--ring);
-    border-radius: 10px;
-    width: min(96vw, 178vh);
-    height: min(96vh, 54vw);
-    min-height: 640px;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    padding: clamp(16px, 2vh, 28px) clamp(18px, 2.2vw, 34px);
-    gap: clamp(10px, 1.4vh, 18px);
-    overflow: hidden;
-  }
+  /* hero */
+  .hero { position: relative; padding: clamp(40px,8vh,84px) 0 clamp(24px,4vh,40px); overflow: hidden;
+    border-bottom: 2px solid var(--ink); }
+  #emberfield { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.9; }
+  .hero > * { position: relative; z-index: 1; }
+  .kicker { font-family: system-ui,sans-serif; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.22em; color: var(--accent); margin: 0 0 14px; font-weight: 600; }
+  .hero h1 { margin: 0 0 14px; font-size: clamp(32px,5.4vw,64px); font-weight: 600;
+    letter-spacing: -0.01em; line-height: 1.02; text-wrap: balance; max-width: 16ch; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero .dek { max-width: 60ch; color: var(--ink-2); font-size: 1.12em; margin: 0; font-style: italic; }
+  .verdict-badge { display: inline-flex; align-items: baseline; gap: 10px; margin-top: 22px;
+    border: 1px solid var(--ring); background: var(--surface); border-radius: 999px; padding: 7px 16px;
+    font-family: system-ui,sans-serif; font-size: 0.9em; }
+  .verdict-badge b { color: var(--accent); }
 
-  /* ---- header ---- */
-  header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
-           border-bottom: 1px solid var(--hairline); padding-bottom: clamp(8px, 1.2vh, 14px); }
-  .title-block h1 {
-    margin: 0; font-size: clamp(20px, 2.1vw, 32px); font-weight: 750;
-    letter-spacing: -0.02em; text-wrap: balance;
-  }
-  .title-block h1 .dim { color: var(--muted); font-weight: 500; }
-  .eyebrow {
-    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.14em;
-    color: var(--accent); margin: 0 0 4px;
-  }
-  .meta { text-align: right; color: var(--ink-2); font-size: 0.85em; }
-  .meta .big { color: var(--ink); font-weight: 650; font-variant-numeric: tabular-nums; }
+  section { padding: clamp(30px,5.5vh,52px) 0; border-bottom: 1px solid var(--hairline); }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+  .sec-head .no { font-family: ui-monospace,monospace; color: var(--accent); font-size: 0.85rem; }
+  h2 { margin: 0; font-size: clamp(22px,2.8vw,32px); font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
+  .lede { color: var(--ink-2); font-size: 1.05em; max-width: 68ch; margin: 10px 0 0; }
+  p { max-width: 70ch; color: var(--ink-2); }
+  strong { color: var(--ink); font-weight: 600; }
+  .src { font-family: system-ui,sans-serif; font-size: 0.8em; }
 
-  /* ---- main grid ---- */
-  main { display: grid; grid-template-columns: 0.92fr 1.55fr 0.88fr; gap: clamp(14px, 1.6vw, 26px); min-height: 0; }
-  section { min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
-  h2 { margin: 0; font-size: 0.95em; font-weight: 700; letter-spacing: -0.01em; }
-  h2 .sub { color: var(--muted); font-weight: 450; font-size: 0.86em; margin-left: 6px; }
+  /* abliteration timeline */
+  .abl { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 14px; margin: 20px 0 0; }
+  .abl .step { border: 1px solid var(--hairline); border-radius: 8px; padding: 13px 15px; background: var(--surface); }
+  .abl .t { font-family: ui-monospace,monospace; font-size: 0.72em; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--accent); }
+  .abl .t b { font-size: 1.5em; letter-spacing: 0; display: block; margin-top: 3px; color: var(--ink); font-family: system-ui,sans-serif; }
+  .abl p { margin: 7px 0 0; font-size: 0.86em; max-width: none; }
+  .takeaway { border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 6px 6px 0;
+    padding: 10px 16px; margin: 18px 0 0; font-style: italic; color: var(--ink); max-width: 74ch; }
 
-  /* ---- pillar charts ---- */
-  .pillar-col { overflow-y: auto; }
-  .chart-block { border: 1px solid var(--hairline); border-radius: 8px; padding: 11px 13px 9px;
-                 display: flex; flex-direction: column; gap: 6px; }
-  .chart-block + .chart-block { margin-top: clamp(8px, 1.2vh, 14px); }
-  .pillar-label {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent);
-  }
-  .chart { display: flex; flex-direction: column; gap: 5px; }
-  .bar-row { display: grid; grid-template-columns: 8.2em 1fr 3.4em; align-items: center; gap: 8px; }
-  .bar-row .name { font-size: 0.82em; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .bar-row .name sup { color: var(--muted); }
-  .bar-track { height: 13px; position: relative; }
-  .bar-fill { position: absolute; inset: 0 auto 0 0; border-radius: 0 4px 4px 0; min-width: 3px; }
-  .bar-fill.proxy { opacity: 0.55; }
-  .bar-row:hover .bar-fill { filter: brightness(1.12); }
-  .bar-row .val { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8em;
-                  font-variant-numeric: tabular-nums; text-align: right; }
-  .bar-row .val a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--baseline); }
-  .bar-row .val a:hover, .bar-row .val a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); outline: none; }
-  .chart-note { color: var(--muted); font-size: 0.75em; margin: 0; }
+  /* capability gauge */
+  .gap-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0 0; }
+  @media (max-width: 640px) { .gap-wrap { grid-template-columns: 1fr; } }
+  .gap { border: 1px solid var(--hairline); border-radius: 10px; padding: 16px 18px; background: var(--surface); }
+  .gap .cap { font-family: system-ui,sans-serif; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--muted); }
+  .gap .big { font-family: system-ui,sans-serif; font-size: clamp(34px,6vw,52px); font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1; margin: 6px 0 2px; }
+  .gap.hi .big { color: var(--danger); }
+  .gap.lo .big { color: var(--safe); }
+  .gap .cap2 { font-family: system-ui,sans-serif; font-size: 0.9em; color: var(--ink-2); }
 
-  .legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 0.74em; color: var(--ink-2); margin-top: clamp(6px, 1vh, 10px); }
-  .legend span { display: inline-flex; align-items: center; gap: 5px; }
-  .swatch { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
-
-  /* ---- matrix table ---- */
-  .matrix-wrap { overflow: auto; border: 1px solid var(--hairline); border-radius: 8px; flex: 1; min-height: 0; }
-  table { border-collapse: collapse; width: 100%; font-size: 0.78em; }
-  th, td { padding: 4px 7px; text-align: right; white-space: nowrap; }
-  thead th { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; font-weight: 600;
-       text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted);
-       position: sticky; background: var(--surface); }
-  tr.groups th { top: 0; border-bottom: none; color: var(--accent); text-align: center;
-                 border-left: 1px solid var(--hairline); padding-top: 6px; }
-  tr.groups th:first-child { border-left: none; }
-  tr.cols th { top: 1.7em; border-bottom: 1px solid var(--baseline); }
-  th.gstart, td.gstart { border-left: 1px solid var(--hairline); }
+  /* model table */
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--hairline); border-radius: 8px; margin: 18px 0 0; }
+  table { border-collapse: collapse; width: 100%; font-family: system-ui,sans-serif; font-size: 0.86em; }
+  th, td { padding: 8px 12px; text-align: right; white-space: nowrap; }
   th:first-child, td:first-child { text-align: left; }
-  td { border-bottom: 1px solid var(--hairline); font-variant-numeric: tabular-nums;
-       font-family: ui-monospace, "SF Mono", Menlo, monospace; color: var(--ink-2); }
+  th { font-family: ui-monospace,monospace; font-size: 0.82em; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.04em; color: var(--muted); border-bottom: 1px solid var(--baseline); }
+  td { border-bottom: 1px solid var(--hairline); color: var(--ink-2); font-variant-numeric: tabular-nums; }
   tr:last-child td { border-bottom: none; }
-  td.model { font-family: inherit; color: var(--ink); font-weight: 550; }
-  td.model .dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; margin-right: 6px; }
-  td a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--baseline); }
-  td a:hover, td a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); outline: none; }
-  td.best, td.best a { color: var(--lead); font-weight: 700; }
-  td.na { color: var(--baseline); }
-  td sup { color: var(--muted); font-size: 0.85em; }
-  tbody tr:hover td { background: color-mix(in srgb, var(--accent) 6%, transparent); }
-  .matrix-foot { color: var(--muted); font-size: 0.73em; margin: 2px 2px 0; }
+  td.m { color: var(--ink); font-weight: 550; }
+  .passbar { position: relative; height: 13px; width: 130px; display: inline-block; vertical-align: middle;
+    margin-left: 8px; background: var(--grid); border-radius: 3px; }
+  .passbar i { position: absolute; inset: 0 auto 0 0; background: var(--danger); border-radius: 3px; opacity: 0.75; }
 
-  /* ---- insights rail ---- */
-  .rail { overflow-y: auto; gap: clamp(8px, 1.1vh, 12px); padding-right: 2px; }
-  .callout {
-    border: 1px solid var(--hairline); border-left: 3px solid var(--accent);
-    border-radius: 6px; padding: 9px 11px;
-    background: color-mix(in srgb, var(--accent) 3%, transparent);
-  }
-  .callout .tag {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 0.66em; text-transform: uppercase; letter-spacing: 0.13em; color: var(--accent);
-  }
-  .callout h3 { margin: 3px 0 4px; font-size: 0.9em; font-weight: 700; letter-spacing: -0.01em; }
-  .callout p { margin: 0; font-size: 0.8em; color: var(--ink-2); }
+  /* single vs multi split visual */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin: 18px 0 0;
+    border: 1px solid var(--hairline); border-radius: 10px; overflow: hidden; }
+  @media (max-width: 560px) { .split { grid-template-columns: 1fr; } }
+  .split .half { padding: 20px; background: var(--surface); }
+  .split .half.hot { background: color-mix(in srgb, var(--danger) 8%, var(--surface)); }
+  .split .half.cool { background: color-mix(in srgb, var(--safe) 9%, var(--surface)); }
+  .split .pct { font-family: system-ui,sans-serif; font-size: clamp(30px,5vw,46px); font-weight: 700; letter-spacing: -0.02em; }
+  .split .half.hot .pct { color: var(--danger); }
+  .split .half.cool .pct { color: var(--safe); }
+  .split .k { font-family: system-ui,sans-serif; font-size: 0.82em; color: var(--ink-2); margin-top: 4px; max-width: 34ch; }
+  .split .k b { color: var(--ink); }
 
-  /* ---- footer ---- */
-  footer { display: flex; align-items: center; justify-content: space-between; gap: 16px;
-           border-top: 1px solid var(--hairline); padding-top: clamp(8px, 1.2vh, 12px);
-           font-size: 0.78em; color: var(--muted); }
-  .nav { display: flex; gap: 18px; }
-  .nav a { color: var(--accent); text-decoration: none; font-weight: 600; }
-  .nav a:hover, .nav a:focus-visible { text-decoration: underline; outline: none; }
-  .nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
-  .pageno { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .callout-line { border-left: 3px solid var(--danger); background: color-mix(in srgb,var(--danger) 5%,transparent);
+    padding: 8px 14px; margin: 16px 0 0; font-size: 0.9em; color: var(--ink-2); border-radius: 0 6px 6px 0; max-width: 74ch; }
+  .callout-line b { color: var(--ink); }
 
-  @media (max-width: 980px) {
-    body { align-items: flex-start; }
-    .slide { height: auto; min-height: 100vh; width: 100vw; border-radius: 0; border: none; }
-    main { grid-template-columns: 1fr; }
-    .rail, .pillar-col { overflow-y: visible; }
-    tr.cols th { top: 0; }
-    tr.groups th { position: static; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; animation: none !important; }
-  }
+  /* defense grid */
+  .defense { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 14px; margin: 20px 0 0; }
+  .dcard { border: 1px solid var(--hairline); border-top: 3px solid var(--safe); border-radius: 8px;
+    padding: 14px 16px; background: var(--surface); }
+  .dcard .n { font-family: system-ui,sans-serif; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--safe); font-weight: 600; }
+  .dcard b { display: block; margin: 5px 0 6px; font-size: 1.02em; font-weight: 600; }
+  .dcard p { margin: 0; font-size: 0.87em; max-width: none; }
+
+  /* verdict block */
+  .final { background: var(--surface); border: 1px solid var(--ring); border-radius: 12px;
+    padding: clamp(20px,3.5vw,36px); margin-top: clamp(26px,4vh,44px); }
+  .final .hl { font-size: clamp(20px,2.6vw,28px); font-weight: 600; letter-spacing: -0.01em;
+    color: var(--accent); margin: 0 0 10px; font-style: italic; text-wrap: balance; }
+  .final p { max-width: 76ch; }
+
+  footer { padding: 30px 0 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    color: var(--muted); font-family: system-ui,sans-serif; font-size: 0.82em; }
+  footer a { font-weight: 600; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; }
+    #emberfield { display: none; } }
 </style>
 
 <script id="benchmark-data" type="application/json">{"generated_at":"2026-07-13T00:00:00Z","schema_version":3,"sources":[{"id":"lmarena","name":"LMArena (Chatbot Arena)","url":"https://arena.ai/leaderboard/text","method":"auto","notes":"Crowd-sourced pairwise Elo. 7,274,904 votes across 374 models as of 2026-07-10."},{"id":"artificial-analysis","name":"Artificial Analysis","url":"https://artificialanalysis.ai/leaderboards/models","method":"auto-with-key","notes":"Intelligence Index v4.x composite. Set AA_API_KEY to enable API fetch."},{"id":"swebench","name":"SWE-bench Verified / Pro","url":"https://www.swebench.com","method":"auto","notes":"Verified: 500 human-reviewed GitHub issues. Pro: harder agentic-coding successor."},{"id":"terminal-bench","name":"Terminal-Bench 2.1","url":"https://www.tbench.ai","method":"manual","notes":"Agentic terminal task benchmark."},{"id":"livebench","name":"LiveBench / LiveCodeBench","url":"https://livebench.ai","method":"auto","notes":"Contamination-resistant rolling releases; latest release 2026-06-25."},{"id":"hle","name":"Humanity's Last Exam (Scale/CAIS)","url":"https://agi.safe.ai/","method":"manual","notes":"Frontier academic knowledge, 2,500 questions."},{"id":"endor","name":"Endor Labs Agent Security League","url":"https://www.endorlabs.com/research/ai-code-security-benchmark","method":"manual","notes":"200 real-world vulnerability-fix tasks across 108 projects and 77 CWE classes."},{"id":"tau2","name":"Tau2-bench (Sierra)","url":"https://pricepertoken.com/leaderboards/benchmark/tau2","method":"manual","notes":"Multi-turn tool-use agents in retail/airline/telecom customer service. 226 models ranked."},{"id":"andon","name":"Vending-Bench 2 (Andon Labs)","url":"https://andonlabs.com/evals/vending-bench-2","method":"manual","notes":"One simulated year running a vending business from a $500 float; score is final balance."},{"id":"hal","name":"GAIA (Princeton HAL)","url":"https://hal.cs.princeton.edu/","method":"manual","notes":"General assistant tasks in the HAL scaffold; harness alone moves scores ~7 points."},{"id":"cotool","name":"Cybench defensive subset (CoTool)","url":"https://www.cotool.ai/research/cybench","method":"manual","notes":"18 defensive tasks from Cybench's 40 professional CTF challenges (HackTheBox, SekaiCTF, Glacier, HKCert)."}],"vendors":[{"id":"anthropic","name":"Anthropic","slot":1},{"id":"openai","name":"OpenAI","slot":2},{"id":"google","name":"Google","slot":3},{"id":"xai","name":"xAI","slot":4},{"id":"open-weights","name":"Open weights","slot":5}],"models":[{"id":"mythos-5","name":"Claude Mythos 5","vendor":"anthropic","note":"Same model as Fable 5, safeguards lifted. Project Glasswing partners only."},{"id":"fable-5","name":"Claude Fable 5","vendor":"anthropic","note":"Mythos-class, generally available. $10/$50 per MTok."},{"id":"opus-4-8","name":"Claude Opus 4.8","vendor":"anthropic","note":"$5/$25 per MTok. Fable's designated fallback model."},{"id":"sonnet-5","name":"Claude Sonnet 5","vendor":"anthropic","note":"$3/$15 ($2/$10 intro)."},{"id":"gpt-5-6-sol","name":"GPT-5.6 Sol","vendor":"openai","note":"OpenAI flagship; 'Ultra' variant scores higher on Terminal-Bench."},{"id":"gpt-5-6-terra","name":"GPT-5.6 Terra","vendor":"openai","note":""},{"id":"gpt-5-5","name":"GPT-5.5","vendor":"openai","note":"Terminal-Bench score is the Codex CLI harness."},{"id":"gemini-3-1-pro","name":"Gemini 3.1 Pro","vendor":"google","note":"LiveCodeBench score is Gemini 3 Pro Preview."},{"id":"grok-4-5","name":"Grok 4.5","vendor":"xai","note":"HLE score is Grok 4 (predecessor)."},{"id":"deepseek-v4-pro","name":"DeepSeek V4 Pro","vendor":"open-weights","note":"Top open-weights model in the LMArena frontier cluster."},{"id":"glm-5-2","name":"GLM-5.2","vendor":"open-weights","note":"HLE score is with tools (40.5 without)."},{"id":"kimi-k2-5","name":"Kimi K2.5","vendor":"open-weights","note":"HLE score is with tools (31.5 without)."}],"pillars":[{"id":"planning","name":"Planning","benchmarks":["tau2-bench","vending-bench-2","gaia","arc-agi-2"],"flagship":"vending-bench-2"},{"id":"security","name":"Security","benchmarks":["cybench-defensive","endor-secpass"],"flagship":"cybench-defensive"},{"id":"coding","name":"Coding","benchmarks":["swe-pro","swe-verified","terminal-bench","livecodebench"],"flagship":"terminal-bench"}],"benchmarks":[{"id":"tau2-bench","name":"Tau2-bench","short":"Tau2","source":"tau2","url":"https://pricepertoken.com/leaderboards/benchmark/tau2","unit":"%","note":"Multi-turn tool-use customer-service agents. Near saturation — leader at 99.1%."},{"id":"vending-bench-2","name":"Vending-Bench 2","short":"VB-2","source":"andon","url":"https://andonlabs.com/evals/vending-bench-2","unit":"$","note":"Final balance after one simulated year of running a business from a $500 float."},{"id":"gaia","name":"GAIA (HAL)","short":"GAIA","source":"hal","url":"https://hal.cs.princeton.edu/","unit":"%","note":"General-assistant tasks. Harness choice alone moves the same model ~7 points."},{"id":"arc-agi-2","name":"ARC-AGI-2","short":"ARC-2","source":"livebench","url":"https://arcprize.org/leaderboard","unit":"%","note":"Novel abstract reasoning; resistant to memorization."},{"id":"cybench-defensive","name":"Cybench (defensive subset)","short":"Cybench-D","source":"cotool","url":"https://www.cotool.ai/research/cybench","unit":"%","note":"18 defensive tasks from 40 professional CTF challenges."},{"id":"endor-secpass","name":"Endor ASL SecPass","short":"SecPass","source":"endor","url":"https://www.endorlabs.com/research/ai-code-security-benchmark","unit":"%","note":"Share of vulnerability fixes that pass security tests (not just functional tests)."},{"id":"swe-pro","name":"SWE-bench Pro","short":"SWE-Pro","source":"swebench","url":"https://www.morphllm.com/swe-bench-pro","unit":"%","note":"Harder successor to Verified; the current agentic-coding discriminator."},{"id":"swe-verified","name":"SWE-bench Verified","short":"SWE-V","source":"swebench","url":"https://benchlm.ai/benchmarks/sweVerified","unit":"%","note":"OpenAI audit: 59.4% of the hardest unsolved problems have flawed test cases."},{"id":"terminal-bench","name":"Terminal-Bench 2.1","short":"T-Bench","source":"terminal-bench","url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","unit":"%","note":"Fable 5 was suspended 2026-06-12 and later reinstated."},{"id":"livecodebench","name":"LiveCodeBench","short":"LCB","source":"livebench","url":"https://pricepertoken.com/leaderboards/benchmark/livecodebench","unit":"%","note":"Rolling contamination-resistant coding problems."},{"id":"lmarena-elo","name":"LMArena Elo","short":"Elo","source":"lmarena","url":"https://www.swfte.com/lmarena","unit":"elo","note":"Text arena, thinking variants included."},{"id":"aa-index","name":"AA Intelligence Index","short":"AA idx","source":"artificial-analysis","url":"https://benchlm.ai/benchmarks/artificialAnalysis","unit":"index","note":"v4.x — versions v4.0 and v4.1 report different absolute values."},{"id":"gpqa-diamond","name":"GPQA Diamond","short":"GPQA-D","source":"livebench","url":"https://felloai.com/best-ai-models/","unit":"%","note":"PhD-level science QA. Near saturation at the frontier."},{"id":"hle","name":"Humanity's Last Exam","short":"HLE","source":"hle","url":"https://agi.safe.ai/","unit":"%","note":"Open-weights scores are tool-assisted."}],"scores":[{"model":"glm-5-2","benchmark":"tau2-bench","value":99.1,"source_url":"https://pricepertoken.com/leaderboards/benchmark/tau2","note":"Leaderboard top score as of 2026-07-08; benchmark near saturation."},{"model":"opus-4-8","benchmark":"vending-bench-2","value":8017.59,"proxy":"Claude Opus 4.6","source_url":"https://llm-stats.com/benchmarks/vending-bench-2","note":"Score is predecessor Claude Opus 4.6 — current leader; only 4 models evaluated."},{"model":"gemini-3-1-pro","benchmark":"vending-bench-2","value":5478.16,"proxy":"Gemini 3 Pro","source_url":"https://andonlabs.com/evals/vending-bench-2","note":"Score is predecessor Gemini 3 Pro."},{"model":"sonnet-5","benchmark":"gaia","value":74.6,"proxy":"Claude Sonnet 4.5 (HAL harness)","source_url":"https://hal.cs.princeton.edu/","note":"Predecessor Sonnet 4.5 leads the HAL scaffolded board; Anthropic holds the top six slots."},{"model":"gemini-3-1-pro","benchmark":"arc-agi-2","value":77.1,"source_url":"https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked"},{"model":"opus-4-8","benchmark":"cybench-defensive","value":61,"proxy":"Claude Opus 4.5","source_url":"https://www.cotool.ai/research/cybench","note":"Predecessor Claude Opus 4.5; tied for the ceiling with GPT-5.2 at ~3x the cost per task."},{"model":"gpt-5-5","benchmark":"cybench-defensive","value":61,"proxy":"GPT-5.2","source_url":"https://www.cotool.ai/research/cybench","note":"Predecessor GPT-5.2 — 61% at $2.62/task with 100% reliability."},{"model":"gemini-3-1-pro","benchmark":"cybench-defensive","value":44,"proxy":"Gemini 3.0 Pro","source_url":"https://www.cotool.ai/research/cybench","note":"Predecessor Gemini 3.0 Pro."},{"model":"sonnet-5","benchmark":"cybench-defensive","value":33,"proxy":"Claude Sonnet 4.5","source_url":"https://www.cotool.ai/research/cybench","note":"Predecessor Claude Sonnet 4.5."},{"model":"fable-5","benchmark":"endor-secpass","value":19.0,"source_url":"https://www.endorlabs.com/learn/claude-fable-5-mythos-grade-hype","note":"League-wide SecPass had previously peaked at 17.3% while FuncPass climbed to 84.4%."},{"model":"fable-5","benchmark":"swe-pro","value":80.3,"source_url":"https://www.anthropic.com/news/claude-fable-5-mythos-5"},{"model":"opus-4-8","benchmark":"swe-pro","value":69.2,"source_url":"https://www.morphllm.com/swe-bench-pro"},{"model":"mythos-5","benchmark":"swe-verified","value":95.5,"source_url":"https://benchlm.ai/benchmarks/sweVerified"},{"model":"fable-5","benchmark":"swe-verified","value":95.0,"source_url":"https://llm-stats.com/benchmarks/swe-bench-verified"},{"model":"opus-4-8","benchmark":"swe-verified","value":88.6,"source_url":"https://benchlm.ai/benchmarks/sweVerified"},{"model":"gpt-5-5","benchmark":"swe-verified","value":88.7,"source_url":"https://www.marc0.dev/en/leaderboard"},{"model":"gpt-5-6-sol","benchmark":"terminal-bench","value":88.8,"source_url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","note":"91.9 for the Ultra variant."},{"model":"gpt-5-6-terra","benchmark":"terminal-bench","value":87.4,"source_url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/"},{"model":"gpt-5-5","benchmark":"terminal-bench","value":83.4,"source_url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","note":"Codex CLI harness."},{"model":"fable-5","benchmark":"terminal-bench","value":83.1,"source_url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","note":"Suspended 2026-06-12, later reinstated."},{"model":"sonnet-5","benchmark":"terminal-bench","value":80.4,"source_url":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","note":"~97% of Opus 4.8's score at 60% of the price."},{"model":"gemini-3-1-pro","benchmark":"livecodebench","value":91.7,"source_url":"https://pricepertoken.com/leaderboards/benchmark/livecodebench","note":"Gemini 3 Pro Preview."},{"model":"opus-4-8","benchmark":"lmarena-elo","value":1510,"source_url":"https://www.swfte.com/lmarena"},{"model":"gpt-5-5","benchmark":"lmarena-elo","value":1500,"source_url":"https://www.swfte.com/lmarena","note":"GPT-5.5 Pro; frontier cluster approx."},{"model":"gemini-3-1-pro","benchmark":"lmarena-elo","value":1500,"source_url":"https://www.swfte.com/lmarena","note":"Frontier cluster approx."},{"model":"deepseek-v4-pro","benchmark":"lmarena-elo","value":1495,"source_url":"https://www.swfte.com/lmarena","note":"Frontier cluster approx."},{"model":"gpt-5-6-sol","benchmark":"aa-index","value":58.9,"source_url":"https://benchlm.ai/benchmarks/artificialAnalysis"},{"model":"opus-4-8","benchmark":"aa-index","value":55.7,"source_url":"https://benchlm.ai/benchmarks/artificialAnalysis"},{"model":"gpt-5-6-terra","benchmark":"aa-index","value":55.0,"source_url":"https://benchlm.ai/benchmarks/artificialAnalysis"},{"model":"grok-4-5","benchmark":"aa-index","value":54.0,"source_url":"https://benchlm.ai/"},{"model":"fable-5","benchmark":"aa-index","value":null,"source_url":"https://artificialanalysis.ai/","note":"AA reports Fable 5 (with Opus fallback) as its highest-intelligence model; exact index differs between v4.0 and v4.1."},{"model":"mythos-5","benchmark":"gpqa-diamond","value":94.6,"source_url":"https://felloai.com/best-ai-models/"},{"model":"gemini-3-1-pro","benchmark":"gpqa-diamond","value":94.3,"source_url":"https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked"},{"model":"mythos-5","benchmark":"hle","value":64.7,"source_url":"https://felloai.com/best-ai-models/"},{"model":"glm-5-2","benchmark":"hle","value":54.7,"source_url":"https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked","note":"With tools; 40.5 without."},{"model":"kimi-k2-5","benchmark":"hle","value":51.8,"source_url":"https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked","note":"With tools; 31.5 without."},{"model":"grok-4-5","benchmark":"hle","value":50.7,"source_url":"https://felloai.com/best-ai-models/","note":"Grok 4 (predecessor)."},{"model":"gemini-3-1-pro","benchmark":"hle","value":44.4,"source_url":"https://www.buildfastwithai.com/blogs/best-ai-models-july-2026-ranked"}],"arena_meta":{"votes":7274904,"models_ranked":374,"as_of":"2026-07-10","frontier_spread_elo":55},"insights":[{"title":"Coding is measured. Planning isn't.","body":"Coding has four live, regularly refreshed leaderboards covering the whole frontier. Long-horizon planning has a 4-model sample (Vending-Bench 2) and a saturated tool-use board (Tau2's leader sits at 99.1%). The pillar everyone claims to care about has the weakest evidence base.","tag":"coverage"},{"title":"Security scores collapse when it matters","body":"The frontier tops out at 61% on defensive CTF tasks — and when agents write actual vulnerability fixes, only 19% survive security tests (Fable 5, the current best). Over 80% of functionally-correct agent code ships with vulnerabilities. Passing CI is not passing security.","tag":"security"},{"title":"Nobody has tested the current frontier","body":"Every Cybench and Vending-Bench entry is a predecessor generation — Opus 4.5/4.6, GPT-5.2, Gemini 3.0. Daggered (†) cells mark these proxies. The models you'd actually deploy today are unscored on two of the three pillars that matter.","tag":"staleness"},{"title":"Each pillar has a different champion","body":"Coding belongs to Anthropic (Fable 5's 80.3% SWE-Pro) and OpenAI's terminal agents (Sol 88.8%). Best planning evidence points to the Anthropic lineage (Vending-Bench leader, top six GAIA slots). Security's ceiling is a 61% tie — where GPT-5.2 matched Opus 4.5 at a third of the cost.","tag":"strategy"},{"title":"Why there's no single composite score","body":"Models are tested on different subsets — averaging Fable's SecPass against Opus's Cybench would compare different exams. We rank within each benchmark and refuse a blended number. The methodology page documents exactly what feeds each pillar.","tag":"method"},{"title":"Harnesses move scores as much as models","body":"The same Claude Opus 4 scores 64.9% on GAIA in one harness and 57.6% in another — a 7-point swing from scaffolding alone. Terminal-Bench scores are model+harness pairs. Treat every agentic number as a system score, not a model score.","tag":"measurement"}],"head_to_head":{"title":"Fable 5 vs Sol Pro (Extra High)","subtitle":"Anthropic's Mythos-class flagship against OpenAI's maximum-effort coder, scored across the three pillars.","a":{"model":"fable-5","label":"Claude Fable 5","vendor":"anthropic","sub":"Mythos-class · $10 / $50 per MTok · always-on thinking"},"b":{"model":"gpt-5-6-sol","label":"GPT-5.6 Sol Pro","vendor":"openai","sub":"xhigh effort (“Ultra”) · ~half Fable's price · max-compute mode"},"config_note":"“Sol Pro Extra High” = GPT-5.6 Sol run at xhigh reasoning effort, marketed as Sol Ultra. OpenAI publishes only some benchmarks at this effort level; cells drawn from the base-Sol number are footnoted, and configurations neither vendor has published are left N/A.","rows":[{"pillar":"Coding","benchmark":"SWE-bench Pro","unit":"%","a":80.3,"b":64.6,"a_src":"https://www.anthropic.com/news/claude-fable-5-mythos-5","b_src":"https://benchlm.ai/models/gpt-5-6-sol","winner":"a","note":"Fable's single clearest edge — 15.7 points on the hardest live coding board. Sol's number is OpenAI-reported at high effort."},{"pillar":"Coding","benchmark":"Terminal-Bench 2.1","unit":"%","a":83.1,"b":91.9,"a_src":"https://codingfleet.com/blog/terminal-bench-leaderboard-2026/","b_src":"https://lushbinary.com/blog/gpt-5-6-sol-benchmarks-terminalbench-agentic-deep-dive/","winner":"b","note":"Sol Ultra (xhigh) leads terminal agency by 8.8 points; base Sol is 88.8."},{"pillar":"Coding","benchmark":"SWE-bench Verified","unit":"%","a":95.0,"b":null,"a_src":"https://llm-stats.com/benchmarks/swe-bench-verified","b_src":"https://benchlm.ai/models/gpt-5-6-sol","winner":"a","note":"No Sol-Pro-xhigh Verified figure published; base Sol trails the 95% tier. Left N/A rather than substitute an effort mismatch."},{"pillar":"Coding","benchmark":"LiveCodeBench","unit":"%","a":null,"b":null,"note":"Neither model has a current published LiveCodeBench figure at these configs."},{"pillar":"Security","benchmark":"Endor ASL SecPass","unit":"%","a":19.0,"b":null,"a_src":"https://www.endorlabs.com/research/ai-code-security-benchmark","b_src":null,"winner":"a","note":"Only Fable has been run on Endor's vulnerability-fix league. Even the leader clears just 19% of security tests — winning here is a low bar."},{"pillar":"Security","benchmark":"Cybench (defensive)","unit":"%","a":null,"b":null,"note":"Neither current-generation model has been publicly run; the board tops out on predecessors (Opus 4.5 / GPT-5.2 tie at 61%)."},{"pillar":"Planning","benchmark":"Vending-Bench 2","unit":"$","a":null,"b":null,"note":"Only 4 models ever evaluated — all predecessors. Neither Fable nor Sol has a score."},{"pillar":"Planning","benchmark":"Tau2-bench","unit":"%","a":null,"b":null,"note":"No published per-config figure for either model; the board is saturated (leader 99.1%)."},{"pillar":"Planning","benchmark":"GAIA (HAL)","unit":"%","a":null,"b":null,"note":"HAL scaffolded board is led by predecessors; neither flagship listed at these configs."},{"pillar":"Planning","benchmark":"ARC-AGI-2","unit":"%","a":null,"b":null,"note":"No published ARC-AGI-2 figure for Fable 5 or Sol Pro xhigh."}],"context_row":{"benchmark":"AA Intelligence Index (general)","unit":"index","a":null,"b":58.9,"a_src":"https://artificialanalysis.ai/","b_src":"https://benchlm.ai/benchmarks/artificialAnalysis","note":"Context only, not a pillar. AA lists Fable 5 (with Opus fallback) as its highest-intelligence entry but publishes no clean single index; Sol leads the numeric index at 58.9."},"verdict":{"headline":"One real contest, two empty arenas.","body":"On the only pillar where both models have been measured head-to-head — Coding — the result splits: Fable owns hard repo-scale issues (SWE-bench Pro +15.7), Sol Pro owns the terminal (+8.8). On Security there is exactly one comparable data point and it favours Fable by default because Sol wasn't run. On Planning, neither model has a single published score. The honest conclusion is that this “flagship vs flagship” matchup is mostly unmeasured, and buyers picking on Planning or Security today are choosing on reputation, not evidence.","picks":[{"label":"Pick Fable 5 for","body":"Hard repository-scale engineering and any workload where the 15-point SWE-bench Pro gap compounds — large migrations, deep multi-file changes."},{"label":"Pick Sol Pro (xhigh) for","body":"Terminal-driven agentic work at roughly half the token cost, where its Ultra-mode Terminal-Bench lead and price both matter."},{"label":"Don't decide on","body":"Planning or Security from these numbers — both pillars are N/A for both models. Run your own eval on the tasks you actually care about."}]}},"risk":{"title":"Securing Against the Uncensored Underworld","question":"Open-weight models can be stripped of their safety training in minutes. Once uncensored, can they attack like a frontier model — and what should defenders actually worry about?","abliteration":{"heretic":"Heretic (early 2026) automates abliteration — surgically removing refusal behaviour — via Optuna-driven optimization: one pip install, one command, ~45–90 min on a consumer GPU for a 12B model.","badllama":"Badllama 3 stripped safety fine-tuning from Llama 3 8B in ~1 minute and 70B in ~30 minutes on a single GPU.","qi":"Qi et al. showed alignment can be broken with as few as 10 adversarial examples for under $0.20 — and it generalizes to API fine-tuning, not just open weights.","takeaway":"Assume every open-weight release has an uncensored counterpart within hours. Any threat model resting on “the base model will refuse” is already void."},"trustedsec":{"source_url":"https://trustedsec.com/blog/benchmarking-self-hosted-llms-for-offensive-security","runs":4800,"models":6,"challenges":8,"single_step_top":98.5,"multi_step":0,"refusals":"None detected across 4,800 runs — uncensored local models simply comply.","rows":[{"model":"gemma4:31b","vendor":"Google","pass":98.5,"params":"31B"},{"model":"qwen3.5:27b","vendor":"Alibaba","pass":97.5,"params":"27B"},{"model":"devstral-small-2:24b","vendor":"Mistral","pass":95.6,"params":"24B"},{"model":"nemotron-3-super","vendor":"NVIDIA","pass":92.0,"params":"87B MoE"},{"model":"qwen3-coder:30b","vendor":"Alibaba","pass":86.5,"params":"30B"},{"model":"qwen3:32b","vendor":"Alibaba","pass":85.4,"params":"32B"}],"zero_pass":"SQLi UNION/blind extraction: 0% across 256+ runs. XXE, LFI-hard, JWT algorithm confusion: 0%. Any chain needing 10+ dependent tool calls failed uniformly.","size_finding":"Parameter count didn't predict skill: 87B Nemotron (92%) lost to 31B Gemma4 (98.5%). Tool interface design mattered more than the base model."},"openai":{"source_url":"https://arxiv.org/html/2508.03153v2","summary":"OpenAI adversarially fine-tuned its open-weight gpt-oss for maximum cyber and bio capability — anti-refusal RL plus domain data, tools, and consensus voting.","cyber_below_frontier":"Stayed below o3 across every cyber eval; 0% on cyber-range environments without hints; estimated 367 trials needed to reach 75% on professional CTFs.","conclusion":"Even deliberately weaponized, the open model “does not significantly advance frontier capabilities.”"},"verdict":{"headline":"Reliable script kiddie, not an autonomous adversary — yet.","body":"Uncensored local models are genuinely dangerous at what they do reliably: recognising and validating single-step vulnerabilities with zero refusals, cheaply, on hardware anyone can rent. Where they collapse is exactly where a frontier model earns its keep — sustaining a coherent multi-step campaign across a real target. Both the TrustedSec field study (0% on 10+ step chains) and OpenAI's worst-case weaponization study (below o3, 0% on cyber ranges) land in the same place: the offensive gap is not knowledge, it's long-horizon execution. That gap is the current safety margin — and it is the thing that closes as agent harnesses and orchestration improve, independent of the model."},"defense":[{"k":"Model the harness, not the model","b":"The danger scales with the scaffolding around the model — tool interfaces, memory, orchestration — not raw parameter count. Track agent frameworks and tool-calling reliability as the real capability signal."},{"k":"Assume no refusal","b":"Do not rely on any model declining a malicious request. Uncensored variants exist for every open release and refuse nothing. Detection and response, not model-level refusal, is the control that holds."},{"k":"Defend the multi-step seam","b":"Single-step exploit validation is already commoditised. Invest defense where attackers still fail: breaking the chain — rate-limiting, anomaly detection on multi-request sequences, and state that resets between steps."},{"k":"Raise execution cost","b":"The frontier gap is long-horizon coherence. Controls that force more sequential, dependent steps (segmentation, per-step re-auth, honeytokens) tax exactly the capability local models lack."},{"k":"Use frontier models to defend","b":"The same long-horizon skill attackers lack locally, defenders can rent from safeguarded frontier models — triage, patch generation, detection engineering — with the vendor's classifiers on your side."}]}}</script>
 
-<div class="slide" role="document">
-  <header>
-    <div class="title-block">
-      <p class="eyebrow">llm-meta-bench · planning / security / coding · 1 of 2</p>
-      <h1>The three pillars. <span class="dim">Every score links to where it came from.</span></h1>
+<div class="wrap">
+  <div class="hero">
+    <canvas id="emberfield" aria-hidden="true"></canvas>
+    <p class="kicker">llm-meta-bench · risk assessment</p>
+    <h1 id="hero-h1">Securing against the <em>uncensored underworld</em></h1>
+    <p class="dek" id="hero-q"></p>
+    <div class="verdict-badge ui">Verdict: <b id="badge"></b></div>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="no">01</span><h2>Removing the leash is now trivial</h2></div>
+    <p class="lede">Safety alignment on an open-weight model is a thin layer, and stripping it has gone from a research exercise to a one-command chore. Any risk model that assumes "the base model will refuse" is already obsolete.</p>
+    <div class="abl" id="abl"></div>
+    <div class="takeaway" id="abl-take"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="no">02</span><h2>So — can they attack like a frontier model?</h2></div>
+    <p class="lede">Two independent 2026 studies stress-tested that question: a field benchmark of six self-hosted models across 4,800 offensive runs, and OpenAI's own attempt to weaponize its open-weight release. They reach the same verdict from opposite directions.</p>
+
+    <div class="gap-wrap">
+      <div class="gap hi"><div class="cap">Single-step exploit validation</div><div class="big" id="g-single">—</div><div class="cap2">top uncensored local model — reliable, cheap, zero refusals</div></div>
+      <div class="gap lo"><div class="cap">Multi-step exploitation chains</div><div class="big" id="g-multi">—</div><div class="cap2">every model, on any chain needing 10+ dependent tool calls</div></div>
     </div>
-    <div class="meta">
-      <div><span class="big" id="meta-models">—</span> models · <span class="big" id="meta-benches">—</span> benchmarks · 3 pillars</div>
-      <div>data as of <span class="big" id="meta-date">—</span> · <sup>†</sup> = predecessor-model score</div>
+
+    <h3 class="ui" style="margin:26px 0 0;font-size:1em;">TrustedSec field benchmark — pass rate by model <span class="src" id="ts-meta" style="color:var(--muted);font-weight:400;"></span></h3>
+    <div class="tbl-wrap">
+      <table id="ts-table"><thead><tr><th>Model</th><th>Params</th><th>Single-step pass</th></tr></thead><tbody></tbody></table>
     </div>
-  </header>
+    <p class="callout-line" id="ts-size"></p>
+    <p class="callout-line" id="ts-zero"></p>
 
-  <main>
-    <section class="pillar-col" aria-label="Pillar headline charts" id="pillar-charts"></section>
+    <div class="split">
+      <div class="half hot"><div class="pct">below o3</div><div class="k" id="oai-cyber"></div></div>
+      <div class="half cool"><div class="pct" id="oai-trials">367×</div><div class="k">estimated trials for an adversarially fine-tuned open model to reach 75% on professional CTFs — and still 0% on cyber ranges without hints. <b>Weaponizing it did not close the frontier gap.</b></div></div>
+    </div>
+    <p class="src" id="oai-src" style="margin-top:12px;color:var(--muted);"></p>
+  </section>
 
-    <section aria-label="Benchmark matrix">
-      <h2>The matrix <span class="sub">click any score for its data origin · best per column in green</span></h2>
-      <div class="matrix-wrap">
-        <table id="matrix">
-          <thead></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <p class="matrix-foot">— = not reported. <sup>†</sup> = score belongs to that vendor's predecessor model (hover for which). No blended composite is shown — models are tested on different subsets, so we rank within benchmarks only (see methodology).</p>
-    </section>
+  <section>
+    <div class="sec-head"><span class="no">03</span><h2>What this means for defenders</h2></div>
+    <p class="lede">The offensive gap isn't knowledge — uncensored models know the payloads. It's long-horizon execution: holding a coherent campaign together across a real target. That gap is today's safety margin, and it's exactly what improving agent harnesses erode. Defend it deliberately.</p>
+    <div class="defense" id="defense"></div>
+  </section>
 
-    <section class="rail" aria-label="Insights" id="insights">
-      <h2>What the numbers mean</h2>
-    </section>
-  </main>
+  <div class="final">
+    <p class="hl" id="final-hl"></p>
+    <p id="final-body"></p>
+  </div>
 
   <footer>
-    <div class="nav">
-      <a id="method-link" href="./methodology.html">Methodology →</a>
-      <a id="h2h-link" href="./headtohead.html">Fable 5 vs Sol Pro</a>
-      <a id="risk-link" href="./underworld.html">Uncensored underworld</a>
-    </div>
-    <div class="pageno">1 / 4 · → methodology</div>
+    <span>Sources linked inline · TrustedSec, OpenAI/arXiv, Heretic, Badllama · July 13, 2026</span>
+    <a id="back-link" href="./index.html">← Back to the scoreboard</a>
   </footer>
 </div>
 
 <script>
 (function () {
   var data = JSON.parse(document.getElementById("benchmark-data").textContent || "{}");
-  if (!data.models) return;
+  var r = data.risk; if (!r) return;
 
-  var vendorVar = {
-    anthropic: "--v-anthropic", openai: "--v-openai", google: "--v-google",
-    xai: "--v-xai", "open-weights": "--v-open"
-  };
-  var modelById = {}, benchById = {};
-  data.models.forEach(function (m) { modelById[m.id] = m; });
-  data.benchmarks.forEach(function (b) { benchById[b.id] = b; });
+  document.getElementById("hero-q").textContent = r.question;
+  document.getElementById("badge").textContent = r.verdict.headline;
 
-  function score(model, bench) {
-    return (data.scores || []).find(function (s) { return s.model === model && s.benchmark === bench; }) || null;
-  }
-  function color(modelId) {
-    var m = modelById[modelId];
-    return "var(" + (vendorVar[m && m.vendor] || "--muted") + ")";
-  }
-  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;"); }
-  function originOf(s, bench) { return s.source_url || (bench && bench.url) || "#"; }
-  function fmt(v, unit) {
-    if (unit === "$") return Math.round(v).toLocaleString("en-US");
-    if (unit === "elo") return String(Math.round(v));
-    return v.toFixed(1);
-  }
-
-  // meta
-  var pillars = data.pillars || [];
-  var pillarBenchIds = [];
-  pillars.forEach(function (p) { pillarBenchIds = pillarBenchIds.concat(p.benchmarks); });
-  document.getElementById("meta-models").textContent = data.models.length;
-  document.getElementById("meta-benches").textContent = pillarBenchIds.length;
-  document.getElementById("meta-date").textContent = (data.generated_at || "").slice(0, 10);
-
-  // ---- pillar flagship charts ----
-  var chartNotes = {
-    planning: "Only 4 models ever evaluated; both entries are predecessor generations. Planning is the least-measured pillar.",
-    security: "Defensive CTF subset (18 tasks). All entries are predecessor models — the ceiling is a 61% tie.",
-    coding: "The richest pillar: current-generation models, live leaderboard, harness disclosed."
-  };
-  var chartsHost = document.getElementById("pillar-charts");
-  pillars.forEach(function (p) {
-    var bench = benchById[p.flagship];
-    var block = document.createElement("div");
-    block.className = "chart-block";
-    block.innerHTML = '<span class="pillar-label">' + p.name + "</span>" +
-      "<h2>" + bench.name + ' <span class="sub">' + (bench.unit === "$" ? "final balance, $" : "%") + "</span></h2>" +
-      '<div class="chart"></div>' +
-      '<p class="chart-note">' + (chartNotes[p.id] || "") + "</p>";
-    var chart = block.querySelector(".chart");
-    var rows = data.models.map(function (m) { return { id: m.id, s: score(m.id, p.flagship) }; })
-      .filter(function (r) { return r.s && r.s.value != null; })
-      .sort(function (a, b) { return b.s.value - a.s.value; });
-    var max = Math.max.apply(null, rows.map(function (r) { return r.s.value; }));
-    rows.forEach(function (r) {
-      var m = modelById[r.id];
-      var row = document.createElement("div");
-      row.className = "bar-row";
-      var tip = [];
-      if (r.s.proxy) tip.push("Predecessor score: " + r.s.proxy);
-      if (r.s.note) tip.push(r.s.note);
-      if (tip.length) row.title = tip.join(" — ");
-      row.innerHTML =
-        '<span class="name">' + m.name + (r.s.proxy ? "<sup>†</sup>" : "") + "</span>" +
-        '<span class="bar-track"><span class="bar-fill' + (r.s.proxy ? " proxy" : "") + '" style="width:' +
-        (r.s.value / max * 100).toFixed(1) + "%;background:" + color(r.id) + '"></span></span>' +
-        '<span class="val"><a href="' + esc(originOf(r.s, bench)) + '" target="_blank" rel="noopener">' +
-        fmt(r.s.value, bench.unit) + "</a></span>";
-      chart.appendChild(row);
-    });
-    chartsHost.appendChild(block);
+  // abliteration steps
+  var abl = r.abliteration;
+  var steps = [
+    { t: "Heretic", big: "45–90 min", p: abl.heretic },
+    { t: "Badllama 3", big: "1 min", p: abl.badllama },
+    { t: "Qi et al.", big: "$0.20", p: abl.qi }
+  ];
+  var ablHost = document.getElementById("abl");
+  steps.forEach(function (s) {
+    var d = document.createElement("div");
+    d.className = "step";
+    d.innerHTML = '<div class="t">' + s.t + "<b>" + s.big + "</b></div><p>" + s.p + "</p>";
+    ablHost.appendChild(d);
   });
-  var legend = document.createElement("div");
-  legend.className = "legend";
-  data.vendors.forEach(function (v) {
-    var span = document.createElement("span");
-    span.innerHTML = '<span class="swatch" style="background:var(' + vendorVar[v.id] + ')"></span>' + v.name;
-    legend.appendChild(span);
-  });
-  chartsHost.appendChild(legend);
+  document.getElementById("abl-take").textContent = abl.takeaway;
 
-  // ---- matrix ----
-  var thead = document.querySelector("#matrix thead");
-  var groupRow = '<tr class="groups"><th></th>';
-  var colRow = '<tr class="cols"><th>Model</th>';
-  pillars.forEach(function (p) {
-    groupRow += '<th colspan="' + p.benchmarks.length + '">' + p.name + "</th>";
-    p.benchmarks.forEach(function (bid, i) {
-      var b = benchById[bid];
-      colRow += '<th' + (i === 0 ? ' class="gstart"' : "") + ' title="' + esc(b.note || b.name) + '">' +
-        (b.short || b.name) + "</th>";
-    });
-  });
-  thead.innerHTML = groupRow + "</tr>" + colRow + "</tr>";
+  // gauges
+  var ts = r.trustedsec;
+  document.getElementById("g-single").textContent = ts.single_step_top.toFixed(1) + "%";
+  document.getElementById("g-multi").textContent = ts.multi_step + "%";
+  document.getElementById("ts-meta").textContent =
+    "(" + ts.runs.toLocaleString("en-US") + " runs · " + ts.models + " models · " + ts.challenges + " challenges)";
 
-  var best = {};
-  pillarBenchIds.forEach(function (bid) {
-    var top = null;
-    data.models.forEach(function (m) {
-      var s = score(m.id, bid);
-      if (s && s.value != null && (top === null || s.value > top)) top = s.value;
-    });
-    best[bid] = top;
-  });
-
-  var tbody = document.querySelector("#matrix tbody");
-  data.models.forEach(function (m) {
-    var cells = "";
-    pillars.forEach(function (p) {
-      p.benchmarks.forEach(function (bid, i) {
-        var b = benchById[bid];
-        var s = score(m.id, bid);
-        var gs = i === 0 ? " gstart" : "";
-        if (!s || s.value == null) {
-          var t = s && s.note ? ' title="' + esc(s.note) + '"' : "";
-          cells += '<td class="na' + gs + '"' + t + ">—</td>";
-          return;
-        }
-        var cls = (s.value === best[bid] ? "best" : "") + gs;
-        var tip = [];
-        if (s.proxy) tip.push("Predecessor score: " + s.proxy);
-        if (s.note) tip.push(s.note);
-        tip.push("Source: " + originOf(s, b));
-        cells += '<td class="' + cls + '" title="' + esc(tip.join(" — ")) + '">' +
-          '<a href="' + esc(originOf(s, b)) + '" target="_blank" rel="noopener">' +
-          fmt(s.value, b.unit) + "</a>" + (s.proxy ? "<sup>†</sup>" : "") + "</td>";
-      });
-    });
+  // model table
+  var mx = Math.max.apply(null, ts.rows.map(function (x) { return x.pass; }));
+  var tb = document.querySelector("#ts-table tbody");
+  ts.rows.forEach(function (m) {
     var tr = document.createElement("tr");
-    tr.innerHTML = '<td class="model"' + (m.note ? ' title="' + esc(m.note) + '"' : "") +
-      '><span class="dot" style="background:' + color(m.id) + '"></span>' + m.name + "</td>" + cells;
-    tbody.appendChild(tr);
+    tr.innerHTML = '<td class="m">' + m.model + "</td><td>" + m.params + "</td>" +
+      '<td>' + m.pass.toFixed(1) + '%<span class="passbar"><i style="width:' +
+      (m.pass / mx * 100).toFixed(1) + '%"></i></span></td>';
+    tb.appendChild(tr);
+  });
+  document.getElementById("ts-size").innerHTML = "<b>Size didn't help.</b> " + ts.size_finding;
+  document.getElementById("ts-zero").innerHTML = "<b>Where they broke:</b> " + ts.zero_pass;
+
+  // openai
+  document.getElementById("oai-cyber").innerHTML = r.openai.summary + " " + r.openai.cyber_below_frontier;
+  var m = String(r.openai.cyber_below_frontier).match(/(\d+)\s*trials/);
+  if (m) document.getElementById("oai-trials").textContent = m[1] + "×";
+  document.getElementById("oai-src").innerHTML =
+    'Source: <a href="' + r.openai.source_url + '" target="_blank" rel="noopener">Estimating Worst-Case Frontier Risks of Open-Weight LLMs (OpenAI, 2026)</a> · ' +
+    '<a href="' + ts.source_url + '" target="_blank" rel="noopener">TrustedSec benchmark</a>';
+
+  // defense
+  var dh = document.getElementById("defense");
+  (r.defense || []).forEach(function (d, i) {
+    var el = document.createElement("div");
+    el.className = "dcard";
+    el.innerHTML = '<span class="n">Control ' + String(i + 1).padStart(2, "0") + "</span><b>" + d.k + "</b><p>" + d.b + "</p>";
+    dh.appendChild(el);
   });
 
-  // ---- insights ----
-  var rail = document.getElementById("insights");
-  (data.insights || []).forEach(function (ins) {
-    var div = document.createElement("div");
-    div.className = "callout";
-    div.innerHTML = '<span class="tag">' + ins.tag + "</span><h3>" + ins.title + "</h3><p>" + ins.body + "</p>";
-    rail.appendChild(div);
-  });
+  document.getElementById("final-hl").textContent = r.verdict.headline;
+  document.getElementById("final-body").textContent = r.verdict.body;
 
-  // slide-deck keyboard nav
   document.addEventListener("keydown", function (e) {
-    if (e.key === "ArrowRight" || e.key === " ") {
-      window.location.href = document.getElementById("method-link").href;
-    }
+    if (e.key === "ArrowLeft") window.location.href = document.getElementById("back-link").href;
   });
+
+  // --- ambient ember field (canvas) ---
+  var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReduced) return;
+  var cv = document.getElementById("emberfield"), ctx = cv.getContext("2d"), embers = [], raf;
+  function accent() {
+    var c = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+    return c || "#9a3412";
+  }
+  function size() {
+    var p = cv.parentElement.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = p.width * dpr; cv.height = p.height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cv.style.width = p.width + "px"; cv.style.height = p.height + "px";
+    return p;
+  }
+  var box = size();
+  for (var i = 0; i < 46; i++) {
+    embers.push({ x: Math.random() * box.width, y: Math.random() * box.height,
+      r: Math.random() * 1.8 + 0.5, vy: -(Math.random() * 0.35 + 0.1),
+      vx: (Math.random() - 0.5) * 0.25, a: Math.random() * 0.5 + 0.15,
+      tw: Math.random() * Math.PI * 2 });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, box.width, box.height);
+    var col = accent();
+    embers.forEach(function (e) {
+      e.y += e.vy; e.x += e.vx; e.tw += 0.03;
+      if (e.y < -4) { e.y = box.height + 4; e.x = Math.random() * box.width; }
+      var flick = e.a * (0.6 + 0.4 * Math.sin(e.tw));
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+      ctx.fillStyle = col.replace(")", "").replace("rgb", "rgba") ;
+      ctx.globalAlpha = flick;
+      ctx.fillStyle = col;
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    raf = requestAnimationFrame(draw);
+  }
+  draw();
+  window.addEventListener("resize", function () { box = size(); });
 })();
 </script>

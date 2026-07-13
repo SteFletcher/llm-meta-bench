@@ -34,8 +34,9 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA_FILE = ROOT / "data" / "benchmarks.json"
 SITE_PAGES = [
     ROOT / "site" / "index.html",
-    ROOT / "site" / "fable.html",
     ROOT / "site" / "methodology.html",
+    ROOT / "site" / "headtohead.html",
+    ROOT / "site" / "underworld.html",
 ]
 
 UA = "llm-meta-bench/1.0 (+data refresh script)"
