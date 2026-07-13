@@ -54,9 +54,9 @@
     {
       "id": "tau2",
       "name": "Tau2-bench (Sierra)",
-      "url": "https://pricepertoken.com/leaderboards/benchmark/tau2",
+      "url": "https://artificialanalysis.ai/evaluations/tau2-bench",
       "method": "manual",
-      "notes": "Multi-turn tool-use agents in retail/airline/telecom customer service. 226 models ranked."
+      "notes": "Multi-turn tool-use agents in retail/airline/telecom customer service. Telecom split used here (the one with published frontier scores); JS-rendered leaderboards so scores are hand-entered with per-model citations."
     },
     {
       "id": "andon",
@@ -217,12 +217,12 @@
   "benchmarks": [
     {
       "id": "tau2-bench",
-      "name": "Tau2-bench",
+      "name": "Tau2-bench (telecom)",
       "short": "Tau2",
       "source": "tau2",
-      "url": "https://pricepertoken.com/leaderboards/benchmark/tau2",
+      "url": "https://artificialanalysis.ai/evaluations/tau2-bench",
       "unit": "%",
-      "note": "Multi-turn tool-use customer-service agents. Near saturation — leader at 99.1%."
+      "note": "Multi-turn tool-use agents, telecom split. Saturated: the whole frontier clusters at 98–99%, so it can't separate top models."
     },
     {
       "id": "vending-bench-2",
@@ -344,11 +344,26 @@
   ],
   "scores": [
     {
+      "model": "opus-4-8",
+      "benchmark": "tau2-bench",
+      "value": 99.3,
+      "proxy": "Claude Opus 4.6",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench",
+      "note": "Telecom split. Predecessor Opus 4.6 leads the board; Opus 4.8 not separately published."
+    },
+    {
       "model": "glm-5-2",
       "benchmark": "tau2-bench",
       "value": 99.1,
-      "source_url": "https://pricepertoken.com/leaderboards/benchmark/tau2",
-      "note": "Leaderboard top score as of 2026-07-08; benchmark near saturation."
+      "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench",
+      "note": "Telecom split, top public snapshot as of 2026-07-08."
+    },
+    {
+      "model": "gpt-5-5",
+      "benchmark": "tau2-bench",
+      "value": 98.0,
+      "source_url": "https://www.vellum.ai/blog/everything-you-need-to-know-about-gpt-5-5",
+      "note": "Telecom split, no prompt tuning. Current-generation model."
     },
     {
       "model": "opus-4-8",
