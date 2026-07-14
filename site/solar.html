@@ -1,5 +1,6 @@
 <meta charset="utf-8">
-<title>Same Prompt, Two Solar Systems — Fable 5 vs GPT-5.6 Lunar</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Same Prompt, Three Solar Systems — Fable 5 vs GPT-5.6</title>
 <style>
   :root {
     --void: #05070d;
@@ -27,7 +28,7 @@
   .mono { font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace; }
   a { color: var(--accent); }
   a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
-  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px,4vw,44px) 72px; }
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 0 clamp(16px,4vw,44px) 72px; }
 
   /* starfield hero */
   .hero { position: relative; padding: clamp(40px,8vh,88px) 0 clamp(26px,4vh,44px);
@@ -49,9 +50,9 @@
   .method code { color: var(--ink-2); }
 
   /* comparison grid */
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px,2.4vw,34px);
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px,2vw,28px);
     margin-top: clamp(30px,5vh,54px); }
-  @media (max-width: 940px) { .grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1080px) { .grid { grid-template-columns: 1fr; max-width: 720px; } }
 
   .col { min-width: 0; }
   .col-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
@@ -59,13 +60,15 @@
   .who { display: flex; align-items: baseline; gap: 10px; }
   .who .dot { width: 11px; height: 11px; border-radius: 3px; flex: none; transform: translateY(1px); }
   .col.a .dot { background: var(--accent); }
-  .col.b .dot { background: var(--good); }
+  .col.b .dot { background: var(--warn); }
+  .col.c .dot { background: var(--good); }
   .who h2 { margin: 0; font-size: 1.3em; font-weight: 700; letter-spacing: -0.01em; }
   .who .app { color: var(--muted); font-size: 0.8em; font-family: ui-monospace,monospace; }
   .verdict-pill { font-family: ui-monospace,monospace; font-size: 0.72em; text-transform: uppercase;
     letter-spacing: 0.1em; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--hairline); }
   .col.a .verdict-pill { color: var(--accent); border-color: var(--accent-dim); background: rgba(90,169,255,0.08); }
-  .col.b .verdict-pill { color: var(--ink-2); }
+  .col.b .verdict-pill { color: var(--warn); }
+  .col.c .verdict-pill { color: var(--ink-2); }
 
   figure { margin: 0; }
   .shot { display: block; width: 100%; height: auto; border-radius: 10px;
@@ -116,12 +119,13 @@
   <div class="hero">
     <canvas id="stars" aria-hidden="true"></canvas>
     <p class="eyebrow">llm-meta-bench · intent comparison · solar-bench</p>
-    <h1>Same prompt, two solar systems.</h1>
+    <h1>Same prompt, three solar systems.</h1>
     <p class="dek">
-      Two models were handed the <em>identical</em> brief — a single sprawling spec for a
+      Three builds were handed the <em>identical</em> brief — a single sprawling spec for a
       “AAA-quality, browser-based, real-time Solar System simulator” that should feel like a game,
-      not a website. Each owned the whole build. To compare intent versus execution, I started both
-      apps, used each one's own on-screen navigation to fly to <b>Earth</b>, and captured the frame.
+      not a website — with Claude Fable 5 up against both of OpenAI's GPT-5.6 solar attempts, Sol
+      and Lunar. Each owned the whole build. To compare intent versus execution, I started every
+      app, used its own on-screen navigation to fly to <b>Earth</b>, and captured the frame.
     </p>
     <div class="brief">
       <span class="tag"><b>Brief:</b> solar-bench/PROMPT.md</span>
@@ -130,9 +134,9 @@
       <span class="tag"><b>Task:</b> navigate → Earth → screenshot</span>
     </div>
     <p class="method">
-      Captured with Playwright driving headless Chromium (WebGL2 via SwiftShader) at 1600×900: load the
+      Captured with Playwright driving headless Chromium (WebGL2 via SwiftShader) at 1800×1012: load the
       app, wait for boot, click the app's own <code>Earth</code> navigation control, let the cinematic
-      fly-to settle, screenshot. Same procedure for both — the only variable is the code each model wrote.
+      fly-to settle, screenshot. Same procedure for all three — the only variable is the code each model wrote.
     </p>
   </div>
 
@@ -143,7 +147,7 @@
         <span class="verdict-pill">Closest to intent</span>
       </div>
       <figure>
-        <img class="shot" src="./assets/fable5-earth.jpg" width="1600" height="900"
+        <img class="shot" src="./assets/fable5-earth.jpg" width="1800" height="1012"
           alt="Fable 5's simulator showing Earth: a fully-lit textured globe with continents, blue specular oceans, drifting cloud bands and a thin atmospheric rim, centered against a nebula backdrop, with a detailed glass HUD listing Earth's radius, mass, gravity, axial tilt and more." loading="lazy" decoding="async">
         <figcaption>Clicked “Earth” in the bottom nav dock → cinematic day-side arrival.</figcaption>
       </figure>
@@ -170,11 +174,41 @@
 
     <div class="col b">
       <div class="col-head">
+        <div class="who"><span class="dot"></span><div><h2>GPT-5.6 Sol</h2> <span class="app">sol-aaa · “Celestial Navigation System”</span></div></div>
+        <span class="verdict-pill">Best cockpit, wrong planet</span>
+      </div>
+      <figure>
+        <img class="shot" src="./assets/gpt56sol-earth.jpg" width="1800" height="1012"
+          alt="GPT-5.6 Sol after selecting Earth: an elaborate glassmorphic navigation HUD surrounds a stylized pale-and-teal sphere ringed by a bold blue halo — visually striking but reading more like a generic or gaseous planet than Earth, with the ISS and Moon nearby." loading="lazy" decoding="async">
+        <figcaption>Clicked “Earth” in the Quick-Jump bar → framed, but the planet doesn't read as Earth.</figcaption>
+      </figure>
+      <div class="assess">
+        <div class="got">
+          <h3>Got right</h3>
+          <ul class="pts">
+            <li><b>The slickest HUD of the field.</b> A genuinely beautiful glassmorphic “Celestial Navigation System” — 26 objects, follow/orbit/free/tours/photo modes, an observation-scale readout, and a live distance widget. Pure production polish.</li>
+            <li><b>Framed the target.</b> The Quick-Jump correctly flew to Earth and centred it, with the ISS and Moon composed into the shot.</li>
+            <li><b>Data is exact.</b> Radius 6,371 km, gravity 9.807 m/s², escape 11.186 km/s, rotation 23.934 h, axial tilt 23.44° — all present and correct.</li>
+          </ul>
+        </div>
+        <div class="miss">
+          <h3>Fell short</h3>
+          <ul class="pts">
+            <li><b>It isn't Earth.</b> The planet is a stylized pale/teal sphere with an odd, prominent blue ring — it reads like a generic or gaseous world, not the blue marble. No recognizable continents, oceans or clouds.</li>
+            <li><b>Polish went to the frame, not the world.</b> Every pixel of chrome is refined while the one object you flew to is the least convincing part of the scene — the beauty is all around Earth, not on it.</li>
+            <li><b>Ambiguous rings.</b> The bright blue halo doesn't read as atmosphere; it looks like a planetary ring Earth doesn't have.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col c">
+      <div class="col-head">
         <div class="who"><span class="dot"></span><div><h2>GPT-5.6 Lunar</h2> <span class="app">sol-atlas · “Deep Space Atlas”</span></div></div>
         <span class="verdict-pill">Correct, but schematic</span>
       </div>
       <figure>
-        <img class="shot" src="./assets/gpt56lunar-earth.jpg" width="1600" height="900"
+        <img class="shot" src="./assets/gpt56lunar-earth.jpg" width="1800" height="1012"
           alt="GPT-5.6 Lunar's atlas after selecting Earth: a small, untextured grey half-lit sphere near screen center while a huge flat yellow Sun disc blows out the right half of the frame; a dense sci-fi HUD lists the catalogue of objects and Earth's reference data." loading="lazy" decoding="async">
         <figcaption>Clicked “Earth” in Quick Navigation → Earth selected, but the camera framed it poorly.</figcaption>
       </figure>
@@ -201,31 +235,32 @@
 
   <div class="final">
     <span class="k">The read</span>
-    <h2>Both nailed the data. Only one nailed the intent.</h2>
+    <h2>All three nailed the data. Only one nailed the planet.</h2>
     <p>
       This brief is really two tests: <b>be scientifically accurate</b> and <b>be cinematically beautiful</b>.
-      Both models passed the first — near-identical, correct reference data and a full sci-fi HUD. They split
-      hard on the second. <b>Fable 5</b> rendered a textured, cloud-wrapped, atmospherically-lit Earth and
-      directed the camera to arrive on it like a shot in a game. <b>GPT-5.6 Lunar</b> built a competent atlas
-      but left Earth an untextured sphere and let the Sun wreck the framing on the one navigation the user is
-      most likely to try first.
+      All three passed the first — near-identical, correct reference data and a full sci-fi HUD; GPT-5.6 Sol's
+      is arguably the most polished chrome of the lot. They split hard on the second, and revealingly.
+      <b>Fable 5</b> put the craft into the world itself — a textured, cloud-wrapped, atmospherically-lit Earth,
+      arrived on like a shot in a game. <b>GPT-5.6 Sol</b> put its craft into the cockpit and left the planet an
+      abstract ringed sphere. <b>GPT-5.6 Lunar</b> left Earth an untextured sphere and let the Sun wreck the framing.
     </p>
     <p>
-      The gap isn't knowledge — it's <b>execution of the aesthetic and camera direction</b>, exactly the part
-      of “AAA” that can't be satisfied by getting the numbers right. It mirrors the coding-pillar story on the
-      scoreboard: correct output is table stakes; the models separate on the demanding, hard-to-specify finish.
+      The gap isn't knowledge — it's <b>where the effort lands</b>. Both GPT-5.6 builds lavished detail on the
+      enumerable, checkable parts (data fields, widgets, HUD) while the un-checkable goal — “make Earth
+      beautiful” — quietly evaporated. It mirrors the coding-pillar story on the scoreboard: correct output is
+      table stakes; the models separate on the demanding, hard-to-specify finish, and most of them lose it.
     </p>
     <div class="scorebar">
-      <div class="cell win"><b>Visual fidelity</b><span><strong>Fable 5</strong> — textured Earth, clouds, atmosphere vs. a flat sphere.</span></div>
-      <div class="cell win"><b>Camera direction</b><span><strong>Fable 5</strong> — day-side arrival vs. Sun-blown, half-lit framing.</span></div>
-      <div class="cell"><b>Scientific data</b><span><strong>Tie</strong> — both correct and complete in the info panel.</span></div>
-      <div class="cell"><b>HUD / breadth</b><span><strong>Tie</strong> — both shipped a full glass HUD and object catalogue.</span></div>
+      <div class="cell win"><b>The planet itself</b><span><strong>Fable 5</strong> — the only recognizable, textured Earth. Sol is abstract; Lunar is flat grey.</span></div>
+      <div class="cell win"><b>Camera direction</b><span><strong>Fable / Sol</strong> — both framed Earth cleanly; <strong>Lunar</strong> let the Sun blow out the shot.</span></div>
+      <div class="cell"><b>HUD polish</b><span><strong>GPT-5.6 Sol</strong> — the most refined glass HUD of the three, if aimed at the wrong thing.</span></div>
+      <div class="cell"><b>Scientific data</b><span><strong>Three-way tie</strong> — all correct and complete in the info panel.</span></div>
     </div>
   </div>
 
   <footer>
-    <span>Both apps built from <span class="mono">solar-bench/PROMPT.md</span> · screenshots captured via Playwright, {DATE}</span>
-    <a href="./index.html">← Back to the scoreboard</a>
+    <span>All apps built from <span class="mono">solar-bench/PROMPT.md</span> · screenshots captured via Playwright, {DATE}</span>
+    <span><a href="./solar-field.html">Full field: intent-loss gallery ↗</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
   </footer>
 </div>
 

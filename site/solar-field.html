@@ -1,0 +1,203 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Intent-Loss Gallery — Five Builds, One Earth</title>
+<style>
+  :root {
+    --void: #05070d; --panel: #0b0f18; --panel-2: #0f1420;
+    --ink: #eef2fb; --ink-2: #9aa6be; --muted: #5f6b84;
+    --hairline: #1c2434; --ring: rgba(255,255,255,0.08);
+    --accent: #5aa9ff;
+    --realized: #46d08a; --mostly: #5aa9ff; --partial: #f0ad4e; --lost: #ef6a5a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--void); color: var(--ink);
+    font: 400 clamp(14px,0.4vw+12px,16px)/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing: antialiased; }
+  .mono { font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 clamp(16px,4vw,44px) 72px; }
+
+  .hero { position: relative; padding: clamp(40px,8vh,88px) 0 clamp(24px,4vh,40px);
+    border-bottom: 1px solid var(--hairline); overflow: hidden; }
+  #stars { position: absolute; inset: 0; z-index: 0; opacity: 0.7; }
+  .hero > * { position: relative; z-index: 1; }
+  .eyebrow { font-family: ui-monospace,monospace; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.24em; color: var(--accent); margin: 0 0 16px; }
+  .hero h1 { margin: 0 0 14px; font-size: clamp(30px,5vw,60px); font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.02; text-wrap: balance; max-width: 16ch; }
+  .hero .dek { max-width: 70ch; color: var(--ink-2); font-size: 1.08em; margin: 0; }
+  .hero .dek b { color: var(--ink); }
+
+  /* gallery */
+  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px,100%),1fr));
+    gap: clamp(16px,2vw,26px); margin-top: clamp(30px,5vh,52px); }
+  .card { position: relative; border: 1px solid var(--hairline); border-radius: 12px; overflow: hidden;
+    background: var(--panel); display: flex; flex-direction: column; }
+  .card .rank { position: absolute; margin: 10px; font-family: ui-monospace,monospace;
+    font-size: 0.72rem; color: var(--ink); background: rgba(5,7,13,0.72); border: 1px solid var(--ring);
+    border-radius: 999px; padding: 3px 9px; backdrop-filter: blur(4px); z-index: 1; }
+  .card figure { margin: 0; position: relative; aspect-ratio: 16/9; background: #000; }
+  .card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .card .who { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .card .who h2 { margin: 0; font-size: 1.08em; font-weight: 700; letter-spacing: -0.01em; }
+  .card .who .app { color: var(--muted); font-size: 0.74em; font-family: ui-monospace,monospace; display: block; margin-top: 2px; }
+  .badge { font-family: ui-monospace,monospace; font-size: 0.66rem; text-transform: uppercase;
+    letter-spacing: 0.1em; padding: 4px 9px; border-radius: 999px; white-space: nowrap; flex: none; }
+  .badge.realized { color: var(--realized); border: 1px solid var(--realized); background: rgba(70,208,138,0.08); }
+  .badge.mostly   { color: var(--mostly);   border: 1px solid var(--mostly);   background: rgba(90,169,255,0.08); }
+  .badge.partial  { color: var(--partial);  border: 1px solid var(--partial);  background: rgba(240,173,78,0.08); }
+  .badge.lost     { color: var(--lost);     border: 1px solid var(--lost);     background: rgba(239,106,90,0.08); }
+  .card p { margin: 0; font-size: 0.88em; color: var(--ink-2); }
+  .card p b { color: var(--ink); }
+  .card .kept { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--hairline);
+    font-size: 0.78em; color: var(--muted); }
+  .card .kept b { color: var(--ink-2); }
+
+  /* insight + verdict */
+  .insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+    gap: 14px; margin-top: clamp(30px,5vh,52px); }
+  .ins { border: 1px solid var(--hairline); border-left: 3px solid var(--accent);
+    border-radius: 8px; padding: 13px 15px; background: color-mix(in srgb, var(--accent) 4%, transparent); }
+  .ins .n { font-family: ui-monospace,monospace; font-size: 0.66rem; text-transform: uppercase;
+    letter-spacing: 0.13em; color: var(--accent); }
+  .ins h3 { margin: 4px 0 5px; font-size: 0.98em; font-weight: 700; }
+  .ins p { margin: 0; font-size: 0.85em; color: var(--ink-2); }
+
+  .final { margin-top: clamp(34px,6vh,60px); border: 1px solid var(--hairline); border-radius: 14px;
+    background: linear-gradient(180deg, var(--panel-2), var(--panel)); padding: clamp(22px,3.4vw,40px); }
+  .final .k { font-family: ui-monospace,monospace; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.16em; color: var(--accent); }
+  .final h2 { margin: 8px 0 12px; font-size: clamp(20px,2.8vw,32px); font-weight: 700;
+    letter-spacing: -0.02em; text-wrap: balance; max-width: 24ch; }
+  .final p { max-width: 84ch; color: var(--ink-2); margin: 0 0 14px; }
+  .final p b { color: var(--ink); }
+  .final .pull { font-size: 1.05em; color: var(--ink); border-left: 2px solid var(--accent);
+    padding-left: 16px; margin: 18px 0 0; font-style: italic; max-width: 70ch; }
+
+  footer { margin-top: 40px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    color: var(--muted); font-size: 0.82em; border-top: 1px solid var(--hairline); padding-top: 22px; }
+  footer a { font-weight: 600; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  @media (prefers-reduced-motion: reduce) { #stars { display: none; } * { animation: none !important; } }
+</style>
+
+<div class="wrap">
+  <div class="hero">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <p class="eyebrow">llm-meta-bench · solar-bench · field summary</p>
+    <h1>The intent-loss gallery.</h1>
+    <p class="dek">
+      Five builds were handed the same 569-line brief for a cinematic, “AAA-quality” Solar System
+      simulator. Here is <b>Earth</b> from each — the most familiar test of whether factual completeness becomes
+      a convincing experience. The science converges: all five know the radius, gravity and axial tilt, and all
+      five shipped a full glass HUD. What doesn't converge is the <b>planet itself</b>. This is an editorial
+      ordering by how much of the brief's actual intent — “make it beautiful” — survived contact with the build.
+    </p>
+  </div>
+
+  <div class="gallery" id="gallery"></div>
+
+  <div class="insights" id="insights"></div>
+
+  <div class="final">
+    <span class="k">The pattern</span>
+    <h2>The checklist got built. The vibe got lost.</h2>
+    <p>
+      The brief has two kinds of requirement. One kind is <b>enumerable</b> — a list of planets, a list of
+      widgets, a table of physical constants, ten named time scales. The other is a single qualitative
+      thesis, stated in the “Definition of Done”: it should <b>feel like a premium game</b>, beautiful enough
+      to leave running on a second monitor. Every build satisfied the enumerable kind — that's why the HUDs
+      and data panels are near-indistinguishable. They diverged entirely on the thesis.
+    </p>
+    <p>
+      That's <b>intent loss</b>. Long specs quietly reward the parts that can be checked off, and the
+      un-checkable goal is the first thing to evaporate under the weight of shipping everything else. GPT-5.6
+      Sol is the sharpest illustration: it spent its polish budget on the most beautiful cockpit of the field
+      and flew you to a planet that isn't recognizably Earth. Only Fable 5 fully kept the thesis — it made the
+      world, not just the instruments around it, worth looking at.
+    </p>
+    <p class="pull">
+      It's the coding-pillar story again, in pixels: correct output is table stakes. Models separate on the
+      demanding, hard-to-specify finish — and when the goal can't be graded, most of them lose it.
+    </p>
+  </div>
+
+  <footer>
+    <span>Same brief: <span class="mono">solar-bench/PROMPT.md</span> · Earth captured via Playwright, July 14, 2026</span>
+    <span><a href="./solar.html">Detailed three-way ↗</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var models = [
+    { rank:"01", name:"Claude Fable 5", app:"sol-simulator", badge:"realized", label:"Intent realized",
+      img:"fable5-earth.jpg",
+      verdict:"The only <b>recognizable Earth</b> — coherent continents, blue specular oceans, layered clouds and a thin atmospheric limb, arrived on the day side like a game shot.",
+      kept:"Kept the science, the HUD <b>and</b> the beauty." },
+    { rank:"02", name:"GLM-5.2", app:"glm52", badge:"mostly", label:"Mostly there",
+      img:"glm52-earth.jpg",
+      verdict:"Clearly reads as Earth — green land, blue ocean, cloud wisps, a bright atmosphere glow — but the geography is stylized and the atmosphere rim and Moon are blown out.",
+      kept:"Got the <b>idea</b> of Earth; missed the finish." },
+    { rank:"03", name:"Claude Opus 4.8", app:"sol-simulator", badge:"partial", label:"Partial",
+      img:"opus48-earth.jpg",
+      verdict:"A dense widget suite (Hill spheres, Lagrange points, constellations) and an Earth-coloured, atmosphere-wrapped globe — but the surface is procedural <b>noise</b>, not geography.",
+      kept:"Won the checklist; the planet reads as static." },
+    { rank:"04", name:"GPT-5.6 Sol", app:"sol-aaa", badge:"lost", label:"Lost the planet",
+      img:"gpt56sol-earth.jpg",
+      verdict:"The <b>slickest HUD of the field</b> wrapped around an abstract pale/teal sphere with a strange blue ring — the visible polish went to the cockpit far more than the world.",
+      kept:"Beauty everywhere except on Earth." },
+    { rank:"05", name:"GPT-5.6 Lunar", app:"sol-atlas", badge:"lost", label:"Lost",
+      img:"gpt56lunar-earth.jpg",
+      verdict:"A competent star-atlas, but Earth is a <b>flat untextured sphere</b> and the fly-to let the Sun blow out half the frame — the opposite of a cinematic arrival.",
+      kept:"A diagram, not a destination." },
+  ];
+  var g = document.getElementById("gallery");
+  models.forEach(function (m) {
+    var el = document.createElement("div");
+    el.className = "card";
+    el.innerHTML =
+      '<span class="rank">' + m.rank + '</span>' +
+      '<figure><img src="./assets/' + m.img + '" width="1800" height="1012" loading="lazy" decoding="async" alt="Earth as rendered by ' + m.name + '"></figure>' +
+      '<div class="body">' +
+        '<div class="who"><div><h2>' + m.name + '</h2><span class="app">' + m.app + '</span></div>' +
+        '<span class="badge ' + m.badge + '">' + m.label + '</span></div>' +
+        '<p>' + m.verdict + '</p>' +
+        '<div class="kept">' + m.kept + '</div>' +
+      '</div>';
+    g.appendChild(el);
+  });
+
+  var insights = [
+    { n:"observation 1", h:"Data is a solved problem.", p:"All five nailed radius 6,371 km, gravity ~9.8, axial tilt 23.44°. In this sample, reference facts no longer separate the builds." },
+    { n:"observation 2", h:"HUD ≠ hard part.", p:"Every build shipped a glassmorphic sci-fi HUD with search, layers and time scales. The chrome is now a commodity; the planet inside it is not." },
+    { n:"observation 3", h:"Polish can aim at the wrong thing.", p:"GPT-5.6 Sol proves effort and taste aren't the same as intent: immense craft, pointed at the frame instead of the world you actually flew to." },
+  ];
+  var ih = document.getElementById("insights");
+  insights.forEach(function (o) {
+    var el = document.createElement("div");
+    el.className = "ins";
+    el.innerHTML = '<span class="n">' + o.n + '</span><h3>' + o.h + '</h3><p>' + o.p + '</p>';
+    ih.appendChild(el);
+  });
+
+  var m = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (m && m.matches) return;
+  var cv = document.getElementById("stars"), ctx = cv.getContext("2d"), stars = [];
+  function size() { var p = cv.parentElement.getBoundingClientRect(), d = Math.min(window.devicePixelRatio||1,2);
+    cv.width=p.width*d; cv.height=p.height*d; ctx.setTransform(d,0,0,d,0,0);
+    cv.style.width=p.width+"px"; cv.style.height=p.height+"px"; return p; }
+  var box = size();
+  for (var i=0;i<120;i++) stars.push({x:Math.random()*box.width,y:Math.random()*box.height,
+    r:Math.random()*1.3+0.2,a:Math.random()*0.6+0.2,tw:Math.random()*Math.PI*2,sp:Math.random()*0.02+0.005});
+  (function draw(){ ctx.clearRect(0,0,box.width,box.height);
+    for (var i=0;i<stars.length;i++){var s=stars[i]; s.tw+=s.sp;
+      ctx.globalAlpha=s.a*(0.55+0.45*Math.sin(s.tw)); ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=i%9===0?"#9ec8ff":"#ffffff"; ctx.fill();}
+    ctx.globalAlpha=1; requestAnimationFrame(draw); })();
+  window.addEventListener("resize", function(){ box=size(); });
+})();
+</script>
