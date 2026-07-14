@@ -102,9 +102,18 @@ def set_score(data: dict, model: str, benchmark: str, value: float, note: str | 
 # per-model numbers. Scoped to Tau2 for now; add rows (gpqa, hle, livecodebench,
 # terminalbench_v2_1, artificial_analysis_intelligence_index) to single-source
 # more benchmarks from AA.
+AA_MODELS_URL = "https://artificialanalysis.ai/leaderboards/models"
 AA_EVAL_MAP = {
     "tau2-bench": ("tau2", "https://artificialanalysis.ai/evaluations/tau2-bench"),
+    "terminal-bench": ("terminalbench_v2_1", AA_MODELS_URL),
+    "aa-index": ("artificial_analysis_intelligence_index", AA_MODELS_URL),
+    "gpqa-diamond": ("gpqa", AA_MODELS_URL),
+    "hle": ("hle", AA_MODELS_URL),
 }
+# Note: livecodebench is intentionally absent — AA returns no LiveCodeBench
+# value for any model in our set (it publishes a coding *index* instead), so
+# mapping it would only null the one figure we do have. SWE-bench, Cybench,
+# Endor, Vending-Bench, GAIA, ARC-AGI-2 and LMArena are not AA evals at all.
 
 # AA lists each model at several reasoning-effort tiers with different scores.
 # We compare models at their strongest published configuration, so we pick the

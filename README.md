@@ -33,6 +33,48 @@ Both pages are fully self-contained: the JSON payload is inlined into a
 `<script id="benchmark-data" type="application/json">` block, so they work as
 local files or hosted artifacts with no runtime fetches.
 
+## Data sourcing per pillar
+
+The goal is one consistent source per pillar. That's fully achievable for
+Coding but only partly for Planning and Security, because the specialized
+benchmarks are each hosted by their own author and — more fundamentally —
+**most current-generation frontier models have never been run on them.** Where
+a single source can't cover a pillar, we use the minimum number of references
+and explain each here. Every individual score still links to its own origin,
+and predecessor-generation scores are daggered (†) with the tested model named.
+
+- **Coding — single source (Artificial Analysis API).** Terminal-Bench (the
+  flagship), plus GPQA/HLE/intelligence-index, are pulled per-model from the AA
+  API at each model's highest published effort. SWE-bench Pro/Verified are not
+  AA evals, so they stay on their original leaderboards (SWE-bench is not on
+  AA). LiveCodeBench is intentionally left as-is: AA returns no LiveCodeBench
+  value for our model set (it publishes a coding *index* instead).
+
+- **Planning — one API + one aggregator + one harness board (3 refs, by
+  necessity).** Tau2 comes from the AA API (same authoritative source as
+  Coding). Vending-Bench 2 and ARC-AGI-2 are consolidated onto **llm-stats.com**,
+  a single aggregator that hosts both specialized boards in one place (rather
+  than citing Andon Labs and ARC Prize separately). GAIA stays on **Princeton
+  HAL**, because GAIA scores are only meaningful inside a named agent scaffold —
+  a HAL number and a bare-model number aren't the same measurement, so it can't
+  be honestly folded into the aggregator. Vending-Bench and GAIA remain sparse
+  and mostly daggered: only predecessor models have been evaluated on them.
+
+- **Security — two references, by design (different questions).** Cybench
+  (defensive subset, CoTool) measures offensive/analytic CTF capability; Endor
+  Labs SecPass measures whether a model's *generated code is secure*. These are
+  genuinely different security questions and no single site covers both, so
+  both are cited. Current-generation coverage is thin — Cybench cells are
+  daggered predecessor proxies and Endor has only run Fable 5 — because the
+  frontier labs and benchmark authors haven't published current-model runs.
+
+**Why so many N/A cells remain:** they are not gaps we can close by finding a
+better site. Vending-Bench 2 (4 models ever), GAIA, and Cybench were run on
+predecessor generations; Endor has tested one model; and several labs (OpenAI
+for GPT-5.6, xAI for Grok 4.5, Anthropic for Fable 5) did not publish ARC-AGI-2
+at launch. An N/A here means "not publicly measured anywhere," which is itself
+the finding the Planning/Security pillars exist to surface.
+
 ## Refreshing the data
 
 ```sh
