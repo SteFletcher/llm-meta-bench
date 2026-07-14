@@ -1,0 +1,261 @@
+<meta charset="utf-8">
+<title>Same Prompt, Two Solar Systems — Fable 5 vs GPT-5.6 Lunar</title>
+<style>
+  :root {
+    --void: #05070d;
+    --panel: #0b0f18;
+    --panel-2: #0f1420;
+    --ink: #eef2fb;
+    --ink-2: #9aa6be;
+    --muted: #5f6b84;
+    --hairline: #1c2434;
+    --ring: rgba(255,255,255,0.08);
+    --accent: #5aa9ff;
+    --accent-dim: #2b4a72;
+    --good: #46d08a;
+    --warn: #f0ad4e;
+    --bad: #ef6a5a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--void); color: var(--ink);
+    font: 400 clamp(14px,0.4vw+12px,16px)/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px,4vw,44px) 72px; }
+
+  /* starfield hero */
+  .hero { position: relative; padding: clamp(40px,8vh,88px) 0 clamp(26px,4vh,44px);
+    border-bottom: 1px solid var(--hairline); overflow: hidden; }
+  #stars { position: absolute; inset: 0; z-index: 0; opacity: 0.7; }
+  .hero > * { position: relative; z-index: 1; }
+  .eyebrow { font-family: ui-monospace,"SF Mono",Menlo,monospace; font-size: 0.72rem;
+    text-transform: uppercase; letter-spacing: 0.24em; color: var(--accent); margin: 0 0 16px; }
+  .hero h1 { margin: 0 0 14px; font-size: clamp(30px,5vw,60px); font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.02; text-wrap: balance; max-width: 15ch; }
+  .hero .dek { max-width: 66ch; color: var(--ink-2); font-size: 1.08em; margin: 0; }
+  .brief { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 24px; }
+  .brief .tag { border: 1px solid var(--hairline); background: var(--panel);
+    border-radius: 999px; padding: 5px 13px; font-size: 0.8em; color: var(--ink-2);
+    font-family: ui-monospace,"SF Mono",Menlo,monospace; }
+  .brief .tag b { color: var(--ink); font-weight: 600; }
+
+  .method { color: var(--muted); font-size: 0.85em; margin-top: 18px; max-width: 76ch; }
+  .method code { color: var(--ink-2); }
+
+  /* comparison grid */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px,2.4vw,34px);
+    margin-top: clamp(30px,5vh,54px); }
+  @media (max-width: 940px) { .grid { grid-template-columns: 1fr; } }
+
+  .col { min-width: 0; }
+  .col-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap; margin-bottom: 12px; }
+  .who { display: flex; align-items: baseline; gap: 10px; }
+  .who .dot { width: 11px; height: 11px; border-radius: 3px; flex: none; transform: translateY(1px); }
+  .col.a .dot { background: var(--accent); }
+  .col.b .dot { background: var(--good); }
+  .who h2 { margin: 0; font-size: 1.3em; font-weight: 700; letter-spacing: -0.01em; }
+  .who .app { color: var(--muted); font-size: 0.8em; font-family: ui-monospace,monospace; }
+  .verdict-pill { font-family: ui-monospace,monospace; font-size: 0.72em; text-transform: uppercase;
+    letter-spacing: 0.1em; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--hairline); }
+  .col.a .verdict-pill { color: var(--accent); border-color: var(--accent-dim); background: rgba(90,169,255,0.08); }
+  .col.b .verdict-pill { color: var(--ink-2); }
+
+  figure { margin: 0; }
+  .shot { display: block; width: 100%; height: auto; border-radius: 10px;
+    border: 1px solid var(--ring); background: #000;
+    box-shadow: 0 18px 50px -20px rgba(0,0,0,0.9); }
+  figcaption { color: var(--muted); font-size: 0.78em; margin-top: 8px;
+    font-family: ui-monospace,monospace; }
+
+  .assess { margin-top: 18px; display: flex; flex-direction: column; gap: 16px; }
+  .assess h3 { margin: 0 0 8px; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.14em;
+    font-family: ui-monospace,monospace; }
+  .assess .got h3 { color: var(--good); }
+  .assess .miss h3 { color: var(--warn); }
+  ul.pts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  ul.pts li { position: relative; padding-left: 22px; font-size: 0.9em; color: var(--ink-2); }
+  ul.pts li b { color: var(--ink); font-weight: 600; }
+  ul.pts li::before { position: absolute; left: 0; top: 0.05em; font-family: ui-monospace,monospace; font-size: 0.9em; }
+  .got li::before { content: "+"; color: var(--good); }
+  .miss li::before { content: "−"; color: var(--warn); }
+
+  /* verdict */
+  .final { margin-top: clamp(34px,6vh,60px); border: 1px solid var(--hairline);
+    border-radius: 14px; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+    padding: clamp(22px,3.4vw,38px); }
+  .final .k { font-family: ui-monospace,monospace; font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.16em; color: var(--accent); }
+  .final h2 { margin: 8px 0 12px; font-size: clamp(20px,2.6vw,30px); font-weight: 700;
+    letter-spacing: -0.02em; text-wrap: balance; }
+  .final p { max-width: 82ch; color: var(--ink-2); margin: 0 0 14px; }
+  .final p b { color: var(--ink); }
+  .scorebar { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 14px; margin-top: 18px; }
+  .scorebar .cell { border-top: 2px solid var(--hairline); padding-top: 10px; }
+  .scorebar .cell.win { border-top-color: var(--accent); }
+  .scorebar .cell b { display: block; font-size: 0.82em; text-transform: uppercase; letter-spacing: 0.08em;
+    font-family: ui-monospace,monospace; color: var(--muted); margin-bottom: 4px; }
+  .scorebar .cell span { font-size: 0.92em; color: var(--ink-2); }
+  .scorebar .cell span strong { color: var(--ink); }
+
+  footer { margin-top: 40px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    color: var(--muted); font-size: 0.82em; border-top: 1px solid var(--hairline); padding-top: 22px; }
+  footer a { font-weight: 600; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (prefers-reduced-motion: reduce) { #stars { display: none; } * { animation: none !important; } }
+</style>
+
+<div class="wrap">
+  <div class="hero">
+    <canvas id="stars" aria-hidden="true"></canvas>
+    <p class="eyebrow">llm-meta-bench · intent comparison · solar-bench</p>
+    <h1>Same prompt, two solar systems.</h1>
+    <p class="dek">
+      Two models were handed the <em>identical</em> brief — a single sprawling spec for a
+      “AAA-quality, browser-based, real-time Solar System simulator” that should feel like a game,
+      not a website. Each owned the whole build. To compare intent versus execution, I started both
+      apps, used each one's own on-screen navigation to fly to <b>Earth</b>, and captured the frame.
+    </p>
+    <div class="brief">
+      <span class="tag"><b>Brief:</b> solar-bench/PROMPT.md</span>
+      <span class="tag"><b>Stack asked:</b> Three.js · TypeScript · Vite</span>
+      <span class="tag"><b>Target:</b> cinematic · scientifically accurate</span>
+      <span class="tag"><b>Task:</b> navigate → Earth → screenshot</span>
+    </div>
+    <p class="method">
+      Captured with Playwright driving headless Chromium (WebGL2 via SwiftShader) at 1600×900: load the
+      app, wait for boot, click the app's own <code>Earth</code> navigation control, let the cinematic
+      fly-to settle, screenshot. Same procedure for both — the only variable is the code each model wrote.
+    </p>
+  </div>
+
+  <div class="grid">
+    <div class="col a">
+      <div class="col-head">
+        <div class="who"><span class="dot"></span><div><h2>Claude Fable 5</h2> <span class="app">sol-simulator · “SOL”</span></div></div>
+        <span class="verdict-pill">Closest to intent</span>
+      </div>
+      <figure>
+        <img class="shot" src="./assets/fable5-earth.jpg" width="1600" height="900"
+          alt="Fable 5's simulator showing Earth: a fully-lit textured globe with continents, blue specular oceans, drifting cloud bands and a thin atmospheric rim, centered against a nebula backdrop, with a detailed glass HUD listing Earth's radius, mass, gravity, axial tilt and more." loading="lazy" decoding="async">
+        <figcaption>Clicked “Earth” in the bottom nav dock → cinematic day-side arrival.</figcaption>
+      </figure>
+      <div class="assess">
+        <div class="got">
+          <h3>Got right</h3>
+          <ul class="pts">
+            <li><b>A believable Earth.</b> Procedural surface with recognizable continents, blue specular oceans, layered drifting clouds and a thin atmospheric limb — rendered in-shader, not a flat sphere.</li>
+            <li><b>Cinematic framing.</b> The fly-to arrived on the day side with Earth centered and fully lit — exactly the “leave it on a second monitor” feel the brief asked for.</li>
+            <li><b>Science is all there.</b> Radius 6,371 km, gravity 9.81 m/s², escape velocity 11.19 km/s, orbital speed 29.78 km/s, axial tilt 23.44°, rotation 23.9 h, atmosphere N₂/O₂/Ar — correct and complete.</li>
+            <li><b>Deep HUD.</b> Ten time scales with reverse, calendar jump, live scale widget (“≈2.5 Earths wide”, altitude), a live Earth↔Mars distance measure, and floating labels for Neptune, Pluto, JWST, ISS and Voyager 2.</li>
+          </ul>
+        </div>
+        <div class="miss">
+          <h3>Fell short</h3>
+          <ul class="pts">
+            <li><b>Invented geography.</b> The continents are a convincing procedural approximation, not real Earth coastlines — beautiful, but it isn't the actual map.</li>
+            <li><b>No night side.</b> A clean day-side arrival means the city-lights layer the brief lists never shows in this shot.</li>
+            <li><b>Moon out of frame.</b> Luna is modelled and listed, but the Earth arrival doesn't compose it into the view.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col b">
+      <div class="col-head">
+        <div class="who"><span class="dot"></span><div><h2>GPT-5.6 Lunar</h2> <span class="app">sol-atlas · “Deep Space Atlas”</span></div></div>
+        <span class="verdict-pill">Correct, but schematic</span>
+      </div>
+      <figure>
+        <img class="shot" src="./assets/gpt56lunar-earth.jpg" width="1600" height="900"
+          alt="GPT-5.6 Lunar's atlas after selecting Earth: a small, untextured grey half-lit sphere near screen center while a huge flat yellow Sun disc blows out the right half of the frame; a dense sci-fi HUD lists the catalogue of objects and Earth's reference data." loading="lazy" decoding="async">
+        <figcaption>Clicked “Earth” in Quick Navigation → Earth selected, but the camera framed it poorly.</figcaption>
+      </figure>
+      <div class="assess">
+        <div class="got">
+          <h3>Got right</h3>
+          <ul class="pts">
+            <li><b>A legible atlas HUD.</b> 19-object catalogue with filters, a focus panel with correct data (radius 6,371 km, gravity 9.81, mean temp 14 °C, orbit 365.256 days), NASA link, layer toggles, telemetry header.</li>
+            <li><b>Breadth of bodies.</b> Eight planets plus Pluto, Halley's Comet, the Galilean moons, Titan, Phobos/Deimos, an asteroid belt and a drawn orbital plane.</li>
+            <li><b>Navigation works.</b> The Quick-Navigation “Earth” control correctly selected and focused the planet.</li>
+          </ul>
+        </div>
+        <div class="miss">
+          <h3>Fell short</h3>
+          <ul class="pts">
+            <li><b>Earth has no surface.</b> The 3D planet is a plain flat-shaded sphere — no oceans, clouds, continents or atmosphere. The pretty blue globe is only a decorative panel icon, not the render.</li>
+            <li><b>The camera missed.</b> “Fly to Earth” left the Sun blowing out half the frame as a giant flat disc while Earth sits small and half in shadow — the opposite of a cinematic arrival.</li>
+            <li><b>Diagram, not AAA.</b> Blocky square asteroid sprites and flat shading read as a schematic star-atlas, well short of the “feels like a modern game” bar the brief sets.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="final">
+    <span class="k">The read</span>
+    <h2>Both nailed the data. Only one nailed the intent.</h2>
+    <p>
+      This brief is really two tests: <b>be scientifically accurate</b> and <b>be cinematically beautiful</b>.
+      Both models passed the first — near-identical, correct reference data and a full sci-fi HUD. They split
+      hard on the second. <b>Fable 5</b> rendered a textured, cloud-wrapped, atmospherically-lit Earth and
+      directed the camera to arrive on it like a shot in a game. <b>GPT-5.6 Lunar</b> built a competent atlas
+      but left Earth an untextured sphere and let the Sun wreck the framing on the one navigation the user is
+      most likely to try first.
+    </p>
+    <p>
+      The gap isn't knowledge — it's <b>execution of the aesthetic and camera direction</b>, exactly the part
+      of “AAA” that can't be satisfied by getting the numbers right. It mirrors the coding-pillar story on the
+      scoreboard: correct output is table stakes; the models separate on the demanding, hard-to-specify finish.
+    </p>
+    <div class="scorebar">
+      <div class="cell win"><b>Visual fidelity</b><span><strong>Fable 5</strong> — textured Earth, clouds, atmosphere vs. a flat sphere.</span></div>
+      <div class="cell win"><b>Camera direction</b><span><strong>Fable 5</strong> — day-side arrival vs. Sun-blown, half-lit framing.</span></div>
+      <div class="cell"><b>Scientific data</b><span><strong>Tie</strong> — both correct and complete in the info panel.</span></div>
+      <div class="cell"><b>HUD / breadth</b><span><strong>Tie</strong> — both shipped a full glass HUD and object catalogue.</span></div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Both apps built from <span class="mono">solar-bench/PROMPT.md</span> · screenshots captured via Playwright, {DATE}</span>
+    <a href="./index.html">← Back to the scoreboard</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var f = document.querySelector("footer span");
+  if (f) f.innerHTML = f.innerHTML.replace("{DATE}", "July 14, 2026");
+
+  var m = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (m && m.matches) return;
+  var cv = document.getElementById("stars"), ctx = cv.getContext("2d"), stars = [], raf;
+  function size() {
+    var p = cv.parentElement.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio||1,2);
+    cv.width = p.width*dpr; cv.height = p.height*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    cv.style.width = p.width+"px"; cv.style.height = p.height+"px"; return p;
+  }
+  var box = size();
+  for (var i=0;i<120;i++) stars.push({ x:Math.random()*box.width, y:Math.random()*box.height,
+    r:Math.random()*1.3+0.2, a:Math.random()*0.6+0.2, tw:Math.random()*Math.PI*2,
+    sp:Math.random()*0.02+0.005 });
+  function draw() {
+    ctx.clearRect(0,0,box.width,box.height);
+    for (var i=0;i<stars.length;i++){ var s=stars[i]; s.tw+=s.sp;
+      ctx.globalAlpha = s.a*(0.55+0.45*Math.sin(s.tw));
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle = i%9===0 ? "#9ec8ff" : "#ffffff"; ctx.fill();
+    }
+    ctx.globalAlpha=1; raf=requestAnimationFrame(draw);
+  }
+  draw();
+  window.addEventListener("resize", function(){ box=size(); });
+})();
+</script>
