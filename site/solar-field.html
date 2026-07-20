@@ -7,6 +7,7 @@
     --ink: #eef2fb; --ink-2: #9aa6be; --muted: #5f6b84;
     --hairline: #1c2434; --ring: rgba(255,255,255,0.08);
     --accent: #5aa9ff;
+    --axis-intent: #67e8d1; --axis-note: #ffc466;
     --realized: #46d08a; --mostly: #5aa9ff; --partial: #f0ad4e; --lost: #ef6a5a;
   }
   * { box-sizing: border-box; }
@@ -29,10 +30,26 @@
     letter-spacing: -0.03em; line-height: 1.02; text-wrap: balance; max-width: 16ch; }
   .hero .dek { max-width: 70ch; color: var(--ink-2); font-size: 1.08em; margin: 0; }
   .hero .dek b { color: var(--ink); }
-  .hero .axis-note { max-width: 76ch; margin: 18px 0 0; padding: 13px 16px;
-    border-left: 3px solid var(--accent); border-radius: 4px 9px 9px 4px;
-    background: rgba(90,169,255,0.07); color: var(--ink-2); font-size: 0.9em; }
-  .hero .axis-note b { color: var(--ink); }
+  .axis-primer { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px;
+    max-width: 1000px; margin-top: 26px; }
+  .axis-definition { padding: 17px 18px; border: 1px solid var(--hairline); border-radius: 10px;
+    background: rgba(11,15,24,0.86); }
+  .axis-definition.intent { border-color: #365e65; }
+  .axis-definition .axis-name { display: block; margin-bottom: 5px; color: var(--accent);
+    font: 650 0.74rem/1.35 ui-monospace,"SF Mono",Menlo,monospace; text-transform: uppercase;
+    letter-spacing: 0.11em; }
+  .axis-definition.intent .axis-name { color: var(--axis-intent); }
+  .axis-definition b { display: block; margin-bottom: 4px; font-size: 1.05em; }
+  .axis-definition p { margin: 0; color: var(--ink-2); font-size: 0.9em; }
+  .why-it-matters { grid-column: 1 / -1; margin: 0; padding: 13px 17px;
+    border-left: 3px solid var(--axis-note); border-radius: 4px 9px 9px 4px;
+    background: rgba(255,196,102,0.06); color: var(--ink-2); }
+  .why-it-matters strong { color: var(--ink); }
+  .why-it-matters a { white-space: nowrap; }
+  @media (max-width: 640px) {
+    .axis-primer { grid-template-columns: 1fr; }
+    .why-it-matters { grid-column: auto; }
+  }
 
   /* gallery */
   .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px,100%),1fr));
@@ -178,11 +195,22 @@
     <p class="eyebrow">llm-meta-bench · solar-bench · field summary</p>
     <h1>The intent-loss gallery.</h1>
     <p class="dek">
-      Solar Bench separates <b>explicit execution</b> — whether a build delivered the brief's literal features —
-      from <b>implicit intent</b> — whether it created the cinematic, credible, premium-game experience those
-      features were meant to serve. This gallery isolates the second axis through the most familiar test: Earth.
+      Nine models received the same sprawling brief. This gallery asks why the same literal checklist produced
+      such different Earths—and whether each build understood the experience those features were meant to serve.
     </p>
-    <p class="axis-note"><b>Why the distinction matters:</b> a model can complete the checklist and still miss the assignment. The scores below are <b>implicit-intent scores only</b>, grounded in evidence such as real geography, deliberate lighting, useful zoom and a scene that stays alive—not a standalone beauty vote. Seven trustworthy captures are available; two evidence gaps remain.</p>
+    <div class="axis-primer" aria-label="Solar Bench scoring axes">
+      <div class="axis-definition">
+        <span class="axis-name">Explicit execution · the what</span>
+        <b>Did it deliver the requested product?</b>
+        <p>Required bodies, science, controls, rendering, accessibility, documentation and verification.</p>
+      </div>
+      <div class="axis-definition intent">
+        <span class="axis-name">Implicit intent · the why</span>
+        <b>Did it understand the experience?</b>
+        <p>A credible, cinematic simulation that feels like a premium game and stays compelling on a second monitor.</p>
+      </div>
+      <p class="why-it-matters"><strong>This page isolates the why.</strong> These are implicit-intent scores only, grounded in real geography, deliberate lighting, useful zoom and a scene that stays alive—not a standalone beauty vote. Seven trustworthy captures are available; two evidence gaps remain. <a href="./solar-benchmark.html#scoring-method">Full scoring method →</a></p>
+    </div>
   </div>
 
   <div class="gallery" id="gallery"></div>

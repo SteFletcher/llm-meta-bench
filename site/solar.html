@@ -16,6 +16,8 @@
     --good: #46d08a;
     --warn: #f0ad4e;
     --bad: #ef6a5a;
+    --axis-intent: #67e8d1;
+    --axis-note: #ffc466;
   }
 
   * { box-sizing: border-box; }
@@ -40,6 +42,26 @@
   .hero h1 { margin: 0 0 14px; font-size: clamp(30px,5vw,60px); font-weight: 700;
     letter-spacing: -0.03em; line-height: 1.02; text-wrap: balance; max-width: 15ch; }
   .hero .dek { max-width: 66ch; color: var(--ink-2); font-size: 1.08em; margin: 0; }
+  .axis-primer { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px;
+    max-width: 1000px; margin-top: 26px; }
+  .axis-definition { padding: 17px 18px; border: 1px solid var(--hairline); border-radius: 10px;
+    background: rgba(11,15,24,0.86); }
+  .axis-definition.intent { border-color: #365e65; }
+  .axis-definition .axis-name { display: block; margin-bottom: 5px; color: var(--accent);
+    font: 650 0.74rem/1.35 ui-monospace,"SF Mono",Menlo,monospace; text-transform: uppercase;
+    letter-spacing: 0.11em; }
+  .axis-definition.intent .axis-name { color: var(--axis-intent); }
+  .axis-definition b { display: block; margin-bottom: 4px; font-size: 1.05em; }
+  .axis-definition p { margin: 0; color: var(--ink-2); font-size: 0.9em; }
+  .why-it-matters { grid-column: 1 / -1; margin: 0; padding: 13px 17px;
+    border-left: 3px solid var(--axis-note); border-radius: 4px 9px 9px 4px;
+    background: rgba(255,196,102,0.06); color: var(--ink-2); }
+  .why-it-matters strong { color: var(--ink); }
+  .why-it-matters a { white-space: nowrap; }
+  @media (max-width: 640px) {
+    .axis-primer { grid-template-columns: 1fr; }
+    .why-it-matters { grid-column: auto; }
+  }
   .brief { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 24px; }
   .brief .tag { border: 1px solid var(--hairline); background: var(--panel);
     border-radius: 999px; padding: 5px 13px; font-size: 0.8em; color: var(--ink-2);
@@ -216,6 +238,19 @@
       and <b>Claude Sonnet 5</b>. Each owned the whole build. To expose how their priorities differ, I used
       each app's own navigation to fly to <b>Earth</b> and captured the arrival.
     </p>
+    <div class="axis-primer" aria-label="Solar Bench scoring axes">
+      <div class="axis-definition">
+        <span class="axis-name">Explicit execution · the what</span>
+        <b>Did it deliver the requested product?</b>
+        <p>Required bodies, science, controls, rendering, accessibility, documentation and verification.</p>
+      </div>
+      <div class="axis-definition intent">
+        <span class="axis-name">Implicit intent · the why</span>
+        <b>Did it understand the experience?</b>
+        <p>A credible, cinematic simulation that feels like a premium game and stays compelling on a second monitor.</p>
+      </div>
+      <p class="why-it-matters"><strong>Why equal weight?</strong> A perfect checklist with no believable world has missed the assignment. A beautiful globe with dead controls is not a finished product. Neither failure mode can hide inside the other axis. <a href="./solar-benchmark.html#scoring-method">Full scoring method →</a></p>
+    </div>
     <div class="brief">
       <span class="tag"><b>Brief:</b> solar-bench/PROMPT.md</span>
       <span class="tag"><b>Stack asked:</b> Three.js · TypeScript · Vite</span>
@@ -225,12 +260,7 @@
       <span class="tag"><b>Axes:</b> explicit execution · implicit intent</span>
     </div>
     <p class="method">
-      <b>How this is scored.</b> Explicit execution asks whether the build delivered the features, science,
-      controls and verification the brief literally requested. Implicit intent asks whether those parts become
-      the cinematic, credible, premium-game experience the brief was trying to create. The axes carry equal
-      weight so checklist coverage cannot hide a lifeless world—and visual polish cannot hide a broken product.
-      <a href="./solar-benchmark.html#scoring-method">See the full scoring method →</a><br>
-      Provenance-clean captures load the production build, use its visible <code>Earth</code> control, let the
+      <b>Capture method.</b> Provenance-clean captures load the production build, use its visible <code>Earth</code> control, let the
       fly-to settle, then screenshot. Fable and Kimi supply project-owned frames; Sonnet uses the standardized
       1800×1012 assessment capture.
     </p>
