@@ -22,6 +22,7 @@ stale — the site always renders the last known-good data.
 from __future__ import annotations
 
 import argparse
+import html as html_lib
 import json
 import os
 import re
@@ -96,25 +97,33 @@ def set_score(data: dict, model: str, benchmark: str, value: float, note: str | 
 # --------------------------------------------------------------------------
 
 # Benchmarks sourced from the Artificial Analysis API — our benchmark id ->
-# (AA `evaluations` field name, citation URL). AA is the single source of truth
-# for every benchmark listed here: a keyed refresh overwrites those cells from
-# one place. The AA leaderboard *page* renders its table in JavaScript (an
-# automated page-fetch sees only the top line), but the *API* returns raw
-# per-model numbers. Scoped to Tau2 for now; add rows (gpqa, hle, livecodebench,
-# terminalbench_v2_1, artificial_analysis_intelligence_index) to single-source
-# more benchmarks from AA.
+# (AA `evaluations` field name, citation URL). The capability-index pages also
+# publish machine-readable JSON-LD; those are refreshed below for headline
+# metrics not exposed by the legacy API endpoint used by this project.
 AA_MODELS_URL = "https://artificialanalysis.ai/leaderboards/models"
 AA_EVAL_MAP = {
     "tau2-bench": ("tau2", "https://artificialanalysis.ai/evaluations/tau2-bench"),
-    "terminal-bench": ("terminalbench_v2_1", AA_MODELS_URL),
+    "tau3-banking": ("tau_banking", "https://artificialanalysis.ai/evaluations/tau3-banking"),
+    "aa-coding-index": ("artificial_analysis_coding_index", "https://artificialanalysis.ai/models/capabilities/coding"),
+    "terminal-bench": ("terminalbench_v2_1", "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"),
+    "scicode": ("scicode", "https://artificialanalysis.ai/evaluations/scicode"),
     "aa-index": ("artificial_analysis_intelligence_index", AA_MODELS_URL),
     "gpqa-diamond": ("gpqa", AA_MODELS_URL),
     "hle": ("hle", AA_MODELS_URL),
 }
-# Note: livecodebench is intentionally absent — AA returns no LiveCodeBench
-# value for any model in our set (it publishes a coding *index* instead), so
-# mapping it would only null the one figure we do have. SWE-bench, Cybench,
-# Endor, Vending-Bench, GAIA, ARC-AGI-2 and LMArena are not AA evals at all.
+
+AA_JSON_LD_MAP = {
+    "aa-agentic-index": {
+        "url": "https://artificialanalysis.ai/models/capabilities/agentic/",
+        "dataset": "Artificial Analysis Agentic Index",
+        "field": "score",
+    },
+    "gdpval-aa": {
+        "url": "https://artificialanalysis.ai/evaluations/gdpval-aa",
+        "dataset": "GDPval-AA v2 Leaderboard",
+        "field": "gdpvalAaElo",
+    },
+}
 
 # AA lists each model at several reasoning-effort tiers with different scores.
 # We compare models at their strongest published configuration, so we pick the
@@ -151,8 +160,36 @@ def _aa_model_id(name: str) -> str | None:
     return None
 
 
+def _pin_score_origin(data: dict, model: str, benchmark: str, url: str) -> None:
+    for row in data["scores"]:
+        if row["model"] == model and row["benchmark"] == benchmark:
+            row["source_url"] = url
+            row.pop("proxy", None)
+            return
+
+
+def _aa_json_ld_dataset(url: str, dataset_name: str) -> list[dict]:
+    page = fetch(url)
+    pattern = r'<script type="application/ld\+json">(.*?)</script>'
+    for raw in re.findall(pattern, page, re.S):
+        try:
+            payload = json.loads(html_lib.unescape(raw))
+        except json.JSONDecodeError:
+            continue
+        if payload.get("@type") == "Dataset" and payload.get("name") == dataset_name:
+            return payload.get("data", [])
+    raise RuntimeError(f"Artificial Analysis JSON-LD dataset not found: {dataset_name}")
+
+
+def _aa_json_ld_value(row: dict, field: str) -> float | None:
+    raw = row.get(field)
+    if field == "gdpvalAaElo":
+        raw = next((item.get("value") for item in (raw or []) if item.get("name") == "mid"), None)
+    return float(raw) if raw is not None else None
+
+
 def refresh_artificial_analysis(data: dict) -> int:
-    """Pull every AA_EVAL_MAP benchmark per model from the AA API. Requires AA_API_KEY."""
+    """Pull AA API evaluations plus public capability-index JSON-LD datasets."""
     key = os.environ.get("AA_API_KEY")
     if not key:
         raise RuntimeError("AA_API_KEY not set — skipping (get one at artificialanalysis.ai)")
@@ -181,11 +218,19 @@ def refresh_artificial_analysis(data: dict) -> int:
                 raw *= 100.0
             note = f"Artificial Analysis API; highest-effort published variant ({_aa_effort_label(best['name'])})."
             set_score(data, mid, bench_id, round(raw, 1), note=note)
-            for row in data["scores"]:  # pin citation to AA, drop any proxy flag
-                if row["model"] == mid and row["benchmark"] == bench_id:
-                    row["source_url"] = url
-                    row.pop("proxy", None)
-                    break
+            _pin_score_origin(data, mid, bench_id, url)
+            updated += 1
+
+    for bench_id, config in AA_JSON_LD_MAP.items():
+        for row in _aa_json_ld_dataset(config["url"], config["dataset"]):
+            mid = _aa_model_id(row.get("label", ""))
+            value = _aa_json_ld_value(row, config["field"])
+            if not mid or value is None:
+                continue
+            label = row.get("label", "")
+            note = f"Artificial Analysis official leaderboard; published configuration: {label}."
+            set_score(data, mid, bench_id, round(value, 1), note=note)
+            _pin_score_origin(data, mid, bench_id, config["url"])
             updated += 1
     return updated
 

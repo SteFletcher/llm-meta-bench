@@ -56,7 +56,11 @@
   .card .who h2 { margin: 0; font-size: 1.08em; font-weight: 700; letter-spacing: -0.01em; }
   .card .who .app { color: var(--muted); font-size: 0.74em; font-family: ui-monospace,monospace; display: block; margin-top: 2px; }
   .badge { font-family: ui-monospace,monospace; font-size: 0.66rem; text-transform: uppercase;
-    letter-spacing: 0.1em; padding: 4px 9px; border-radius: 999px; white-space: nowrap; flex: none; }
+    letter-spacing: 0.1em; padding: 4px 9px; border-radius: 999px; white-space: nowrap; flex: none;
+    appearance: none; cursor: help; }
+  .badge:hover { filter: brightness(1.18); }
+  .badge:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .badge[aria-expanded="true"] { box-shadow: 0 0 0 3px rgba(90,169,255,0.13); }
   .badge.realized { color: var(--realized); border: 1px solid var(--realized); background: rgba(70,208,138,0.08); }
   .badge.mostly   { color: var(--mostly);   border: 1px solid var(--mostly);   background: rgba(90,169,255,0.08); }
   .badge.partial  { color: var(--partial);  border: 1px solid var(--partial);  background: rgba(240,173,78,0.08); }
@@ -66,6 +70,43 @@
   .card .kept { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--hairline);
     font-size: 0.78em; color: var(--muted); }
   .card .kept b { color: var(--ink-2); }
+
+  /* implicit-intent rubric popover */
+  .rubric-popover { position: fixed; inset: auto; margin: 0; width: min(390px,calc(100vw - 24px));
+    max-height: min(620px,calc(100dvh - 24px)); overflow: auto; padding: 0; color: var(--ink);
+    border: 1px solid color-mix(in srgb,var(--accent) 45%,var(--hairline)); border-radius: 12px;
+    background: color-mix(in srgb,var(--panel-2) 96%,transparent); box-shadow: 0 22px 70px rgba(0,0,0,0.72);
+    display: none; opacity: 0; transform: translateY(-4px) scale(0.985);
+    transition: opacity 120ms ease,transform 120ms ease; }
+  .rubric-popover:popover-open,.rubric-popover[data-open="true"] { display: block; opacity: 1; transform: translateY(0) scale(1); }
+  .rubric-popover::backdrop { background: transparent; }
+  .rubric-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    padding: 14px 15px 11px; border-bottom: 1px solid var(--hairline); }
+  .rubric-head .k { display: block; font: 0.64rem/1.35 ui-monospace,"SF Mono",Menlo,monospace;
+    text-transform: uppercase; letter-spacing: 0.13em; color: var(--accent); }
+  .rubric-head h3 { margin: 3px 0 0; font-size: 1rem; line-height: 1.3; }
+  .rubric-total { color: var(--ink); font: 700 1.08rem/1 ui-monospace,"SF Mono",Menlo,monospace;
+    white-space: nowrap; padding-top: 3px; }
+  .rubric-total small { color: var(--muted); font-size: 0.68rem; font-weight: 500; }
+  .rubric-grid { display: grid; grid-template-columns: 1fr auto; margin: 0; padding: 8px 15px; }
+  .rubric-grid dt,.rubric-grid dd { margin: 0; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.045); }
+  .rubric-grid dt { color: var(--ink-2); font-size: 0.78rem; }
+  .rubric-grid dt .mono { color: var(--muted); margin-right: 5px; }
+  .rubric-grid dd { color: var(--ink); text-align: right; font: 650 0.76rem/1.6 ui-monospace,"SF Mono",Menlo,monospace; }
+  .rubric-grid dd::after { content: " / 5"; color: var(--muted); font-size: 0.66rem; font-weight: 400; }
+  .rubric-assessment { padding: 2px 15px 13px; }
+  .rubric-assessment .k { display: block; margin: 0 0 4px; color: var(--muted);
+    font: 0.62rem/1.4 ui-monospace,"SF Mono",Menlo,monospace; text-transform: uppercase; letter-spacing: 0.12em; }
+  .rubric-assessment p { margin: 0; color: var(--ink-2); font-size: 0.78rem; line-height: 1.5; }
+  .rubric-assessment p b { color: var(--ink); }
+  .rubric-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    padding: 10px 15px 12px; border-top: 1px solid var(--hairline); }
+  .rubric-foot span { color: var(--muted); font-size: 0.68rem; }
+  .rubric-foot a { font: 650 0.7rem/1.3 ui-monospace,"SF Mono",Menlo,monospace; text-decoration: none; }
+  .rubric-foot a:hover { text-decoration: underline; }
+  @media (max-width: 600px) {
+    .rubric-popover { left: 12px !important; right: 12px; bottom: 12px; top: auto !important; width: auto; }
+  }
 
   /* full-resolution image viewer */
   .lightbox { width: min(96vw, 1900px); height: 94vh; max-width: none; max-height: none;
@@ -190,42 +231,67 @@
   </div>
 </dialog>
 
+<div class="rubric-popover" id="rubric-popover" popover="manual" role="dialog" aria-labelledby="rubric-title">
+  <div class="rubric-head">
+    <div><span class="k">Implicit-intent rubric</span><h3 id="rubric-title"></h3></div>
+    <div class="rubric-total" id="rubric-total"></div>
+  </div>
+  <dl class="rubric-grid" id="rubric-grid"></dl>
+  <div class="rubric-assessment"><span class="k">Assessment</span><p id="rubric-assessment"></p></div>
+  <div class="rubric-foot"><span>Hover, focus or tap the rating</span><a href="./solar-benchmark.html#matrix-title">Full 26-criterion matrix ↗</a></div>
+</div>
+
 <script>
 (function () {
+  var implicitCriteria = [
+    ["B1","Resourcefulness"], ["B2","Money shot"], ["B3","Cinematic staging"],
+    ["B4","Game feel"], ["B5","Honesty"], ["B6","Substance"],
+    ["B7","Scientific soul"], ["B8","Idle / screen-saver"],
+    ["B9","Scale honesty"], ["B10","Hard-body test"]
+  ];
   var models = [
     { rank:"01", name:"Claude Fable 5", app:"sol-simulator", badge:"realized", label:"Implicit intent 8.7",
+      rubric:[4,3.5,4.5,4.5,4,5,4.5,4.5,5,4],
       img:"fable5-earth.jpg",
       verdict:"The strongest complete product and a convincing blue world, but its attractive continents and city-light density are <b>procedural fiction</b>, not Earth data.",
       kept:"Current project capture · 1440×900 · 18 Jul." },
     { rank:"02", name:"Kimi K3", app:"S·O·L", badge:"mostly", label:"Implicit intent 8.3",
+      rubric:[3.5,3,4,5,3.5,4.5,4.5,4.5,5,4],
       img:"kimi3-earth.jpg",
       verdict:"A lively, carefully staged game frame with clouds and atmosphere. At 512×256, the generated landmasses remain visibly <b>invented geography</b>.",
       kept:"Project-owned Earth capture · 1600×1000 · 18 Jul." },
     { rank:"03", name:"Claude Sonnet 5", app:"SOL", badge:"mostly", label:"Implicit intent 7.6",
+      rubric:[5,4.5,2,4,4,3,5,4,3,3.5],
       img:"sonnet5-earth.jpg",
       verdict:"Real credited imagery produces the field's clearest actual coastlines and cloud structure. The arrival is undersized, and the current browser suite is highly unstable under software rendering.",
       kept:"Repository assessment capture · 1800×1012 · 18 Jul." },
     { rank:"04", name:"Claude Opus 4.8", app:"sol-simulator", badge:"partial", label:"Implicit intent 7.0",
+      rubric:[3.5,2.5,2,4,3.5,4,4,4,5,2.5],
       img:"opus48-earth.jpg",
       verdict:"A dense widget suite (Hill spheres, Lagrange points, constellations) and an Earth-coloured, atmosphere-wrapped globe — but the surface is procedural <b>noise</b>, not geography.",
       kept:"Repository capture · 1800×1012; production checks rerun 18 Jul." },
     { rank:"05", name:"GPT-5.6 Sol", app:"sol-aaa", badge:"partial", label:"Implicit intent 6.2",
+      rubric:[2.5,1.5,3,4,3,3.5,4,4,4,1.5],
       img:"gpt56sol-earth.jpg",
       verdict:"The strongest cockpit in the field surrounds a pale, overexposed sphere whose five green ellipse continents and white cloud strips do not read as Earth. Maximum zoom dissolves into an <b>abstract procedural field</b>.",
       kept:"Original commit e2409bd · standardized capture · 1800×1012 · 19 Jul." },
     { rank:"06", name:"Kimi 2.7", app:"kimi27", badge:"partial", label:"Implicit intent 6.2",
+      rubric:[3,2,2.5,4,3.5,4,3.5,4,2.5,2],
       img:null,
       verdict:"The engine passes 20 production browser checks, but no Earth still was emitted by the shipped suite and the standard capture browser was unavailable.",
       kept:"No trustworthy Earth snapshot; evidence gap shown deliberately." },
     { rank:"07", name:"GLM-5.2", app:"glm52", badge:"partial", label:"Implicit intent 6.1",
+      rubric:[3,2.5,2.5,3.5,3,3.5,3.5,3.5,3,2.5],
       img:"glm52-earth.jpg",
       verdict:"Clearly reads as an Earth-like globe — green land, blue ocean and atmosphere — but the geography is stylized, lighting is blown out and surface detail is schematic.",
       kept:"Repository capture · 1800×1012." },
     { rank:"08", name:"GPT-5.6 Lunar", app:"sol-atlas", badge:"lost", label:"Implicit intent 4.4",
+      rubric:[2.5,1.5,1.5,2.5,3,2.5,3,2.5,2,1],
       img:"gpt56lunar-earth.jpg",
       verdict:"A competent star-atlas, but Earth is a <b>flat untextured sphere</b> and the fly-to let the Sun blow out half the frame — the opposite of a cinematic arrival.",
       kept:"Repository capture · 1800×1012." },
     { rank:"09", name:"Gemini 3.1 Pro", app:"SOL mock-up", badge:"lost", label:"Implicit intent 1.4",
+      rubric:[1,0.5,0.5,1,1,0.5,1,1,0.5,0],
       img:null,
       verdict:"Only Sun, Earth and Mars are rendered, the production build fails TypeScript, and no trustworthy Earth capture exists in the repository.",
       kept:"No production snapshot; build failure is the evidence." },
@@ -239,12 +305,103 @@
       '<figure>' + (m.img ? '<button class="shot-open" type="button" aria-label="Enlarge the ' + m.name + ' screenshot"><img src="./assets/' + m.img + '" width="1800" height="1012" loading="lazy" decoding="async" alt="Earth as rendered by ' + m.name + '"></button>' : '<div class="missing" role="img" aria-label="No trustworthy Earth capture available for ' + m.name + '">NO TRUSTWORTHY EARTH CAPTURE<br>STANDARD BROWSER PASS BLOCKED</div>') + '</figure>' +
       '<div class="body">' +
         '<div class="who"><div><h2>' + m.name + '</h2><span class="app">' + m.app + '</span></div>' +
-        '<span class="badge ' + m.badge + '">' + m.label + '</span></div>' +
+        '<button class="badge rubric-trigger ' + m.badge + '" type="button" aria-expanded="false" aria-haspopup="dialog" aria-controls="rubric-popover">' + m.label + '</button></div>' +
         '<p>' + m.verdict + '</p>' +
         '<div class="kept">' + m.kept + '</div>' +
       '</div>';
     g.appendChild(el);
+    el.querySelector(".rubric-trigger")._rubricModel = m;
   });
+
+  var rubricPopover = document.getElementById("rubric-popover");
+  var rubricTitle = document.getElementById("rubric-title");
+  var rubricTotal = document.getElementById("rubric-total");
+  var rubricGrid = document.getElementById("rubric-grid");
+  var rubricAssessment = document.getElementById("rubric-assessment");
+  var activeRubricTrigger = null;
+  var rubricCloseTimer = null;
+  var nativePopover = typeof rubricPopover.showPopover === "function";
+
+  function rubricIsOpen() {
+    return nativePopover ? rubricPopover.matches(":popover-open") : rubricPopover.dataset.open === "true";
+  }
+  function showRubricPopover() {
+    if (nativePopover) rubricPopover.showPopover();
+    else rubricPopover.dataset.open = "true";
+  }
+  function hideRubricPopover() {
+    if (nativePopover) rubricPopover.hidePopover();
+    else rubricPopover.removeAttribute("data-open");
+  }
+
+  function cancelRubricClose() {
+    if (rubricCloseTimer) window.clearTimeout(rubricCloseTimer);
+    rubricCloseTimer = null;
+  }
+  function positionRubricPopover(trigger) {
+    if (window.matchMedia("(max-width: 600px)").matches) return;
+    var gap = 8, edge = 12, rect = trigger.getBoundingClientRect();
+    var pop = rubricPopover.getBoundingClientRect();
+    var left = Math.min(window.innerWidth - pop.width - edge, Math.max(edge, rect.right - pop.width));
+    var below = rect.bottom + gap;
+    var top = below + pop.height <= window.innerHeight - edge ? below : Math.max(edge, rect.top - pop.height - gap);
+    rubricPopover.style.left = Math.round(left) + "px";
+    rubricPopover.style.top = Math.round(top) + "px";
+  }
+  function openRubric(trigger) {
+    cancelRubricClose();
+    if (activeRubricTrigger && activeRubricTrigger !== trigger) activeRubricTrigger.setAttribute("aria-expanded", "false");
+    activeRubricTrigger = trigger;
+    var model = trigger._rubricModel;
+    rubricTitle.textContent = model.name;
+    rubricTotal.innerHTML = model.label.replace("Implicit intent ", "") + '<small> / 10</small>';
+    rubricGrid.innerHTML = implicitCriteria.map(function (criterion, index) {
+      return '<dt><span class="mono">' + criterion[0] + '</span>' + criterion[1] + '</dt><dd>' + model.rubric[index] + '</dd>';
+    }).join("");
+    rubricAssessment.innerHTML = model.verdict;
+    trigger.setAttribute("aria-expanded", "true");
+    if (!rubricIsOpen()) showRubricPopover();
+    positionRubricPopover(trigger);
+  }
+  function closeRubric() {
+    cancelRubricClose();
+    if (activeRubricTrigger) activeRubricTrigger.setAttribute("aria-expanded", "false");
+    activeRubricTrigger = null;
+    if (rubricIsOpen()) hideRubricPopover();
+  }
+  function scheduleRubricClose() {
+    cancelRubricClose();
+    rubricCloseTimer = window.setTimeout(function () {
+      if (rubricPopover.contains(document.activeElement) || document.activeElement === activeRubricTrigger) return;
+      closeRubric();
+    }, 140);
+  }
+  document.querySelectorAll(".rubric-trigger").forEach(function (trigger) {
+    trigger.addEventListener("pointerenter", function (event) { if (event.pointerType === "mouse") openRubric(trigger); });
+    trigger.addEventListener("pointerleave", scheduleRubricClose);
+    trigger.addEventListener("focus", function () { openRubric(trigger); });
+    trigger.addEventListener("blur", scheduleRubricClose);
+    trigger.addEventListener("pointerdown", function (event) {
+      trigger._rubricWasOpen = activeRubricTrigger === trigger && rubricIsOpen();
+      trigger._rubricPointerType = event.pointerType;
+    });
+    trigger.addEventListener("click", function () {
+      if (trigger._rubricPointerType !== "mouse" && trigger._rubricWasOpen) closeRubric();
+      else openRubric(trigger);
+      trigger._rubricWasOpen = false;
+    });
+  });
+  rubricPopover.addEventListener("pointerenter", cancelRubricClose);
+  rubricPopover.addEventListener("pointerleave", scheduleRubricClose);
+  rubricPopover.addEventListener("focusin", cancelRubricClose);
+  rubricPopover.addEventListener("focusout", scheduleRubricClose);
+  document.addEventListener("pointerdown", function (event) {
+    if (!activeRubricTrigger || rubricPopover.contains(event.target) || activeRubricTrigger.contains(event.target)) return;
+    closeRubric();
+  });
+  document.addEventListener("keydown", function (event) { if (event.key === "Escape") closeRubric(); });
+  window.addEventListener("resize", function () { if (activeRubricTrigger) positionRubricPopover(activeRubricTrigger); });
+  window.addEventListener("scroll", function () { if (activeRubricTrigger) positionRubricPopover(activeRubricTrigger); }, true);
 
   var dialog = document.getElementById("image-lightbox");
   var largeImage = document.getElementById("lightbox-image");

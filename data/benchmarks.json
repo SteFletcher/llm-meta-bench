@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-18T17:33:38+00:00",
+  "generated_at": "2026-07-20T10:05:14+00:00",
   "schema_version": 3,
   "sources": [
     {
@@ -14,8 +14,8 @@
       "name": "Artificial Analysis",
       "url": "https://artificialanalysis.ai/leaderboards/models",
       "method": "auto-with-key",
-      "notes": "Intelligence Index v4.x composite. Set AA_API_KEY to enable API fetch.",
-      "last_fetched": "2026-07-18T17:33:38+00:00"
+      "notes": "Official capability indices and component evaluations for Planning and Coding. Set AA_API_KEY to enable the API refresh; public JSON-LD supplies headline planning datasets.",
+      "last_fetched": "2026-07-20T10:05:14+00:00"
     },
     {
       "id": "swebench",
@@ -200,12 +200,12 @@
       "id": "planning",
       "name": "Planning",
       "benchmarks": [
-        "tau2-bench",
-        "vending-bench-2",
-        "gaia",
-        "arc-agi-2"
+        "aa-agentic-index",
+        "gdpval-aa",
+        "tau3-banking"
       ],
-      "flagship": "vending-bench-2"
+      "flagship": "aa-agentic-index",
+      "headline": "Who can plan, use tools and finish multi-step real-world work?"
     },
     {
       "id": "security",
@@ -214,21 +214,67 @@
         "cybench-defensive",
         "endor-secpass"
       ],
-      "flagship": "cybench-defensive"
+      "flagship": "cybench-defensive",
+      "headline": "Security remains the blind spot: current-model coverage is still exceptionally thin."
     },
     {
       "id": "coding",
       "name": "Coding",
       "benchmarks": [
-        "swe-pro",
-        "swe-verified",
+        "aa-coding-index",
         "terminal-bench",
-        "livecodebench"
+        "scicode"
       ],
-      "flagship": "terminal-bench"
+      "flagship": "aa-coding-index",
+      "headline": "A single coding score, with terminal execution and scientific code exposed underneath."
     }
   ],
   "benchmarks": [
+    {
+      "id": "aa-agentic-index",
+      "name": "Artificial Analysis Agentic Index",
+      "short": "Agentic idx",
+      "source": "artificial-analysis",
+      "url": "https://artificialanalysis.ai/models/capabilities/agentic/",
+      "unit": "index",
+      "note": "Equal-weighted Artificial Analysis composite of GDPval-AA v2 and τ³-Banking, covering planning, tool use and multi-step execution."
+    },
+    {
+      "id": "gdpval-aa",
+      "name": "GDPval-AA v2",
+      "short": "GDPval-AA",
+      "source": "artificial-analysis",
+      "url": "https://artificialanalysis.ai/evaluations/gdpval-aa",
+      "unit": "elo",
+      "note": "Agentic real-world knowledge work across 44 occupations, scored by blind pairwise comparison and anchored to a human baseline of 1,000 Elo."
+    },
+    {
+      "id": "tau3-banking",
+      "name": "τ³-Banking",
+      "short": "τ³-Banking",
+      "source": "artificial-analysis",
+      "url": "https://artificialanalysis.ai/evaluations/tau3-banking",
+      "unit": "%",
+      "note": "Multi-step tool-using banking workflows over a large unstructured policy knowledge base, independently evaluated by Artificial Analysis."
+    },
+    {
+      "id": "aa-coding-index",
+      "name": "Artificial Analysis Coding Index",
+      "short": "Coding idx",
+      "source": "artificial-analysis",
+      "url": "https://artificialanalysis.ai/models/capabilities/coding",
+      "unit": "index",
+      "note": "Equal-weighted Artificial Analysis composite of Terminal-Bench v2.1 and SciCode."
+    },
+    {
+      "id": "scicode",
+      "name": "SciCode",
+      "short": "SciCode",
+      "source": "artificial-analysis",
+      "url": "https://artificialanalysis.ai/evaluations/scicode",
+      "unit": "%",
+      "note": "Scientist-curated code generation across 80 laboratory problems and 16 scientific disciplines, independently evaluated by Artificial Analysis."
+    },
     {
       "id": "tau2-bench",
       "name": "Tau2-bench (telecom)",
@@ -306,7 +352,7 @@
       "name": "Terminal-Bench 2.1",
       "short": "T-Bench",
       "source": "artificial-analysis",
-      "url": "https://artificialanalysis.ai/leaderboards/models",
+      "url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1",
       "unit": "%",
       "note": "Agentic terminal tasks, single-sourced from the Artificial Analysis API at each model's highest published effort (terminalbench_v2_1)."
     },
@@ -488,35 +534,35 @@
       "model": "gpt-5-6-sol",
       "benchmark": "terminal-bench",
       "value": 88.0,
-      "source_url": "https://artificialanalysis.ai/leaderboards/models",
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1",
       "note": "Artificial Analysis API; highest-effort published variant (max)."
     },
     {
       "model": "gpt-5-6-terra",
       "benchmark": "terminal-bench",
       "value": 88.0,
-      "source_url": "https://artificialanalysis.ai/leaderboards/models",
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1",
       "note": "Artificial Analysis API; highest-effort published variant (max)."
     },
     {
       "model": "gpt-5-5",
       "benchmark": "terminal-bench",
       "value": 84.3,
-      "source_url": "https://artificialanalysis.ai/leaderboards/models",
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1",
       "note": "Artificial Analysis API; highest-effort published variant (xhigh)."
     },
     {
       "model": "fable-5",
       "benchmark": "terminal-bench",
       "value": 84.6,
-      "source_url": "https://artificialanalysis.ai/leaderboards/models",
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1",
       "note": "Artificial Analysis API; highest-effort published variant (max)."
     },
     {
       "model": "sonnet-5",
       "benchmark": "terminal-bench",
       "value": 80.5,
-      "source_url": "https://artificialanalysis.ai/leaderboards/models",
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1",
       "note": "Artificial Analysis API; highest-effort published variant (max)."
     },
     {
@@ -733,7 +779,7 @@
       "benchmark": "terminal-bench",
       "value": 73.8,
       "note": "Artificial Analysis API; highest-effort published variant (default).",
-      "source_url": "https://artificialanalysis.ai/leaderboards/models"
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"
     },
     {
       "model": "gemini-3-1-pro",
@@ -747,7 +793,7 @@
       "benchmark": "terminal-bench",
       "value": 84.6,
       "note": "Artificial Analysis API; highest-effort published variant (max).",
-      "source_url": "https://artificialanalysis.ai/leaderboards/models"
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"
     },
     {
       "model": "opus-4-8",
@@ -803,7 +849,7 @@
       "benchmark": "terminal-bench",
       "value": 64.0,
       "note": "Artificial Analysis API; highest-effort published variant (max).",
-      "source_url": "https://artificialanalysis.ai/leaderboards/models"
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"
     },
     {
       "model": "deepseek-v4-pro",
@@ -831,7 +877,7 @@
       "benchmark": "terminal-bench",
       "value": 81.6,
       "note": "Artificial Analysis API; highest-effort published variant (high).",
-      "source_url": "https://artificialanalysis.ai/leaderboards/models"
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"
     },
     {
       "model": "grok-4-5",
@@ -845,7 +891,7 @@
       "benchmark": "terminal-bench",
       "value": 77.9,
       "note": "Artificial Analysis API; highest-effort published variant (max).",
-      "source_url": "https://artificialanalysis.ai/leaderboards/models"
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"
     },
     {
       "model": "glm-5-2",
@@ -866,7 +912,7 @@
       "benchmark": "terminal-bench",
       "value": 45.7,
       "note": "Artificial Analysis API; highest-effort published variant (default).",
-      "source_url": "https://artificialanalysis.ai/leaderboards/models"
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"
     },
     {
       "model": "kimi-k2-5",
@@ -917,7 +963,7 @@
       "benchmark": "terminal-bench",
       "value": 85.0,
       "note": "Artificial Analysis API; highest-effort published variant (default).",
-      "source_url": "https://artificialanalysis.ai/leaderboards/models"
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"
     },
     {
       "model": "kimi-k3",
@@ -939,6 +985,398 @@
       "value": 44.3,
       "note": "Artificial Analysis API; highest-effort published variant (default).",
       "source_url": "https://artificialanalysis.ai/leaderboards/models"
+    },
+    {
+      "model": "gpt-5-6-sol",
+      "benchmark": "tau3-banking",
+      "value": 33.0,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "gpt-5-6-sol",
+      "benchmark": "aa-coding-index",
+      "value": 77.4,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "gpt-5-6-sol",
+      "benchmark": "scicode",
+      "value": 56.1,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "gpt-5-6-terra",
+      "benchmark": "tau3-banking",
+      "value": 31.8,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "gpt-5-6-terra",
+      "benchmark": "aa-coding-index",
+      "value": 76.7,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "gpt-5-6-terra",
+      "benchmark": "scicode",
+      "value": 53.9,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "gpt-5-5",
+      "benchmark": "tau3-banking",
+      "value": 31.3,
+      "note": "Artificial Analysis API; highest-effort published variant (xhigh).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "gpt-5-5",
+      "benchmark": "aa-coding-index",
+      "value": 74.9,
+      "note": "Artificial Analysis API; highest-effort published variant (xhigh).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "gpt-5-5",
+      "benchmark": "scicode",
+      "value": 56.1,
+      "note": "Artificial Analysis API; highest-effort published variant (xhigh).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "gemini-3-1-pro",
+      "benchmark": "tau3-banking",
+      "value": 16.5,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "gemini-3-1-pro",
+      "benchmark": "aa-coding-index",
+      "value": 68.8,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "gemini-3-1-pro",
+      "benchmark": "scicode",
+      "value": 58.9,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "sonnet-5",
+      "benchmark": "tau3-banking",
+      "value": 28.2,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "sonnet-5",
+      "benchmark": "aa-coding-index",
+      "value": 71.5,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "sonnet-5",
+      "benchmark": "scicode",
+      "value": 53.6,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "fable-5",
+      "benchmark": "tau3-banking",
+      "value": 26.8,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "fable-5",
+      "benchmark": "aa-coding-index",
+      "value": 76.5,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "fable-5",
+      "benchmark": "scicode",
+      "value": 60.2,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "opus-4-8",
+      "benchmark": "tau3-banking",
+      "value": 27.6,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "opus-4-8",
+      "benchmark": "aa-coding-index",
+      "value": 74.3,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "opus-4-8",
+      "benchmark": "scicode",
+      "value": 53.5,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "benchmark": "tau3-banking",
+      "value": 25.8,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "benchmark": "aa-coding-index",
+      "value": 59.4,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "benchmark": "scicode",
+      "value": 50.0,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "grok-4-5",
+      "benchmark": "tau3-banking",
+      "value": 32.6,
+      "note": "Artificial Analysis API; highest-effort published variant (high).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "grok-4-5",
+      "benchmark": "aa-coding-index",
+      "value": 72.4,
+      "note": "Artificial Analysis API; highest-effort published variant (high).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "grok-4-5",
+      "benchmark": "scicode",
+      "value": 54.1,
+      "note": "Artificial Analysis API; highest-effort published variant (high).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "kimi-k3",
+      "benchmark": "tau3-banking",
+      "value": 33.4,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "kimi-k3",
+      "benchmark": "aa-coding-index",
+      "value": 76.2,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "kimi-k3",
+      "benchmark": "scicode",
+      "value": 58.7,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "glm-5-2",
+      "benchmark": "tau3-banking",
+      "value": 26.8,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "glm-5-2",
+      "benchmark": "aa-coding-index",
+      "value": 68.8,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "glm-5-2",
+      "benchmark": "scicode",
+      "value": 50.5,
+      "note": "Artificial Analysis API; highest-effort published variant (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "kimi-k2-5",
+      "benchmark": "tau3-banking",
+      "value": 14.2,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "kimi-k2-5",
+      "benchmark": "aa-coding-index",
+      "value": 46.8,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "kimi-k2-5",
+      "benchmark": "scicode",
+      "value": 49.0,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "gpt-5-6-sol",
+      "benchmark": "aa-agentic-index",
+      "value": 54.0,
+      "note": "Artificial Analysis official leaderboard; published configuration: GPT-5.6 Sol (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "fable-5",
+      "benchmark": "aa-agentic-index",
+      "value": 52.8,
+      "note": "Artificial Analysis official leaderboard; published configuration: Claude Fable 5 (with fallback).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "kimi-k3",
+      "benchmark": "aa-agentic-index",
+      "value": 50.1,
+      "note": "Artificial Analysis official leaderboard; published configuration: Kimi K3.",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "gpt-5-6-terra",
+      "benchmark": "aa-agentic-index",
+      "value": 47.4,
+      "note": "Artificial Analysis official leaderboard; published configuration: GPT-5.6 Terra (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "opus-4-8",
+      "benchmark": "aa-agentic-index",
+      "value": 47.2,
+      "note": "Artificial Analysis official leaderboard; published configuration: Claude Opus 4.8 (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "sonnet-5",
+      "benchmark": "aa-agentic-index",
+      "value": 46.7,
+      "note": "Artificial Analysis official leaderboard; published configuration: Claude Sonnet 5 (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "grok-4-5",
+      "benchmark": "aa-agentic-index",
+      "value": 45.7,
+      "note": "Artificial Analysis official leaderboard; published configuration: Grok 4.5 (high).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "gpt-5-5",
+      "benchmark": "aa-agentic-index",
+      "value": 44.9,
+      "note": "Artificial Analysis official leaderboard; published configuration: GPT-5.5 (xhigh).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "glm-5-2",
+      "benchmark": "aa-agentic-index",
+      "value": 43.1,
+      "note": "Artificial Analysis official leaderboard; published configuration: GLM-5.2 (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "benchmark": "aa-agentic-index",
+      "value": 36.4,
+      "note": "Artificial Analysis official leaderboard; published configuration: DeepSeek V4 Pro (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "fable-5",
+      "benchmark": "gdpval-aa",
+      "value": 1759.6,
+      "note": "Artificial Analysis official leaderboard; published configuration: Claude Fable 5 (with fallback).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "gpt-5-6-sol",
+      "benchmark": "gdpval-aa",
+      "value": 1742.6,
+      "note": "Artificial Analysis official leaderboard; published configuration: GPT-5.6 Sol (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "kimi-k3",
+      "benchmark": "gdpval-aa",
+      "value": 1683.7,
+      "note": "Artificial Analysis official leaderboard; published configuration: Kimi K3.",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "sonnet-5",
+      "benchmark": "gdpval-aa",
+      "value": 1606.7,
+      "note": "Artificial Analysis official leaderboard; published configuration: Claude Sonnet 5 (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "opus-4-8",
+      "benchmark": "gdpval-aa",
+      "value": 1600.1,
+      "note": "Artificial Analysis official leaderboard; published configuration: Claude Opus 4.8 (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "gpt-5-6-terra",
+      "benchmark": "gdpval-aa",
+      "value": 1581.2,
+      "note": "Artificial Analysis official leaderboard; published configuration: GPT-5.6 Terra (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "grok-4-5",
+      "benchmark": "gdpval-aa",
+      "value": 1534.6,
+      "note": "Artificial Analysis official leaderboard; published configuration: Grok 4.5 (high).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "glm-5-2",
+      "benchmark": "gdpval-aa",
+      "value": 1513.9,
+      "note": "Artificial Analysis official leaderboard; published configuration: GLM-5.2 (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "gpt-5-5",
+      "benchmark": "gdpval-aa",
+      "value": 1493.2,
+      "note": "Artificial Analysis official leaderboard; published configuration: GPT-5.5 (xhigh).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "deepseek-v4-pro",
+      "benchmark": "gdpval-aa",
+      "value": 1307.2,
+      "note": "Artificial Analysis official leaderboard; published configuration: DeepSeek V4 Pro (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
     }
   ],
   "arena_meta": {
@@ -949,9 +1387,9 @@
   },
   "insights": [
     {
-      "title": "Coding is measured. Planning isn't.",
-      "body": "Coding has four live, regularly refreshed leaderboards covering the whole frontier. Long-horizon planning has a 4-model sample (Vending-Bench 2) and a saturated tool-use board (Tau2's leader sits at 99.1%). The pillar everyone claims to care about has the weakest evidence base.",
-      "tag": "coverage"
+      "title": "The composites are the headline",
+      "body": "Coding and Planning now lead with Artificial Analysis capability indices. Their two components stay visible beside them so a strong composite cannot hide whether a model is better at terminal execution, code generation, knowledge work or tool use.",
+      "tag": "focus"
     },
     {
       "title": "Security scores collapse when it matters",
@@ -959,24 +1397,14 @@
       "tag": "security"
     },
     {
-      "title": "Nobody has tested the current frontier",
-      "body": "Every Cybench and Vending-Bench entry is a predecessor generation — Opus 4.5/4.6, GPT-5.2, Gemini 3.0. Daggered (†) cells mark these proxies. The models you'd actually deploy today are unscored on two of the three pillars that matter.",
-      "tag": "staleness"
+      "title": "Security is the deliberate exception",
+      "body": "Artificial Analysis does not yet publish a security capability index. Cybench-D and Endor SecPass stay because replacing them with reliability proxies would answer a different question.",
+      "tag": "scope"
     },
     {
-      "title": "Each pillar has a different champion",
-      "body": "Coding belongs to Anthropic on hard issues (Fable 5's 80.3% SWE-Pro) and OpenAI in the terminal (Sol 89.5% Terminal-Bench at xhigh). Best planning evidence points to the Anthropic lineage (Vending-Bench leader, top six GAIA slots, Fable's 98.5% Tau2). Security's ceiling is a 61% tie — where GPT-5.2 matched Opus 4.5 at a third of the cost.",
-      "tag": "strategy"
-    },
-    {
-      "title": "Why there's no single composite score",
-      "body": "Models are tested on different subsets — averaging Fable's SecPass against Opus's Cybench would compare different exams. We rank within each benchmark and refuse a blended number. The methodology page documents exactly what feeds each pillar.",
+      "title": "Compare configurations, not brand names",
+      "body": "Artificial Analysis scores reasoning-effort variants separately. This view keeps one highest-effort published configuration per model; every score links to the exact official evaluation page and missing results remain visible.",
       "tag": "method"
-    },
-    {
-      "title": "Harnesses move scores as much as models",
-      "body": "The same Claude Opus 4 scores 64.9% on GAIA in one harness and 57.6% in another — a 7-point swing from scaffolding alone. Terminal-Bench scores are model+harness pairs. Treat every agentic number as a system score, not a model score.",
-      "tag": "measurement"
     }
   ],
   "head_to_head": {

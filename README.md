@@ -22,10 +22,11 @@ site/headtohead.html    Fable 5 vs Sol Pro (Extra High) across the 3 pillars
 site/underworld.html    risk assessment: uncensored open-weight LLMs vs frontier attack capability
 ```
 
-The primary page groups benchmarks into three pillars (Planning: Tau2,
-Vending-Bench 2, GAIA, ARC-AGI-2 · Security: Cybench defensive, Endor SecPass ·
-Coding: SWE-bench Pro/Verified, Terminal-Bench, LiveCodeBench). Every score
-cell hyperlinks to its data origin (`source_url` per score in the JSON).
+The primary page groups a deliberately small metric set into three pillars
+(Planning: Artificial Analysis Agentic Index, GDPval-AA v2, τ³-Banking ·
+Security: Cybench defensive, Endor SecPass · Coding: Artificial Analysis Coding
+Index, Terminal-Bench v2.1, SciCode). Every score cell hyperlinks to its data
+origin (`source_url` per score in the JSON).
 Predecessor-model scores are shown daggered (†, `proxy` field) and no blended
 composite is published — the methodology page explains why.
 
@@ -35,30 +36,22 @@ local files or hosted artifacts with no runtime fetches.
 
 ## Data sourcing per pillar
 
-The goal is one consistent source per pillar. That's fully achievable for
-Coding but only partly for Planning and Security, because the specialized
-benchmarks are each hosted by their own author and — more fundamentally —
-**most current-generation frontier models have never been run on them.** Where
-a single source can't cover a pillar, we use the minimum number of references
-and explain each here. Every individual score still links to its own origin,
-and predecessor-generation scores are daggered (†) with the tested model named.
+The goal is one consistent source per pillar. Artificial Analysis now provides
+the complete Planning and Coding views. Security remains the deliberate
+exception because Artificial Analysis does not publish a security capability
+index and the two retained benchmarks answer genuinely different questions.
+Every individual score links to its own origin, and predecessor-generation
+security scores are daggered (†) with the tested model named.
 
-- **Coding — single source (Artificial Analysis API).** Terminal-Bench (the
-  flagship), plus GPQA/HLE/intelligence-index, are pulled per-model from the AA
-  API at each model's highest published effort. SWE-bench Pro/Verified are not
-  AA evals, so they stay on their original leaderboards (SWE-bench is not on
-  AA). LiveCodeBench is intentionally left as-is: AA returns no LiveCodeBench
-  value for our model set (it publishes a coding *index* instead).
+- **Coding — single source (Artificial Analysis).** The headline Coding Index
+  is displayed with both components: Terminal-Bench v2.1 for agentic terminal
+  execution and SciCode for scientific code generation. Values are refreshed
+  at each model's highest published effort and link to the matching AA page.
 
-- **Planning — one API + one aggregator + one harness board (3 refs, by
-  necessity).** Tau2 comes from the AA API (same authoritative source as
-  Coding). Vending-Bench 2 and ARC-AGI-2 are consolidated onto **llm-stats.com**,
-  a single aggregator that hosts both specialized boards in one place (rather
-  than citing Andon Labs and ARC Prize separately). GAIA stays on **Princeton
-  HAL**, because GAIA scores are only meaningful inside a named agent scaffold —
-  a HAL number and a bare-model number aren't the same measurement, so it can't
-  be honestly folded into the aggregator. Vending-Bench and GAIA remain sparse
-  and mostly daggered: only predecessor models have been evaluated on them.
+- **Planning — single source (Artificial Analysis).** The headline Agentic
+  Index is displayed with both equal-weighted components: GDPval-AA v2 for
+  real-world knowledge-work deliverables and τ³-Banking for multi-step tool use
+  over a large policy knowledge base.
 
 - **Security — two references, by design (different questions).** Cybench
   (defensive subset, CoTool) measures offensive/analytic CTF capability; Endor
@@ -68,12 +61,9 @@ and predecessor-generation scores are daggered (†) with the tested model named
   daggered predecessor proxies and Endor has only run Fable 5 — because the
   frontier labs and benchmark authors haven't published current-model runs.
 
-**Why so many N/A cells remain:** they are not gaps we can close by finding a
-better site. Vending-Bench 2 (4 models ever), GAIA, and Cybench were run on
-predecessor generations; Endor has tested one model; and several labs (OpenAI
-for GPT-5.6, xAI for Grok 4.5, Anthropic for Fable 5) did not publish ARC-AGI-2
-at launch. An N/A here means "not publicly measured anywhere," which is itself
-the finding the Planning/Security pillars exist to surface.
+**Why Security still has N/A cells:** Cybench was run on predecessor
+generations and Endor has tested only one current model. An N/A means "not
+publicly measured," not a zero.
 
 ## Refreshing the data
 
@@ -87,16 +77,18 @@ python3 scripts/refresh_data.py --only swebench,lmarena
 - Set `AA_API_KEY` to enable the Artificial Analysis adapter.
 - LMArena, SWE-bench, and LiveBench adapters scrape/fetch public endpoints and
   will need occasional maintenance as those sites change.
-- Terminal-Bench, HLE, and the Endor Labs study have no machine-readable feed —
-  update `data/benchmarks.json` by hand and re-run with `--offline`.
+- Endor Labs and the retained Cybench security study have no stable
+  machine-readable feed — update `data/benchmarks.json` by hand and re-run with
+  `--offline`.
 - Any adapter failure keeps the last known-good values and marks the source
   `stale` (rendered as a dashed chip on the slide footer).
 
 ## Pages
 
-- **Primary comparison** (`index.html`) — three flagship pillar charts, the
-  full linked matrix (every score is a hyperlink to its origin), and insight
-  callouts on the right rail. `→` / `Space` advances to the methodology.
+- **Primary comparison** (`index.html`) — three headline charts, a compact
+  sortable matrix of eight key metrics, and focused interpretation on the right
+  rail. Every score is a hyperlink to its origin. `→` / `Space` advances to the
+  methodology.
 - **Methodology** (`methodology.html`) — the four comparison rules, then each
   benchmark per pillar: what it measures, how it scores, current data, caveats.
   `←` returns to the comparison.
