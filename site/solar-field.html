@@ -29,6 +29,10 @@
     letter-spacing: -0.03em; line-height: 1.02; text-wrap: balance; max-width: 16ch; }
   .hero .dek { max-width: 70ch; color: var(--ink-2); font-size: 1.08em; margin: 0; }
   .hero .dek b { color: var(--ink); }
+  .hero .axis-note { max-width: 76ch; margin: 18px 0 0; padding: 13px 16px;
+    border-left: 3px solid var(--accent); border-radius: 4px 9px 9px 4px;
+    background: rgba(90,169,255,0.07); color: var(--ink-2); font-size: 0.9em; }
+  .hero .axis-note b { color: var(--ink); }
 
   /* gallery */
   .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px,100%),1fr));
@@ -127,12 +131,11 @@
     <p class="eyebrow">llm-meta-bench · solar-bench · field summary</p>
     <h1>The intent-loss gallery.</h1>
     <p class="dek">
-      Nine builds were handed the same brief for a cinematic, “AAA-quality” Solar System simulator.
-      Here is <b>Earth</b> from every demo with a trustworthy repository capture — the most familiar test of
-      whether factual completeness becomes a convincing experience. Seven captures are available; two honest
-      evidence gaps remain because the standardized browser pass was blocked. The ordering follows the frozen
-      rubric's intent score, not a beauty vote.
+      Solar Bench separates <b>explicit execution</b> — whether a build delivered the brief's literal features —
+      from <b>implicit intent</b> — whether it created the cinematic, credible, premium-game experience those
+      features were meant to serve. This gallery isolates the second axis through the most familiar test: Earth.
     </p>
+    <p class="axis-note"><b>Why the distinction matters:</b> a model can complete the checklist and still miss the assignment. The scores below are <b>implicit-intent scores only</b>, grounded in evidence such as real geography, deliberate lighting, useful zoom and a scene that stays alive—not a standalone beauty vote. Seven trustworthy captures are available; two evidence gaps remain.</p>
   </div>
 
   <div class="gallery" id="gallery"></div>
@@ -166,7 +169,7 @@
 
   <footer>
     <span>Same brief: <span class="mono">solar-bench/PROMPT.md</span> · mixed repository captures, assessed through 19 July 2026; dimensions and dates disclosed per card</span>
-    <span><a href="./solar.html">Detailed three-way ↗</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
+    <span><a href="./solar-benchmark.html#scoring-method">How scoring works</a> &nbsp;·&nbsp; <a href="./solar.html">Detailed three-way ↗</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
   </footer>
 </div>
 
@@ -190,39 +193,39 @@
 <script>
 (function () {
   var models = [
-    { rank:"01", name:"Claude Fable 5", app:"sol-simulator", badge:"realized", label:"Intent 8.7",
+    { rank:"01", name:"Claude Fable 5", app:"sol-simulator", badge:"realized", label:"Implicit intent 8.7",
       img:"fable5-earth.jpg",
       verdict:"The strongest complete product and a convincing blue world, but its attractive continents and city-light density are <b>procedural fiction</b>, not Earth data.",
       kept:"Current project capture · 1440×900 · 18 Jul." },
-    { rank:"02", name:"Kimi K3", app:"S·O·L", badge:"mostly", label:"Intent 8.3",
+    { rank:"02", name:"Kimi K3", app:"S·O·L", badge:"mostly", label:"Implicit intent 8.3",
       img:"kimi3-earth.jpg",
       verdict:"A lively, carefully staged game frame with clouds and atmosphere. At 512×256, the generated landmasses remain visibly <b>invented geography</b>.",
       kept:"Project-owned Earth capture · 1600×1000 · 18 Jul." },
-    { rank:"03", name:"Claude Sonnet 5", app:"SOL", badge:"mostly", label:"Intent 7.6",
+    { rank:"03", name:"Claude Sonnet 5", app:"SOL", badge:"mostly", label:"Implicit intent 7.6",
       img:"sonnet5-earth.jpg",
       verdict:"Real credited imagery produces the field's clearest actual coastlines and cloud structure. The arrival is undersized, and the current browser suite is highly unstable under software rendering.",
       kept:"Repository assessment capture · 1800×1012 · 18 Jul." },
-    { rank:"04", name:"Claude Opus 4.8", app:"sol-simulator", badge:"partial", label:"Intent 7.0",
+    { rank:"04", name:"Claude Opus 4.8", app:"sol-simulator", badge:"partial", label:"Implicit intent 7.0",
       img:"opus48-earth.jpg",
       verdict:"A dense widget suite (Hill spheres, Lagrange points, constellations) and an Earth-coloured, atmosphere-wrapped globe — but the surface is procedural <b>noise</b>, not geography.",
       kept:"Repository capture · 1800×1012; production checks rerun 18 Jul." },
-    { rank:"05", name:"GPT-5.6 Sol", app:"sol-aaa", badge:"partial", label:"Intent 6.2",
+    { rank:"05", name:"GPT-5.6 Sol", app:"sol-aaa", badge:"partial", label:"Implicit intent 6.2",
       img:"gpt56sol-earth.jpg",
       verdict:"The strongest cockpit in the field surrounds a pale, overexposed sphere whose five green ellipse continents and white cloud strips do not read as Earth. Maximum zoom dissolves into an <b>abstract procedural field</b>.",
       kept:"Original commit e2409bd · standardized capture · 1800×1012 · 19 Jul." },
-    { rank:"06", name:"Kimi 2.7", app:"kimi27", badge:"partial", label:"Intent 6.2",
+    { rank:"06", name:"Kimi 2.7", app:"kimi27", badge:"partial", label:"Implicit intent 6.2",
       img:null,
       verdict:"The engine passes 20 production browser checks, but no Earth still was emitted by the shipped suite and the standard capture browser was unavailable.",
       kept:"No trustworthy Earth snapshot; evidence gap shown deliberately." },
-    { rank:"07", name:"GLM-5.2", app:"glm52", badge:"partial", label:"Intent 6.1",
+    { rank:"07", name:"GLM-5.2", app:"glm52", badge:"partial", label:"Implicit intent 6.1",
       img:"glm52-earth.jpg",
       verdict:"Clearly reads as an Earth-like globe — green land, blue ocean and atmosphere — but the geography is stylized, lighting is blown out and surface detail is schematic.",
       kept:"Repository capture · 1800×1012." },
-    { rank:"08", name:"GPT-5.6 Lunar", app:"sol-atlas", badge:"lost", label:"Intent 4.4",
+    { rank:"08", name:"GPT-5.6 Lunar", app:"sol-atlas", badge:"lost", label:"Implicit intent 4.4",
       img:"gpt56lunar-earth.jpg",
       verdict:"A competent star-atlas, but Earth is a <b>flat untextured sphere</b> and the fly-to let the Sun blow out half the frame — the opposite of a cinematic arrival.",
       kept:"Repository capture · 1800×1012." },
-    { rank:"09", name:"Gemini 3.1 Pro", app:"SOL mock-up", badge:"lost", label:"Intent 1.4",
+    { rank:"09", name:"Gemini 3.1 Pro", app:"SOL mock-up", badge:"lost", label:"Implicit intent 1.4",
       img:null,
       verdict:"Only Sun, Earth and Mars are rendered, the production build fails TypeScript, and no trustworthy Earth capture exists in the repository.",
       kept:"No production snapshot; build failure is the evidence." },

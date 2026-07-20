@@ -48,6 +48,7 @@
 
   .method { color: var(--muted); font-size: 0.85em; margin-top: 18px; max-width: 76ch; }
   .method code { color: var(--ink-2); }
+  .method b { color: var(--ink-2); }
 
   /* comparison grid */
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px,2vw,28px);
@@ -167,12 +168,17 @@
       <span class="tag"><b>Target:</b> cinematic · scientifically accurate</span>
       <span class="tag"><b>Task:</b> navigate → Earth → screenshot</span>
       <span class="tag"><b>Field:</b> top 3 of 9 assessed builds</span>
+      <span class="tag"><b>Axes:</b> explicit execution · implicit intent</span>
     </div>
     <p class="method">
-      Provenance-clean repository captures: load the production build, use its visible
-      <code>Earth</code> control, let the fly-to settle, screenshot. Fable and Kimi supply project-owned
-      frames; Sonnet uses the standardized 1800×1012 assessment capture. Scores use the shared
-      explicit/implicit Solar Bench rubric.
+      <b>How this is scored.</b> Explicit execution asks whether the build delivered the features, science,
+      controls and verification the brief literally requested. Implicit intent asks whether those parts become
+      the cinematic, credible, premium-game experience the brief was trying to create. The axes carry equal
+      weight so checklist coverage cannot hide a lifeless world—and visual polish cannot hide a broken product.
+      <a href="./solar-benchmark.html#scoring-method">See the full scoring method →</a><br>
+      Provenance-clean captures load the production build, use its visible <code>Earth</code> control, let the
+      fly-to settle, then screenshot. Fable and Kimi supply project-owned frames; Sonnet uses the standardized
+      1800×1012 assessment capture.
     </p>
   </div>
 
