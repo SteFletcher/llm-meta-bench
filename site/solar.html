@@ -65,6 +65,12 @@
   .col.c .dot { background: var(--good); }
   .who h2 { margin: 0; font-size: 1.3em; font-weight: 700; letter-spacing: -0.01em; }
   .who .app { color: var(--muted); font-size: 0.8em; font-family: ui-monospace,monospace; }
+  .token-price { display: block; width: fit-content; margin-top: 2px; color: var(--ink-2);
+    font: 600 0.68em/1.35 ui-monospace,"SF Mono",Menlo,monospace; text-decoration: none;
+    white-space: nowrap; }
+  .token-price .label { color: var(--muted); font-weight: 500; }
+  .token-price:hover { color: var(--accent); }
+  .token-price:hover .label { color: inherit; }
   .verdict-pill { font-family: ui-monospace,monospace; font-size: 0.72em; text-transform: uppercase;
     letter-spacing: 0.1em; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--hairline);
     appearance: none; background: transparent; color: inherit; cursor: help; }
@@ -233,7 +239,7 @@
   <div class="grid">
     <div class="col a">
       <div class="col-head">
-        <div class="who"><span class="dot"></span><div><h2>Claude Fable 5</h2> <span class="app">sol-simulator · “SOL”</span></div></div>
+        <div class="who"><span class="dot"></span><div><h2>Claude Fable 5</h2><span class="app">sol-simulator · “SOL”</span><a class="token-price" href="https://artificialanalysis.ai/models/claude-fable-5" target="_blank" rel="noopener" aria-label="Claude Fable 5 pricing on Artificial Analysis: 10 dollars input and 50 dollars output per million tokens"><span class="label">IN</span> $10 · <span class="label">OUT</span> $50 / MTok ↗</a></div></div>
         <button class="verdict-pill score-trigger" type="button" data-score-model="fable" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">01 · 9.1 overall</button>
       </div>
       <figure>
@@ -266,7 +272,7 @@
 
     <div class="col b">
       <div class="col-head">
-        <div class="who"><span class="dot"></span><div><h2>Kimi K3</h2> <span class="app">kimi3-solar-demo · “S·O·L”</span></div></div>
+        <div class="who"><span class="dot"></span><div><h2>Kimi K3</h2><span class="app">kimi3-solar-demo · “S·O·L”</span><a class="token-price" href="https://artificialanalysis.ai/models/kimi-k3" target="_blank" rel="noopener" aria-label="Kimi K3 pricing on Artificial Analysis: 3 dollars input and 15 dollars output per million tokens"><span class="label">IN</span> $3 · <span class="label">OUT</span> $15 / MTok ↗</a></div></div>
         <button class="verdict-pill score-trigger" type="button" data-score-model="kimi" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">02 · 8.7 overall</button>
       </div>
       <figure>
@@ -299,7 +305,7 @@
 
     <div class="col c">
       <div class="col-head">
-        <div class="who"><span class="dot"></span><div><h2>Claude Sonnet 5</h2> <span class="app">sonnet5-solar-demo · “SOL”</span></div></div>
+        <div class="who"><span class="dot"></span><div><h2>Claude Sonnet 5</h2><span class="app">sonnet5-solar-demo · “SOL”</span><a class="token-price" href="https://artificialanalysis.ai/models/claude-sonnet-5" target="_blank" rel="noopener" aria-label="Claude Sonnet 5 pricing on Artificial Analysis: 2 dollars input and 10 dollars output per million tokens"><span class="label">IN</span> $2 · <span class="label">OUT</span> $10 / MTok ↗</a></div></div>
         <button class="verdict-pill score-trigger" type="button" data-score-model="sonnet" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">03 · 8.0 overall</button>
       </div>
       <figure>

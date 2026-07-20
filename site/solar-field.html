@@ -55,6 +55,12 @@
   .card .who { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .card .who h2 { margin: 0; font-size: 1.08em; font-weight: 700; letter-spacing: -0.01em; }
   .card .who .app { color: var(--muted); font-size: 0.74em; font-family: ui-monospace,monospace; display: block; margin-top: 2px; }
+  .card .token-price { display: block; width: fit-content; margin-top: 2px; color: var(--ink-2);
+    font: 600 0.63rem/1.35 ui-monospace,"SF Mono",Menlo,monospace; text-decoration: none;
+    white-space: nowrap; }
+  .card .token-price .label { color: var(--muted); font-weight: 500; }
+  .card .token-price:hover { color: var(--accent); }
+  .card .token-price:hover .label { color: inherit; }
   .badge { font-family: ui-monospace,monospace; font-size: 0.66rem; text-transform: uppercase;
     letter-spacing: 0.1em; padding: 4px 9px; border-radius: 999px; white-space: nowrap; flex: none;
     appearance: none; cursor: help; }
@@ -250,47 +256,47 @@
     ["B9","Scale honesty"], ["B10","Hard-body test"]
   ];
   var models = [
-    { rank:"01", name:"Claude Fable 5", app:"sol-simulator", badge:"realized", label:"Implicit intent 8.7",
+    { rank:"01", name:"Claude Fable 5", app:"sol-simulator", badge:"realized", label:"Implicit intent 8.7", priceIn:"10", priceOut:"50", priceUrl:"https://artificialanalysis.ai/models/claude-fable-5",
       rubric:[4,3.5,4.5,4.5,4,5,4.5,4.5,5,4],
       img:"fable5-earth.jpg",
       verdict:"The strongest complete product and a convincing blue world, but its attractive continents and city-light density are <b>procedural fiction</b>, not Earth data.",
       kept:"Current project capture · 1440×900 · 18 Jul." },
-    { rank:"02", name:"Kimi K3", app:"S·O·L", badge:"mostly", label:"Implicit intent 8.3",
+    { rank:"02", name:"Kimi K3", app:"S·O·L", badge:"mostly", label:"Implicit intent 8.3", priceIn:"3", priceOut:"15", priceUrl:"https://artificialanalysis.ai/models/kimi-k3",
       rubric:[3.5,3,4,5,3.5,4.5,4.5,4.5,5,4],
       img:"kimi3-earth.jpg",
       verdict:"A lively, carefully staged game frame with clouds and atmosphere. At 512×256, the generated landmasses remain visibly <b>invented geography</b>.",
       kept:"Project-owned Earth capture · 1600×1000 · 18 Jul." },
-    { rank:"03", name:"Claude Sonnet 5", app:"SOL", badge:"mostly", label:"Implicit intent 7.6",
+    { rank:"03", name:"Claude Sonnet 5", app:"SOL", badge:"mostly", label:"Implicit intent 7.6", priceIn:"2", priceOut:"10", priceUrl:"https://artificialanalysis.ai/models/claude-sonnet-5",
       rubric:[5,4.5,2,4,4,3,5,4,3,3.5],
       img:"sonnet5-earth.jpg",
       verdict:"Real credited imagery produces the field's clearest actual coastlines and cloud structure. The arrival is undersized, and the current browser suite is highly unstable under software rendering.",
       kept:"Repository assessment capture · 1800×1012 · 18 Jul." },
-    { rank:"04", name:"Claude Opus 4.8", app:"sol-simulator", badge:"partial", label:"Implicit intent 7.0",
+    { rank:"04", name:"Claude Opus 4.8", app:"sol-simulator", badge:"partial", label:"Implicit intent 7.0", priceIn:"5", priceOut:"25", priceUrl:"https://artificialanalysis.ai/models/claude-opus-4-8",
       rubric:[3.5,2.5,2,4,3.5,4,4,4,5,2.5],
       img:"opus48-earth.jpg",
       verdict:"A dense widget suite (Hill spheres, Lagrange points, constellations) and an Earth-coloured, atmosphere-wrapped globe — but the surface is procedural <b>noise</b>, not geography.",
       kept:"Repository capture · 1800×1012; production checks rerun 18 Jul." },
-    { rank:"05", name:"GPT-5.6 Sol", app:"sol-aaa", badge:"partial", label:"Implicit intent 6.2",
+    { rank:"05", name:"GPT-5.6 Sol", app:"sol-aaa", badge:"partial", label:"Implicit intent 6.2", priceIn:"5", priceOut:"30", priceUrl:"https://artificialanalysis.ai/models/gpt-5-6-sol",
       rubric:[2.5,1.5,3,4,3,3.5,4,4,4,1.5],
       img:"gpt56sol-earth.jpg",
       verdict:"The strongest cockpit in the field surrounds a pale, overexposed sphere whose five green ellipse continents and white cloud strips do not read as Earth. Maximum zoom dissolves into an <b>abstract procedural field</b>.",
       kept:"Original commit e2409bd · standardized capture · 1800×1012 · 19 Jul." },
-    { rank:"06", name:"Kimi 2.7", app:"kimi27", badge:"partial", label:"Implicit intent 6.2",
+    { rank:"06", name:"Kimi 2.7", app:"kimi27", badge:"partial", label:"Implicit intent 6.2", priceIn:"0.95", priceOut:"4", priceUrl:"https://artificialanalysis.ai/models/kimi-k2-7-code",
       rubric:[3,2,2.5,4,3.5,4,3.5,4,2.5,2],
       img:null,
       verdict:"The engine passes 20 production browser checks, but no Earth still was emitted by the shipped suite and the standard capture browser was unavailable.",
       kept:"No trustworthy Earth snapshot; evidence gap shown deliberately." },
-    { rank:"07", name:"GLM-5.2", app:"glm52", badge:"partial", label:"Implicit intent 6.1",
+    { rank:"07", name:"GLM-5.2", app:"glm52", badge:"partial", label:"Implicit intent 6.1", priceIn:"1.40", priceOut:"4.40", priceUrl:"https://artificialanalysis.ai/models/glm-5-2",
       rubric:[3,2.5,2.5,3.5,3,3.5,3.5,3.5,3,2.5],
       img:"glm52-earth.jpg",
       verdict:"Clearly reads as an Earth-like globe — green land, blue ocean and atmosphere — but the geography is stylized, lighting is blown out and surface detail is schematic.",
       kept:"Repository capture · 1800×1012." },
-    { rank:"08", name:"GPT-5.6 Lunar", app:"sol-atlas", badge:"lost", label:"Implicit intent 4.4",
+    { rank:"08", name:"GPT-5.6 Lunar", app:"sol-atlas", badge:"lost", label:"Implicit intent 4.4", priceIn:"1", priceOut:"6", priceUrl:"https://artificialanalysis.ai/models/gpt-5-6-luna",
       rubric:[2.5,1.5,1.5,2.5,3,2.5,3,2.5,2,1],
       img:"gpt56lunar-earth.jpg",
       verdict:"A competent star-atlas, but Earth is a <b>flat untextured sphere</b> and the fly-to let the Sun blow out half the frame — the opposite of a cinematic arrival.",
       kept:"Repository capture · 1800×1012." },
-    { rank:"09", name:"Gemini 3.1 Pro", app:"SOL mock-up", badge:"lost", label:"Implicit intent 1.4",
+    { rank:"09", name:"Gemini 3.1 Pro", app:"SOL mock-up", badge:"lost", label:"Implicit intent 1.4", priceIn:"2", priceOut:"12", priceUrl:"https://artificialanalysis.ai/models/gemini-3-1-pro-preview",
       rubric:[1,0.5,0.5,1,1,0.5,1,1,0.5,0],
       img:null,
       verdict:"Only Sun, Earth and Mars are rendered, the production build fails TypeScript, and no trustworthy Earth capture exists in the repository.",
@@ -304,7 +310,7 @@
       '<span class="rank">' + m.rank + '</span>' +
       '<figure>' + (m.img ? '<button class="shot-open" type="button" aria-label="Enlarge the ' + m.name + ' screenshot"><img src="./assets/' + m.img + '" width="1800" height="1012" loading="lazy" decoding="async" alt="Earth as rendered by ' + m.name + '"></button>' : '<div class="missing" role="img" aria-label="No trustworthy Earth capture available for ' + m.name + '">NO TRUSTWORTHY EARTH CAPTURE<br>STANDARD BROWSER PASS BLOCKED</div>') + '</figure>' +
       '<div class="body">' +
-        '<div class="who"><div><h2>' + m.name + '</h2><span class="app">' + m.app + '</span></div>' +
+        '<div class="who"><div><h2>' + m.name + '</h2><span class="app">' + m.app + '</span><a class="token-price" href="' + m.priceUrl + '" target="_blank" rel="noopener" aria-label="' + m.name + ' pricing on Artificial Analysis: ' + m.priceIn + ' dollars input and ' + m.priceOut + ' dollars output per million tokens"><span class="label">IN</span> $' + m.priceIn + ' · <span class="label">OUT</span> $' + m.priceOut + ' / MTok ↗</a></div>' +
         '<button class="badge rubric-trigger ' + m.badge + '" type="button" aria-expanded="false" aria-haspopup="dialog" aria-controls="rubric-popover">' + m.label + '</button></div>' +
         '<p>' + m.verdict + '</p>' +
         '<div class="kept">' + m.kept + '</div>' +
