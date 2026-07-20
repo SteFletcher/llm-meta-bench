@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T04:43:26+00:00",
+  "generated_at": "2026-07-18T17:33:38+00:00",
   "schema_version": 3,
   "sources": [
     {
@@ -15,7 +15,7 @@
       "url": "https://artificialanalysis.ai/leaderboards/models",
       "method": "auto-with-key",
       "notes": "Intelligence Index v4.x composite. Set AA_API_KEY to enable API fetch.",
-      "last_fetched": "2026-07-14T04:43:26+00:00"
+      "last_fetched": "2026-07-18T17:33:38+00:00"
     },
     {
       "id": "swebench",
@@ -186,7 +186,13 @@
       "id": "kimi-k2-5",
       "name": "Kimi K2.5",
       "vendor": "open-weights",
-      "note": "HLE score is with tools (31.5 without)."
+      "note": "AA scores are the Reasoning variant."
+    },
+    {
+      "id": "kimi-k3",
+      "name": "Kimi K3",
+      "vendor": "open-weights",
+      "note": "Moonshot's newest flagship. No Tau2-bench result published yet."
     }
   ],
   "pillars": [
@@ -613,9 +619,9 @@
     {
       "model": "kimi-k2-5",
       "benchmark": "hle",
-      "value": 12.3,
+      "value": 29.4,
       "source_url": "https://artificialanalysis.ai/leaderboards/models",
-      "note": "Artificial Analysis API; highest-effort published variant (non-reasoning)."
+      "note": "Artificial Analysis API; highest-effort published variant (default)."
     },
     {
       "model": "grok-4-5",
@@ -669,8 +675,8 @@
     {
       "model": "kimi-k2-5",
       "benchmark": "tau2-bench",
-      "value": 81.3,
-      "note": "Artificial Analysis API; highest-effort published variant (non-reasoning).",
+      "value": 95.9,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
       "source_url": "https://artificialanalysis.ai/evaluations/tau2-bench"
     },
     {
@@ -865,15 +871,15 @@
     {
       "model": "kimi-k2-5",
       "benchmark": "aa-index",
-      "value": 29.4,
-      "note": "Artificial Analysis API; highest-effort published variant (non-reasoning).",
+      "value": 35.4,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
       "source_url": "https://artificialanalysis.ai/leaderboards/models"
     },
     {
       "model": "kimi-k2-5",
       "benchmark": "gpqa-diamond",
-      "value": 78.9,
-      "note": "Artificial Analysis API; highest-effort published variant (non-reasoning).",
+      "value": 87.9,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
       "source_url": "https://artificialanalysis.ai/leaderboards/models"
     },
     {
@@ -905,6 +911,34 @@
       "source_url": "https://llm-stats.com/benchmarks/vending-bench-2",
       "proxy": "GLM-5.1",
       "note": "Top open-weights entry; predecessor GLM-5.1."
+    },
+    {
+      "model": "kimi-k3",
+      "benchmark": "terminal-bench",
+      "value": 85.0,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/leaderboards/models"
+    },
+    {
+      "model": "kimi-k3",
+      "benchmark": "aa-index",
+      "value": 57.1,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/leaderboards/models"
+    },
+    {
+      "model": "kimi-k3",
+      "benchmark": "gpqa-diamond",
+      "value": 93.5,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/leaderboards/models"
+    },
+    {
+      "model": "kimi-k3",
+      "benchmark": "hle",
+      "value": 44.3,
+      "note": "Artificial Analysis API; highest-effort published variant (default).",
+      "source_url": "https://artificialanalysis.ai/leaderboards/models"
     }
   ],
   "arena_meta": {

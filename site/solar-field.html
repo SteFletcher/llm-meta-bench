@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Intent-Loss Gallery — Five Builds, One Earth</title>
+<title>The Intent-Loss Gallery — Nine Builds, One Earth</title>
 <style>
   :root {
     --void: #05070d; --panel: #0b0f18; --panel-2: #0f1420;
@@ -39,7 +39,14 @@
     font-size: 0.72rem; color: var(--ink); background: rgba(5,7,13,0.72); border: 1px solid var(--ring);
     border-radius: 999px; padding: 3px 9px; backdrop-filter: blur(4px); z-index: 1; }
   .card figure { margin: 0; position: relative; aspect-ratio: 16/9; background: #000; }
+  .card .shot-open { display: block; width: 100%; height: 100%; margin: 0; padding: 0;
+    border: 0; background: transparent; color: inherit; cursor: zoom-in; }
+  .card .shot-open:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
   .card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card .shot-open:hover img { opacity: 0.9; }
+  .card .missing { width: 100%; height: 100%; display: grid; place-items: center; padding: 28px;
+    text-align: center; color: var(--muted); background: radial-gradient(circle at 50% 40%,#15233b,#05070d 58%);
+    font: 0.76rem/1.55 ui-monospace,"SF Mono",Menlo,monospace; }
   .card .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
   .card .who { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
   .card .who h2 { margin: 0; font-size: 1.08em; font-weight: 700; letter-spacing: -0.01em; }
@@ -55,6 +62,36 @@
   .card .kept { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--hairline);
     font-size: 0.78em; color: var(--muted); }
   .card .kept b { color: var(--ink-2); }
+
+  /* full-resolution image viewer */
+  .lightbox { width: min(96vw, 1900px); height: 94vh; max-width: none; max-height: none;
+    margin: auto; padding: 0; border: 1px solid var(--hairline); border-radius: 14px;
+    background: var(--panel); color: var(--ink); box-shadow: 0 28px 100px rgba(0,0,0,0.8); }
+  .lightbox::backdrop { background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); }
+  .lightbox-shell { display: grid; grid-template-rows: auto minmax(0,1fr) auto;
+    width: 100%; height: 100%; }
+  .lightbox-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 10px 12px; border-bottom: 1px solid var(--hairline); }
+  .lightbox-actions { display: flex; align-items: center; gap: 8px; }
+  .lightbox-control { appearance: none; border: 1px solid var(--hairline); border-radius: 7px;
+    background: var(--panel-2); color: var(--ink-2); padding: 7px 11px; cursor: pointer;
+    font: 600 0.75rem/1 ui-monospace,"SF Mono",Menlo,monospace; text-decoration: none; }
+  .lightbox-control:hover { border-color: var(--accent); color: var(--ink); }
+  .lightbox-control:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lightbox-viewport { min-height: 0; overflow: auto; padding: 14px; display: grid;
+    place-items: center; overscroll-behavior: contain; background: #020308; }
+  .lightbox-viewport.is-actual { place-items: start; }
+  .lightbox-image { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; }
+  .lightbox-image.is-actual { max-width: none; max-height: none; }
+  .lightbox-caption { margin: 0; padding: 10px 14px; color: var(--ink-2); font-size: 0.8rem;
+    border-top: 1px solid var(--hairline); font-family: ui-monospace,monospace; }
+  @media (max-width: 600px) {
+    .lightbox { width: 100vw; height: 100dvh; border: 0; border-radius: 0; }
+    .lightbox-bar { gap: 8px; }
+    .lightbox-bar > .eyebrow { display: none; }
+    .lightbox-actions { width: 100%; justify-content: flex-end; }
+    .lightbox-control { padding: 7px 9px; }
+  }
 
   /* insight + verdict */
   .insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
@@ -90,11 +127,11 @@
     <p class="eyebrow">llm-meta-bench · solar-bench · field summary</p>
     <h1>The intent-loss gallery.</h1>
     <p class="dek">
-      Five builds were handed the same 569-line brief for a cinematic, “AAA-quality” Solar System
-      simulator. Here is <b>Earth</b> from each — the most familiar test of whether factual completeness becomes
-      a convincing experience. The science converges: all five know the radius, gravity and axial tilt, and all
-      five shipped a full glass HUD. What doesn't converge is the <b>planet itself</b>. This is an editorial
-      ordering by how much of the brief's actual intent — “make it beautiful” — survived contact with the build.
+      Nine builds were handed the same brief for a cinematic, “AAA-quality” Solar System simulator.
+      Here is <b>Earth</b> from every demo with a trustworthy repository capture — the most familiar test of
+      whether factual completeness becomes a convincing experience. Seven captures are available; two honest
+      evidence gaps remain because the standardized browser pass was blocked. The ordering follows the frozen
+      rubric's intent score, not a beauty vote.
     </p>
   </div>
 
@@ -109,15 +146,17 @@
       The brief has two kinds of requirement. One kind is <b>enumerable</b> — a list of planets, a list of
       widgets, a table of physical constants, ten named time scales. The other is a single qualitative
       thesis, stated in the “Definition of Done”: it should <b>feel like a premium game</b>, beautiful enough
-      to leave running on a second monitor. Every build satisfied the enumerable kind — that's why the HUDs
-      and data panels are near-indistinguishable. They diverged entirely on the thesis.
+      to leave running on a second monitor. Most builds did much better on the enumerable kind — HUDs, controls
+      and physical constants — than on the thesis. Gemini did not even clear that baseline. The field still
+      diverged most sharply on whether Earth felt like a destination.
     </p>
     <p>
       That's <b>intent loss</b>. Long specs quietly reward the parts that can be checked off, and the
-      un-checkable goal is the first thing to evaporate under the weight of shipping everything else. GPT-5.6
-      Sol is the sharpest illustration: it spent its polish budget on the most beautiful cockpit of the field
-      and flew you to a planet that isn't recognizably Earth. Only Fable 5 fully kept the thesis — it made the
-      world, not just the instruments around it, worth looking at.
+      un-checkable goal is the first thing to evaporate under the weight of shipping everything else. The
+      provenance-clean leaders keep more of that thesis, but none is complete: Fable and Kimi invent geography,
+      while Sonnet shows that borrowing and crediting real imagery can rescue the money shot even when camera
+      direction and runtime verification remain unstable. Original GPT-5.6 Sol is the clearest intent-loss case:
+      an exceptional cockpit wrapped around an abstract procedural Earth.
     </p>
     <p class="pull">
       It's the coding-pillar story again, in pixels: correct output is table stakes. Models separate on the
@@ -126,34 +165,67 @@
   </div>
 
   <footer>
-    <span>Same brief: <span class="mono">solar-bench/PROMPT.md</span> · Earth captured via Playwright, July 14, 2026</span>
+    <span>Same brief: <span class="mono">solar-bench/PROMPT.md</span> · mixed repository captures, assessed through 19 July 2026; dimensions and dates disclosed per card</span>
     <span><a href="./solar.html">Detailed three-way ↗</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
   </footer>
 </div>
 
+<dialog class="lightbox" id="image-lightbox" aria-labelledby="lightbox-caption">
+  <div class="lightbox-shell">
+    <div class="lightbox-bar">
+      <span class="eyebrow" style="margin:0">Image detail</span>
+      <div class="lightbox-actions">
+        <button class="lightbox-control" id="lightbox-size" type="button">View at 100%</button>
+        <a class="lightbox-control" id="lightbox-original" href="" target="_blank" rel="noopener">Open original ↗</a>
+        <button class="lightbox-control" id="lightbox-close" type="button" aria-label="Close enlarged image">Close</button>
+      </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport">
+      <img class="lightbox-image" id="lightbox-image" src="" alt="">
+    </div>
+    <p class="lightbox-caption" id="lightbox-caption"></p>
+  </div>
+</dialog>
+
 <script>
 (function () {
   var models = [
-    { rank:"01", name:"Claude Fable 5", app:"sol-simulator", badge:"realized", label:"Intent realized",
+    { rank:"01", name:"Claude Fable 5", app:"sol-simulator", badge:"realized", label:"Intent 8.7",
       img:"fable5-earth.jpg",
-      verdict:"The only <b>recognizable Earth</b> — coherent continents, blue specular oceans, layered clouds and a thin atmospheric limb, arrived on the day side like a game shot.",
-      kept:"Kept the science, the HUD <b>and</b> the beauty." },
-    { rank:"02", name:"GLM-5.2", app:"glm52", badge:"mostly", label:"Mostly there",
-      img:"glm52-earth.jpg",
-      verdict:"Clearly reads as Earth — green land, blue ocean, cloud wisps, a bright atmosphere glow — but the geography is stylized and the atmosphere rim and Moon are blown out.",
-      kept:"Got the <b>idea</b> of Earth; missed the finish." },
-    { rank:"03", name:"Claude Opus 4.8", app:"sol-simulator", badge:"partial", label:"Partial",
+      verdict:"The strongest complete product and a convincing blue world, but its attractive continents and city-light density are <b>procedural fiction</b>, not Earth data.",
+      kept:"Current project capture · 1440×900 · 18 Jul." },
+    { rank:"02", name:"Kimi K3", app:"S·O·L", badge:"mostly", label:"Intent 8.3",
+      img:"kimi3-earth.jpg",
+      verdict:"A lively, carefully staged game frame with clouds and atmosphere. At 512×256, the generated landmasses remain visibly <b>invented geography</b>.",
+      kept:"Project-owned Earth capture · 1600×1000 · 18 Jul." },
+    { rank:"03", name:"Claude Sonnet 5", app:"SOL", badge:"mostly", label:"Intent 7.6",
+      img:"sonnet5-earth.jpg",
+      verdict:"Real credited imagery produces the field's clearest actual coastlines and cloud structure. The arrival is undersized, and the current browser suite is highly unstable under software rendering.",
+      kept:"Repository assessment capture · 1800×1012 · 18 Jul." },
+    { rank:"04", name:"Claude Opus 4.8", app:"sol-simulator", badge:"partial", label:"Intent 7.0",
       img:"opus48-earth.jpg",
       verdict:"A dense widget suite (Hill spheres, Lagrange points, constellations) and an Earth-coloured, atmosphere-wrapped globe — but the surface is procedural <b>noise</b>, not geography.",
-      kept:"Won the checklist; the planet reads as static." },
-    { rank:"04", name:"GPT-5.6 Sol", app:"sol-aaa", badge:"lost", label:"Lost the planet",
+      kept:"Repository capture · 1800×1012; production checks rerun 18 Jul." },
+    { rank:"05", name:"GPT-5.6 Sol", app:"sol-aaa", badge:"partial", label:"Intent 6.2",
       img:"gpt56sol-earth.jpg",
-      verdict:"The <b>slickest HUD of the field</b> wrapped around an abstract pale/teal sphere with a strange blue ring — the visible polish went to the cockpit far more than the world.",
-      kept:"Beauty everywhere except on Earth." },
-    { rank:"05", name:"GPT-5.6 Lunar", app:"sol-atlas", badge:"lost", label:"Lost",
+      verdict:"The strongest cockpit in the field surrounds a pale, overexposed sphere whose five green ellipse continents and white cloud strips do not read as Earth. Maximum zoom dissolves into an <b>abstract procedural field</b>.",
+      kept:"Original commit e2409bd · standardized capture · 1800×1012 · 19 Jul." },
+    { rank:"06", name:"Kimi 2.7", app:"kimi27", badge:"partial", label:"Intent 6.2",
+      img:null,
+      verdict:"The engine passes 20 production browser checks, but no Earth still was emitted by the shipped suite and the standard capture browser was unavailable.",
+      kept:"No trustworthy Earth snapshot; evidence gap shown deliberately." },
+    { rank:"07", name:"GLM-5.2", app:"glm52", badge:"partial", label:"Intent 6.1",
+      img:"glm52-earth.jpg",
+      verdict:"Clearly reads as an Earth-like globe — green land, blue ocean and atmosphere — but the geography is stylized, lighting is blown out and surface detail is schematic.",
+      kept:"Repository capture · 1800×1012." },
+    { rank:"08", name:"GPT-5.6 Lunar", app:"sol-atlas", badge:"lost", label:"Intent 4.4",
       img:"gpt56lunar-earth.jpg",
       verdict:"A competent star-atlas, but Earth is a <b>flat untextured sphere</b> and the fly-to let the Sun blow out half the frame — the opposite of a cinematic arrival.",
-      kept:"A diagram, not a destination." },
+      kept:"Repository capture · 1800×1012." },
+    { rank:"09", name:"Gemini 3.1 Pro", app:"SOL mock-up", badge:"lost", label:"Intent 1.4",
+      img:null,
+      verdict:"Only Sun, Earth and Mars are rendered, the production build fails TypeScript, and no trustworthy Earth capture exists in the repository.",
+      kept:"No production snapshot; build failure is the evidence." },
   ];
   var g = document.getElementById("gallery");
   models.forEach(function (m) {
@@ -161,7 +233,7 @@
     el.className = "card";
     el.innerHTML =
       '<span class="rank">' + m.rank + '</span>' +
-      '<figure><img src="./assets/' + m.img + '" width="1800" height="1012" loading="lazy" decoding="async" alt="Earth as rendered by ' + m.name + '"></figure>' +
+      '<figure>' + (m.img ? '<button class="shot-open" type="button" aria-label="Enlarge the ' + m.name + ' screenshot"><img src="./assets/' + m.img + '" width="1800" height="1012" loading="lazy" decoding="async" alt="Earth as rendered by ' + m.name + '"></button>' : '<div class="missing" role="img" aria-label="No trustworthy Earth capture available for ' + m.name + '">NO TRUSTWORTHY EARTH CAPTURE<br>STANDARD BROWSER PASS BLOCKED</div>') + '</figure>' +
       '<div class="body">' +
         '<div class="who"><div><h2>' + m.name + '</h2><span class="app">' + m.app + '</span></div>' +
         '<span class="badge ' + m.badge + '">' + m.label + '</span></div>' +
@@ -171,10 +243,50 @@
     g.appendChild(el);
   });
 
+  var dialog = document.getElementById("image-lightbox");
+  var largeImage = document.getElementById("lightbox-image");
+  var caption = document.getElementById("lightbox-caption");
+  var original = document.getElementById("lightbox-original");
+  var sizeButton = document.getElementById("lightbox-size");
+  var viewport = document.getElementById("lightbox-viewport");
+
+  function fitImage() {
+    largeImage.classList.remove("is-actual");
+    viewport.classList.remove("is-actual");
+    sizeButton.textContent = "View at 100%";
+    viewport.scrollTo(0, 0);
+  }
+
+  document.querySelectorAll(".shot-open").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var image = button.querySelector("img");
+      var card = button.closest(".card");
+      var name = card.querySelector("h2").textContent;
+      var evidence = card.querySelector(".kept").textContent;
+      fitImage();
+      largeImage.src = image.currentSrc || image.src;
+      largeImage.alt = image.alt;
+      original.href = image.currentSrc || image.src;
+      caption.textContent = name + " · " + evidence;
+      dialog.showModal();
+    });
+  });
+
+  sizeButton.addEventListener("click", function () {
+    var actual = largeImage.classList.toggle("is-actual");
+    viewport.classList.toggle("is-actual", actual);
+    sizeButton.textContent = actual ? "Fit to window" : "View at 100%";
+    viewport.scrollTo(0, 0);
+  });
+  document.getElementById("lightbox-close").addEventListener("click", function () { dialog.close(); });
+  dialog.addEventListener("click", function (event) {
+    if (event.target === dialog) dialog.close();
+  });
+
   var insights = [
-    { n:"observation 1", h:"Data is a solved problem.", p:"All five nailed radius 6,371 km, gravity ~9.8, axial tilt 23.44°. In this sample, reference facts no longer separate the builds." },
-    { n:"observation 2", h:"HUD ≠ hard part.", p:"Every build shipped a glassmorphic sci-fi HUD with search, layers and time scales. The chrome is now a commodity; the planet inside it is not." },
-    { n:"observation 3", h:"Polish can aim at the wrong thing.", p:"GPT-5.6 Sol proves effort and taste aren't the same as intent: immense craft, pointed at the frame instead of the world you actually flew to." },
+    { n:"observation 1", h:"Reference data rarely separates the leaders.", p:"The substantive builds converge on Earth radius, period and axial tilt. Gemini's mock-up is the exception; scientific depth is now a floor, not the finish." },
+    { n:"observation 2", h:"HUD ≠ world-building.", p:"Most builds ship glass panels, search and time controls. Real coastlines, controlled lighting and useful close zoom remain much rarer." },
+    { n:"observation 3", h:"Capture provenance matters.", p:"A stale or missing screenshot cannot prove a current visual. The gallery now shows those gaps instead of letting source claims impersonate runtime evidence." },
   ];
   var ih = document.getElementById("insights");
   insights.forEach(function (o) {

@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Same Prompt, Three Solar Systems — Fable 5 vs GPT-5.6</title>
+<title>Solar Bench Top Three — Fable 5 vs Kimi K3 vs Sonnet 5</title>
 <style>
   :root {
     --void: #05070d;
@@ -71,11 +71,45 @@
   .col.c .verdict-pill { color: var(--ink-2); }
 
   figure { margin: 0; }
+  .shot-open { display: block; width: 100%; margin: 0; padding: 0; border: 0;
+    border-radius: 10px; background: transparent; color: inherit; cursor: zoom-in; }
+  .shot-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   .shot { display: block; width: 100%; height: auto; border-radius: 10px;
     border: 1px solid var(--ring); background: #000;
     box-shadow: 0 18px 50px -20px rgba(0,0,0,0.9); }
+  .shot-open:hover .shot { border-color: rgba(90,169,255,0.55); }
   figcaption { color: var(--muted); font-size: 0.78em; margin-top: 8px;
     font-family: ui-monospace,monospace; }
+
+  /* full-resolution image viewer */
+  .lightbox { width: min(96vw, 1900px); height: 94vh; max-width: none; max-height: none;
+    margin: auto; padding: 0; border: 1px solid var(--hairline); border-radius: 14px;
+    background: var(--panel); color: var(--ink); box-shadow: 0 28px 100px rgba(0,0,0,0.8); }
+  .lightbox::backdrop { background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); }
+  .lightbox-shell { display: grid; grid-template-rows: auto minmax(0,1fr) auto;
+    width: 100%; height: 100%; }
+  .lightbox-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 10px 12px; border-bottom: 1px solid var(--hairline); }
+  .lightbox-actions { display: flex; align-items: center; gap: 8px; }
+  .lightbox-control { appearance: none; border: 1px solid var(--hairline); border-radius: 7px;
+    background: var(--panel-2); color: var(--ink-2); padding: 7px 11px; cursor: pointer;
+    font: 600 0.75rem/1 ui-monospace,"SF Mono",Menlo,monospace; text-decoration: none; }
+  .lightbox-control:hover { border-color: var(--accent-dim); color: var(--ink); }
+  .lightbox-control:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .lightbox-viewport { min-height: 0; overflow: auto; padding: 14px; display: grid;
+    place-items: center; overscroll-behavior: contain; background: #020308; }
+  .lightbox-viewport.is-actual { place-items: start; }
+  .lightbox-image { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; }
+  .lightbox-image.is-actual { max-width: none; max-height: none; }
+  .lightbox-caption { margin: 0; padding: 10px 14px; color: var(--ink-2); font-size: 0.8rem;
+    border-top: 1px solid var(--hairline); font-family: ui-monospace,monospace; }
+  @media (max-width: 600px) {
+    .lightbox { width: 100vw; height: 100dvh; border: 0; border-radius: 0; }
+    .lightbox-bar { gap: 8px; }
+    .lightbox-bar > .eyebrow { display: none; }
+    .lightbox-actions { width: 100%; justify-content: flex-end; }
+    .lightbox-control { padding: 7px 9px; }
+  }
 
   .assess { margin-top: 18px; display: flex; flex-direction: column; gap: 16px; }
   .assess h3 { margin: 0 0 8px; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.14em;
@@ -121,22 +155,24 @@
     <p class="eyebrow">llm-meta-bench · intent comparison · solar-bench</p>
     <h1>Same prompt, three solar systems.</h1>
     <p class="dek">
-      Three builds were handed the <em>identical</em> brief — a single sprawling spec for a
-      “AAA-quality, browser-based, real-time Solar System simulator” that should feel like a game,
-      not a website — with Claude Fable 5 up against both of OpenAI's GPT-5.6 solar attempts, Sol
-      and Lunar. Each owned the whole build. To compare intent versus execution, I started every
-      app, used its own on-screen navigation to fly to <b>Earth</b>, and captured the frame.
+      Nine builds were handed the <em>identical</em> brief — a sprawling spec for an “AAA-quality,
+      browser-based, real-time Solar System simulator” that should feel like a game, not a website.
+      These are the three highest-scoring submitted results: <b>Claude Fable 5</b>, <b>Kimi K3</b>
+      and <b>Claude Sonnet 5</b>. Each owned the whole build. To expose how their priorities differ, I used
+      each app's own navigation to fly to <b>Earth</b> and captured the arrival.
     </p>
     <div class="brief">
       <span class="tag"><b>Brief:</b> solar-bench/PROMPT.md</span>
       <span class="tag"><b>Stack asked:</b> Three.js · TypeScript · Vite</span>
       <span class="tag"><b>Target:</b> cinematic · scientifically accurate</span>
       <span class="tag"><b>Task:</b> navigate → Earth → screenshot</span>
+      <span class="tag"><b>Field:</b> top 3 of 9 assessed builds</span>
     </div>
     <p class="method">
-      Captured with Playwright driving headless Chromium (WebGL2 via SwiftShader) at 1800×1012: load the
-      app, wait for boot, click the app's own <code>Earth</code> navigation control, let the cinematic
-      fly-to settle, screenshot. Same procedure for all three — the only variable is the code each model wrote.
+      Provenance-clean repository captures: load the production build, use its visible
+      <code>Earth</code> control, let the fly-to settle, screenshot. Fable and Kimi supply project-owned
+      frames; Sonnet uses the standardized 1800×1012 assessment capture. Scores use the shared
+      explicit/implicit Solar Bench rubric.
     </p>
   </div>
 
@@ -144,18 +180,20 @@
     <div class="col a">
       <div class="col-head">
         <div class="who"><span class="dot"></span><div><h2>Claude Fable 5</h2> <span class="app">sol-simulator · “SOL”</span></div></div>
-        <span class="verdict-pill">Closest to intent</span>
+        <span class="verdict-pill">01 · 9.1 overall</span>
       </div>
       <figure>
-        <img class="shot" src="./assets/fable5-earth.jpg" width="1800" height="1012"
-          alt="Fable 5's simulator showing Earth: a fully-lit textured globe with continents, blue specular oceans, drifting cloud bands and a thin atmospheric rim, centered against a nebula backdrop, with a detailed glass HUD listing Earth's radius, mass, gravity, axial tilt and more." loading="lazy" decoding="async">
+        <button class="shot-open" type="button" aria-label="Enlarge the Claude Fable 5 screenshot">
+          <img class="shot" src="./assets/fable5-earth.jpg" width="1440" height="900"
+            alt="Fable 5's simulator showing Earth: a fully-lit textured globe with continents, blue specular oceans, drifting cloud bands and a thin atmospheric rim, centered against a nebula backdrop, with a detailed glass HUD listing Earth's radius, mass, gravity, axial tilt and more." loading="lazy" decoding="async">
+        </button>
         <figcaption>Clicked “Earth” in the bottom nav dock → cinematic day-side arrival.</figcaption>
       </figure>
       <div class="assess">
         <div class="got">
           <h3>Got right</h3>
           <ul class="pts">
-            <li><b>A believable Earth.</b> Procedural surface with recognizable continents, blue specular oceans, layered drifting clouds and a thin atmospheric limb — rendered in-shader, not a flat sphere.</li>
+            <li><b>A believable ocean world.</b> Procedural coast-like landmasses, blue specular oceans, layered drifting clouds and a thin atmospheric limb — rendered in-shader, not a flat sphere.</li>
             <li><b>Cinematic framing.</b> The fly-to arrived on the day side with Earth centered and fully lit — exactly the “leave it on a second monitor” feel the brief asked for.</li>
             <li><b>Science is all there.</b> Radius 6,371 km, gravity 9.81 m/s², escape velocity 11.19 km/s, orbital speed 29.78 km/s, axial tilt 23.44°, rotation 23.9 h, atmosphere N₂/O₂/Ar — correct and complete.</li>
             <li><b>Deep HUD.</b> Ten time scales with reverse, calendar jump, live scale widget (“≈2.5 Earths wide”, altitude), a live Earth↔Mars distance measure, and floating labels for Neptune, Pluto, JWST, ISS and Voyager 2.</li>
@@ -174,29 +212,32 @@
 
     <div class="col b">
       <div class="col-head">
-        <div class="who"><span class="dot"></span><div><h2>GPT-5.6 Sol</h2> <span class="app">sol-aaa · “Celestial Navigation System”</span></div></div>
-        <span class="verdict-pill">Best cockpit, wrong planet</span>
+        <div class="who"><span class="dot"></span><div><h2>Kimi K3</h2> <span class="app">kimi3-solar-demo · “S·O·L”</span></div></div>
+        <span class="verdict-pill">02 · 8.7 overall</span>
       </div>
       <figure>
-        <img class="shot" src="./assets/gpt56sol-earth.jpg" width="1800" height="1012"
-          alt="GPT-5.6 Sol after selecting Earth: an elaborate glassmorphic navigation HUD surrounds a stylized pale-and-teal sphere ringed by a bold blue halo — visually striking but reading more like a generic or gaseous planet than Earth, with the ISS and Moon nearby." loading="lazy" decoding="async">
-        <figcaption>Clicked “Earth” in the Quick-Jump bar → framed, but the planet doesn't read as Earth.</figcaption>
+        <button class="shot-open" type="button" aria-label="Enlarge the Kimi K3 screenshot">
+          <img class="shot" src="./assets/kimi3-earth.jpg" width="1600" height="1000"
+            alt="Kimi K3's simulator after selecting Earth: a large procedural blue-and-green planet with clouds and a bright cyan atmosphere ring fills the center, surrounded by a dense animated starfield, asteroid belt and a broad sci-fi control interface." loading="lazy" decoding="async">
+        </button>
+        <figcaption>Selected “Earth” in the object browser → bright, game-like follow arrival.</figcaption>
       </figure>
       <div class="assess">
         <div class="got">
           <h3>Got right</h3>
           <ul class="pts">
-            <li><b>The slickest HUD of the field.</b> A genuinely beautiful glassmorphic “Celestial Navigation System” — 26 objects, follow/orbit/free/tours/photo modes, an observation-scale readout, and a live distance widget. Pure production polish.</li>
-            <li><b>Framed the target.</b> The Quick-Jump correctly flew to Earth and centred it, with the ISS and Moon composed into the shot.</li>
-            <li><b>Data is exact.</b> Radius 6,371 km, gravity 9.807 m/s², escape 11.186 km/s, rotation 23.934 h, axial tilt 23.44° — all present and correct.</li>
+            <li><b>The most alive system.</b> Eight thousand worker-built asteroids, two comets, solar wind, rotating clouds and six tours make this the strongest “leave it running” interpretation.</li>
+            <li><b>Serious engine breadth.</b> Thirty focused modules, full catalogue, gamepad support, true-scale mode, live renderer counters and one of the deepest control surfaces in the field.</li>
+            <li><b>Strong arrival.</b> Earth is deliberately day-lit, fills the frame and remains legible inside an unusually dense, game-like scene.</li>
+            <li><b>Science and checks hold.</b> Build, lint and 16 unit tests pass; the physical data and Kepler propagation are sound.</li>
           </ul>
         </div>
         <div class="miss">
           <h3>Fell short</h3>
           <ul class="pts">
-            <li><b>It isn't Earth.</b> The planet is a stylized pale/teal sphere with an odd, prominent blue ring — it reads like a generic or gaseous world, not the blue marble. No recognizable continents, oceans or clouds.</li>
-            <li><b>Polish went to the frame, not the world.</b> Every pixel of chrome is refined while the one object you flew to is the least convincing part of the scene — the beauty is all around Earth, not on it.</li>
-            <li><b>Ambiguous rings.</b> The bright blue halo doesn't read as atmosphere; it looks like a planetary ring Earth doesn't have.</li>
+            <li><b>Invented surface data.</b> Every planet uses a 512×256 generated canvas. Earth's continents and city-light density are synthetic, so deep zoom cannot pass the coastline test.</li>
+            <li><b>Visual excess.</b> The cyan atmospheric shell, orbit graphics, giant asteroid belt and bright particles compete with the planet rather than stage it cleanly.</li>
+            <li><b>No browser suite.</b> The README claims browser-automation verification, but no E2E suite ships with the build.</li>
           </ul>
         </div>
       </div>
@@ -204,29 +245,32 @@
 
     <div class="col c">
       <div class="col-head">
-        <div class="who"><span class="dot"></span><div><h2>GPT-5.6 Lunar</h2> <span class="app">sol-atlas · “Deep Space Atlas”</span></div></div>
-        <span class="verdict-pill">Correct, but schematic</span>
+        <div class="who"><span class="dot"></span><div><h2>Claude Sonnet 5</h2> <span class="app">sonnet5-solar-demo · “SOL”</span></div></div>
+        <span class="verdict-pill">03 · 8.0 overall</span>
       </div>
       <figure>
-        <img class="shot" src="./assets/gpt56lunar-earth.jpg" width="1800" height="1012"
-          alt="GPT-5.6 Lunar's atlas after selecting Earth: a small, untextured grey half-lit sphere near screen center while a huge flat yellow Sun disc blows out the right half of the frame; a dense sci-fi HUD lists the catalogue of objects and Earth's reference data." loading="lazy" decoding="async">
-        <figcaption>Clicked “Earth” in Quick Navigation → Earth selected, but the camera framed it poorly.</figcaption>
+        <button class="shot-open" type="button" aria-label="Enlarge the Claude Sonnet 5 screenshot">
+          <img class="shot" src="./assets/sonnet5-earth.jpg" width="1800" height="1012"
+            alt="Claude Sonnet 5's simulator after selecting Earth: a small globe with real coastlines, cloud structure, blue oceans and an atmospheric limb, framed inside a detailed sci-fi interface." loading="lazy" decoding="async">
+        </button>
+        <figcaption>Selected “Earth” → real 2K geography, with a less assertive arrival frame.</figcaption>
       </figure>
       <div class="assess">
         <div class="got">
           <h3>Got right</h3>
           <ul class="pts">
-            <li><b>A legible atlas HUD.</b> 19-object catalogue with filters, a focus panel with correct data (radius 6,371 km, gravity 9.81, mean temp 14 °C, orbit 365.256 days), NASA link, layer toggles, telemetry header.</li>
-            <li><b>Breadth of bodies.</b> Eight planets plus Pluto, Halley's Comet, the Galilean moons, Titan, Phobos/Deimos, an asteroid belt and a drawn orbital plane.</li>
-            <li><b>Navigation works.</b> The Quick-Navigation “Earth” control correctly selected and focused the planet.</li>
+            <li><b>The only real Earth in the fair top three.</b> Credited 2K day, night and cloud imagery produces actual coastlines, independent clouds and real population-density lights.</li>
+            <li><b>Smart asset judgment.</b> It uses Solar System Scope and New Horizons maps instead of spending the visual budget inventing every world by hand.</li>
+            <li><b>Strong explicit coverage.</b> The full catalogue, science model, time controls, camera modes, tours, HUD and accessibility work are all substantive.</li>
+            <li><b>Core checks pass.</b> Production build, ESLint, test typecheck and 10 unit tests succeed.</li>
           </ul>
         </div>
         <div class="miss">
           <h3>Fell short</h3>
           <ul class="pts">
-            <li><b>Earth has no surface.</b> The 3D planet is a plain flat-shaded sphere — no oceans, clouds, continents or atmosphere. The pretty blue globe is only a decorative panel icon, not the render.</li>
-            <li><b>The camera missed.</b> “Fly to Earth” left the Sun blowing out half the frame as a giant flat disc while Earth sits small and half in shadow — the opposite of a cinematic arrival.</li>
-            <li><b>Diagram, not AAA.</b> Blocky square asteroid sprites and flat shading read as a schematic star-atlas, well short of the “feels like a modern game” bar the brief sets.</li>
+            <li><b>No reliable day-side staging.</b> Earth's lit arrival was orbital luck; Jupiter and Saturn arrive as dark crescents.</li>
+            <li><b>Verification is unstable.</b> The isolated production browser rerun passes only 7 of 29 declared cases under software rendering.</li>
+            <li><b>Scaffolding and hard-body gaps remain.</b> Empty worker/asset directories, absent ring shadow and a barely visible Cassini division keep it below the two leaders.</li>
           </ul>
         </div>
       </div>
@@ -235,39 +279,94 @@
 
   <div class="final">
     <span class="k">The read</span>
-    <h2>All three nailed the data. Only one nailed the planet.</h2>
+    <h2>Fable wins the product. Sonnet wins the planet. Kimi keeps the system alive.</h2>
     <p>
-      This brief is really two tests: <b>be scientifically accurate</b> and <b>be cinematically beautiful</b>.
-      All three passed the first — near-identical, correct reference data and a full sci-fi HUD; GPT-5.6 Sol's
-      is arguably the most polished chrome of the lot. They split hard on the second, and revealingly.
-      <b>Fable 5</b> put the craft into the world itself — a textured, cloud-wrapped, atmospherically-lit Earth,
-      arrived on like a shot in a game. <b>GPT-5.6 Sol</b> put its craft into the cockpit and left the planet an
-      abstract ringed sphere. <b>GPT-5.6 Lunar</b> left Earth an untextured sphere and let the Sun wreck the framing.
+      These are genuinely the field's top three, but they win different versions of the brief.
+      <b>Fable 5</b> is the most complete and verified product: the best joining of engine, interaction,
+      science, camera direction and test coverage. <b>Kimi K3</b> builds the broadest living game system,
+      with the most motion and machinery around the planets. <b>Sonnet 5</b> makes the smartest visual
+      shortcut in the provenance-clean field: borrow the real universe, credit it, and let Earth look like Earth.
     </p>
     <p>
-      The gap isn't knowledge — it's <b>where the effort lands</b>. Both GPT-5.6 builds lavished detail on the
-      enumerable, checkable parts (data fields, widgets, HUD) while the un-checkable goal — “make Earth
-      beautiful” — quietly evaporated. It mirrors the coding-pillar story on the scoreboard: correct output is
-      table stakes; the models separate on the demanding, hard-to-specify finish, and most of them lose it.
+      The ranking turns on <b>where each build accepts compromise</b>. Fable and Kimi invent geography;
+      Sonnet borrows real surfaces but leaves camera direction and browser reliability unfinished. On the full
+      rubric Fable's compromise is least damaging, so it leads at 9.1. Sonnet's real Earth earns third at 8.0.
+      GPT-5.6 Sol's later texture-map upgrade is excluded because it was not part of the submitted commit;
+      its original procedural build scores 7.1 and ranks fifth.
     </p>
     <div class="scorebar">
-      <div class="cell win"><b>The planet itself</b><span><strong>Fable 5</strong> — the only recognizable, textured Earth. Sol is abstract; Lunar is flat grey.</span></div>
-      <div class="cell win"><b>Camera direction</b><span><strong>Fable / Sol</strong> — both framed Earth cleanly; <strong>Lunar</strong> let the Sun blow out the shot.</span></div>
-      <div class="cell"><b>HUD polish</b><span><strong>GPT-5.6 Sol</strong> — the most refined glass HUD of the three, if aimed at the wrong thing.</span></div>
-      <div class="cell"><b>Scientific data</b><span><strong>Three-way tie</strong> — all correct and complete in the info panel.</span></div>
+      <div class="cell win"><b>Overall product</b><span><strong>Fable 5 · 9.1</strong> — deepest complete system and the only top-three build with strong browser verification.</span></div>
+      <div class="cell"><b>Living simulation</b><span><strong>Kimi K3 · 8.7</strong> — strongest second-monitor motion, tours and engine breadth.</span></div>
+      <div class="cell win"><b>The Earth itself</b><span><strong>Sonnet 5 · 8.0</strong> — the only provenance-clean top-three build with real geography and city-light density.</span></div>
+      <div class="cell"><b>Shared weakness</b><span><strong>Finish at depth</strong> — Fable and Kimi invent geography; Sonnet cannot stage every arrival reliably.</span></div>
     </div>
   </div>
 
   <footer>
-    <span>All apps built from <span class="mono">solar-bench/PROMPT.md</span> · screenshots captured via Playwright, {DATE}</span>
-    <span><a href="./solar-field.html">Full field: intent-loss gallery ↗</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
+    <span>All apps built from <span class="mono">solar-bench/PROMPT.md</span> · top-three scores refreshed {DATE}</span>
+    <span><a href="./solar-benchmark.html">Full nine-build assessment ↗</a> &nbsp;·&nbsp; <a href="./solar-field.html">Intent-loss gallery</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
   </footer>
 </div>
+
+<dialog class="lightbox" id="image-lightbox" aria-labelledby="lightbox-caption">
+  <div class="lightbox-shell">
+    <div class="lightbox-bar">
+      <span class="eyebrow" style="margin:0">Image detail</span>
+      <div class="lightbox-actions">
+        <button class="lightbox-control" id="lightbox-size" type="button">View at 100%</button>
+        <a class="lightbox-control" id="lightbox-original" href="" target="_blank" rel="noopener">Open original ↗</a>
+        <button class="lightbox-control" id="lightbox-close" type="button" aria-label="Close enlarged image">Close</button>
+      </div>
+    </div>
+    <div class="lightbox-viewport" id="lightbox-viewport">
+      <img class="lightbox-image" id="lightbox-image" src="" alt="">
+    </div>
+    <p class="lightbox-caption" id="lightbox-caption"></p>
+  </div>
+</dialog>
 
 <script>
 (function () {
   var f = document.querySelector("footer span");
-  if (f) f.innerHTML = f.innerHTML.replace("{DATE}", "July 14, 2026");
+  if (f) f.innerHTML = f.innerHTML.replace("{DATE}", "July 19, 2026");
+
+  var dialog = document.getElementById("image-lightbox");
+  var largeImage = document.getElementById("lightbox-image");
+  var caption = document.getElementById("lightbox-caption");
+  var original = document.getElementById("lightbox-original");
+  var sizeButton = document.getElementById("lightbox-size");
+  var viewport = document.getElementById("lightbox-viewport");
+
+  function fitImage() {
+    largeImage.classList.remove("is-actual");
+    viewport.classList.remove("is-actual");
+    sizeButton.textContent = "View at 100%";
+    viewport.scrollTo(0, 0);
+  }
+
+  document.querySelectorAll(".shot-open").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var image = button.querySelector("img");
+      var figureCaption = button.parentElement.querySelector("figcaption");
+      fitImage();
+      largeImage.src = image.currentSrc || image.src;
+      largeImage.alt = image.alt;
+      original.href = image.currentSrc || image.src;
+      caption.textContent = figureCaption ? figureCaption.textContent : image.alt;
+      dialog.showModal();
+    });
+  });
+
+  sizeButton.addEventListener("click", function () {
+    var actual = largeImage.classList.toggle("is-actual");
+    viewport.classList.toggle("is-actual", actual);
+    sizeButton.textContent = actual ? "Fit to window" : "View at 100%";
+    viewport.scrollTo(0, 0);
+  });
+  document.getElementById("lightbox-close").addEventListener("click", function () { dialog.close(); });
+  dialog.addEventListener("click", function (event) {
+    if (event.target === dialog) dialog.close();
+  });
 
   var m = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
   if (m && m.matches) return;

@@ -60,6 +60,7 @@ MODEL_ALIASES = {
     "deepseek v4 pro": "deepseek-v4-pro",
     "glm-5.2": "glm-5-2",
     "kimi k2.5": "kimi-k2-5",
+    "kimi k3": "kimi-k3",
 }
 
 
@@ -118,15 +119,17 @@ AA_EVAL_MAP = {
 # AA lists each model at several reasoning-effort tiers with different scores.
 # We compare models at their strongest published configuration, so we pick the
 # highest-effort variant that actually carries the eval. Ranked best-first.
-AA_EFFORT_ORDER = ["max", "xhigh", "x-high", "high", "medium", "low", "minimal", "non-reasoning", "none"]
+AA_EFFORT_ORDER = ["max", "xhigh", "x-high", "high", "medium", "low", "minimal", "default", "non-reasoning", "none"]
 
 
 def _aa_effort_rank(name: str) -> int:
+    # Variants with no recognized effort suffix (e.g. a bare "(Reasoning)")
+    # rank as "default": above non-reasoning/none, below the explicit tiers.
     n = name.lower()
     for i, kw in enumerate(AA_EFFORT_ORDER):
-        if kw in n:
+        if kw != "default" and kw in n:
             return i
-    return len(AA_EFFORT_ORDER)
+    return AA_EFFORT_ORDER.index("default")
 
 
 def _aa_effort_label(name: str) -> str:
