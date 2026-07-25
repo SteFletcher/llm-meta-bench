@@ -35,7 +35,6 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA_FILE = ROOT / "data" / "benchmarks.json"
 SITE_PAGES = [
     ROOT / "site" / "index.html",
-    ROOT / "site" / "methodology.html",
     ROOT / "site" / "headtohead.html",
     ROOT / "site" / "underworld.html",
 ]
@@ -48,6 +47,8 @@ MODEL_ALIASES = {
     "claude mythos 5": "mythos-5",
     "claude fable 5": "fable-5",
     "claude-fable-5": "fable-5",
+    "claude opus 5": "opus-5",
+    "claude-opus-5": "opus-5",
     "claude opus 4.8": "opus-4-8",
     "claude-opus-4-8": "opus-4-8",
     "claude sonnet 5": "sonnet-5",

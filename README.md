@@ -3,8 +3,9 @@
 **Live report: <https://stefletcher.github.io/llm-meta-bench/>**
 
 Aggregates LLM benchmark scores across the major public leaderboards into a
-single-slide scoreboard, plus a deep-dive page on Claude Fable 5's real-world
-performance in cybersecurity and software engineering.
+single-slide scoreboard, plus focused model comparisons and Solar Bench's
+same-prompt implementation assessment. Claude Opus 5 is included in both the
+public benchmark board and the ten-build Solar Bench field.
 
 Deployed to GitHub Pages by
 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) on
@@ -17,9 +18,10 @@ set an `AA_API_KEY` repo secret to enable the Artificial Analysis adapter).
 data/benchmarks.json    canonical data store (sources, models, pillars, scores, insights)
 scripts/refresh_data.py refresh script — fetches sources, merges, re-injects
 site/index.html         PRIMARY: Planning / Security / Coding comparison (single slide)
-site/methodology.html   how each pillar is scored, benchmark by benchmark
 site/headtohead.html    Fable 5 vs Sol Pro (Extra High) across the 3 pillars
-site/underworld.html    risk assessment: uncensored open-weight LLMs vs frontier attack capability
+site/solar-benchmark.html  Solar Bench scoring, all 10 models and 26 criteria
+site/solar.html         Solar Bench top-three visual comparison
+site/solar-field.html   Solar Bench intent-loss gallery
 ```
 
 The primary page groups a deliberately small metric set into three pillars
@@ -27,10 +29,15 @@ The primary page groups a deliberately small metric set into three pillars
 Security: Cybench defensive, Endor SecPass · Coding: Artificial Analysis Coding
 Index, Terminal-Bench v2.1, SciCode). Every score cell hyperlinks to its data
 origin (`source_url` per score in the JSON).
-Predecessor-model scores are shown daggered (†, `proxy` field) and no blended
-composite is published — the methodology page explains why.
+Predecessor-model scores are shown daggered (†, `proxy` field); sourcing and
+comparison caveats are explained inline.
 
-Both pages are fully self-contained: the JSON payload is inlined into a
+As of the 25 July 2026 update, Claude Opus 5 leads the primary board's
+Artificial Analysis Agentic Index (55.3) and Coding Index (78.0) among the
+included models. It has no compatible current-generation security result, so
+those cells remain N/A rather than inheriting a predecessor score.
+
+The published pages are fully self-contained: the JSON payload is inlined into a
 `<script id="benchmark-data" type="application/json">` block, so they work as
 local files or hosted artifacts with no runtime fetches.
 
@@ -87,20 +94,18 @@ python3 scripts/refresh_data.py --only swebench,lmarena
 
 - **Primary comparison** (`index.html`) — three headline charts, a compact
   sortable matrix of eight key metrics, and focused interpretation on the right
-  rail. Every score is a hyperlink to its origin. `→` / `Space` advances to the
-  methodology.
-- **Methodology** (`methodology.html`) — the four comparison rules, then each
-  benchmark per pillar: what it measures, how it scores, current data, caveats.
-  `←` returns to the comparison.
+  rail. Every score is a hyperlink to its origin.
 - **Head to head** (`headtohead.html`) — Claude Fable 5 vs GPT-5.6 Sol Pro
   (xhigh / "Ultra") scored across all three pillars. Coding is the only pillar
   with real two-sided data (it splits); Planning and Security are largely N/A
   for both current models, which is the honest headline. Every present score
   links to its origin.
-- **Uncensored underworld** (`underworld.html`) — risk assessment: with
-  abliteration now a one-command job, can uncensored open-weight models attack
-  like a frontier model? Two 2026 studies (TrustedSec's 4,800-run field
-  benchmark; OpenAI's worst-case weaponization of gpt-oss) converge: reliable
-  single-step exploit validation with zero refusals, but 0% on multi-step
-  chains — the frontier gap is long-horizon execution, not knowledge. Includes
-  a defender's control set.
+- **Solar Bench** (`solar-benchmark.html`) — ten implementations of one
+  identical simulator brief, scored on 16 required delivery criteria and ten
+  implicit-intent probes. Claude Opus 5 leads at 9.3/10 after passing 58 unit
+  and 44 production browser tests.
+- **Solar top three** (`solar.html`) — the current Opus 5, Fable 5 and Kimi K3
+  cohort compared through Earth captures, criterion scores and implementation
+  trade-offs.
+- **Intent-loss gallery** (`solar-field.html`) — all ten Earth outcomes,
+  evidence provenance and implicit-intent scores.

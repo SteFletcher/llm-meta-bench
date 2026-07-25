@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20T10:05:14+00:00",
+  "generated_at": "2026-07-25T06:40:34+00:00",
   "schema_version": 3,
   "sources": [
     {
@@ -15,7 +15,7 @@
       "url": "https://artificialanalysis.ai/leaderboards/models",
       "method": "auto-with-key",
       "notes": "Official capability indices and component evaluations for Planning and Coding. Set AA_API_KEY to enable the API refresh; public JSON-LD supplies headline planning datasets.",
-      "last_fetched": "2026-07-20T10:05:14+00:00"
+      "last_fetched": "2026-07-25T06:40:34+00:00"
     },
     {
       "id": "swebench",
@@ -127,6 +127,12 @@
       "name": "Claude Fable 5",
       "vendor": "anthropic",
       "note": "Mythos-class, generally available. $10/$50 per MTok."
+    },
+    {
+      "id": "opus-5",
+      "name": "Claude Opus 5",
+      "vendor": "anthropic",
+      "note": "Released 2026-07-24. $5/$25 per MTok; 1M-token context; highest-effort published configuration shown."
     },
     {
       "id": "opus-4-8",
@@ -1377,6 +1383,69 @@
       "value": 1307.2,
       "note": "Artificial Analysis official leaderboard; published configuration: DeepSeek V4 Pro (max).",
       "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "opus-5",
+      "benchmark": "aa-agentic-index",
+      "value": 55.3,
+      "note": "Artificial Analysis official leaderboard; published configuration: Claude Opus 5 (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/agentic/"
+    },
+    {
+      "model": "opus-5",
+      "benchmark": "gdpval-aa",
+      "value": 1860.6,
+      "note": "Artificial Analysis official leaderboard; published configuration: Claude Opus 5 (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gdpval-aa"
+    },
+    {
+      "model": "opus-5",
+      "benchmark": "tau3-banking",
+      "value": 30.3,
+      "note": "Artificial Analysis official leaderboard; highest-effort published configuration: Claude Opus 5 (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
+    },
+    {
+      "model": "opus-5",
+      "benchmark": "aa-coding-index",
+      "value": 78.0,
+      "note": "Artificial Analysis official leaderboard; published configuration: Claude Opus 5 (max).",
+      "source_url": "https://artificialanalysis.ai/models/capabilities/coding"
+    },
+    {
+      "model": "opus-5",
+      "benchmark": "terminal-bench",
+      "value": 89.1,
+      "note": "Artificial Analysis official leaderboard; highest-effort published configuration: Claude Opus 5 (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"
+    },
+    {
+      "model": "opus-5",
+      "benchmark": "scicode",
+      "value": 55.7,
+      "note": "Artificial Analysis official leaderboard; highest-effort published configuration: Claude Opus 5 (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/scicode"
+    },
+    {
+      "model": "opus-5",
+      "benchmark": "aa-index",
+      "value": 60.7,
+      "note": "Artificial Analysis official leaderboard; highest-effort published configuration: Claude Opus 5 (max).",
+      "source_url": "https://artificialanalysis.ai/models/claude-opus-5"
+    },
+    {
+      "model": "opus-5",
+      "benchmark": "gpqa-diamond",
+      "value": 93.2,
+      "note": "Artificial Analysis official leaderboard; highest-effort published configuration: Claude Opus 5 (max).",
+      "source_url": "https://artificialanalysis.ai/evaluations/gpqa-diamond"
+    },
+    {
+      "model": "opus-5",
+      "benchmark": "hle",
+      "value": 52.6,
+      "note": "Artificial Analysis official leaderboard; highest-effort published configuration: Claude Opus 5 (max), no tools.",
+      "source_url": "https://artificialanalysis.ai/evaluations/humanitys-last-exam"
     }
   ],
   "arena_meta": {
@@ -1527,7 +1596,7 @@
       "b": 57.7,
       "a_src": "https://artificialanalysis.ai/leaderboards/models",
       "b_src": "https://artificialanalysis.ai/leaderboards/models",
-      "note": "Context only, not a pillar. Both from the AA API — Fable at max effort (59.9, AA's top-ranked model), Sol at xhigh (57.7)."
+      "note": "Context only, not a pillar. Both from the AA API — Fable at max effort (59.9), Sol at xhigh (57.7). Claude Opus 5 now leads the wider board at 60.7."
     },
     "verdict": {
       "headline": "One real contest, two empty arenas.",
