@@ -63,6 +63,14 @@ MODEL_ALIASES = {
     "glm-5.2": "glm-5-2",
     "kimi k2.5": "kimi-k2-5",
     "kimi k3": "kimi-k3",
+    "claude fable 5.1": "fable-5-1",
+    "claude-fable-5-1": "fable-5-1",
+    "gpt-6 astra": "gpt-6-astra",
+    "gemini 3.8 flash": "gemini-3-8-flash",
+    "grok 4.6": "grok-4-6",
+    "glm-5.3": "glm-5-3",
+    "qwen3.8 max": "qwen-3-8-max",
+    "muse spark 1.3": "muse-spark-1-3",
 }
 
 
@@ -105,7 +113,7 @@ AA_MODELS_URL = "https://artificialanalysis.ai/leaderboards/models"
 AA_EVAL_MAP = {
     "tau2-bench": ("tau2", "https://artificialanalysis.ai/evaluations/tau2-bench"),
     "tau3-banking": ("tau_banking", "https://artificialanalysis.ai/evaluations/tau3-banking"),
-    "aa-coding-index": ("artificial_analysis_coding_index", "https://artificialanalysis.ai/models/capabilities/coding"),
+    "aa-coding-index": ("artificial_analysis_coding_index", AA_MODELS_URL),
     "terminal-bench": ("terminalbench_v2_1", "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"),
     "scicode": ("scicode", "https://artificialanalysis.ai/evaluations/scicode"),
     "aa-index": ("artificial_analysis_intelligence_index", AA_MODELS_URL),
@@ -223,7 +231,13 @@ def refresh_artificial_analysis(data: dict) -> int:
             updated += 1
 
     for bench_id, config in AA_JSON_LD_MAP.items():
-        for row in _aa_json_ld_dataset(config["url"], config["dataset"]):
+        # One retired page must not discard the API evals collected above.
+        try:
+            rows = _aa_json_ld_dataset(config["url"], config["dataset"])
+        except Exception as exc:  # noqa: BLE001 - per-dataset isolation
+            log(f"artificial-analysis: {bench_id} dataset unavailable ({exc}) — keeping existing values")
+            continue
+        for row in rows:
             mid = _aa_model_id(row.get("label", ""))
             value = _aa_json_ld_value(row, config["field"])
             if not mid or value is None:
@@ -239,7 +253,8 @@ def refresh_artificial_analysis(data: dict) -> int:
 def refresh_lmarena(data: dict) -> int:
     """Scrape the arena text leaderboard. Markup changes often; parse both the
     embedded Next.js payload and a plain-table fallback."""
-    html = fetch("https://arena.ai/leaderboard/text")
+    arena_url = "https://arena.ai/leaderboard/text"
+    html = fetch(arena_url)
     updated = 0
     m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.S)
     if m:
@@ -251,6 +266,7 @@ def refresh_lmarena(data: dict) -> int:
                 elo = row.get("rating", row.get("elo", row.get("score")))
                 if model_id and elo:
                     set_score(data, model_id, "lmarena-elo", round(float(elo)))
+                    _pin_score_origin(data, model_id, "lmarena-elo", arena_url)
                     updated += 1
         except (json.JSONDecodeError, TypeError):
             pass
@@ -261,6 +277,7 @@ def refresh_lmarena(data: dict) -> int:
             hit = re.search(pat, html, re.I)
             if hit:
                 set_score(data, alias, "lmarena-elo", int(hit.group(1)))
+                _pin_score_origin(data, alias, "lmarena-elo", arena_url)
                 updated += 1
     if not updated:
         raise RuntimeError("no recognizable models found in page")
