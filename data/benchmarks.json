@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T12:52:23+00:00",
+  "generated_at": "2026-09-07T14:29:26+00:00",
   "schema_version": 3,
   "sources": [
     {
@@ -15,8 +15,8 @@
       "name": "Artificial Analysis",
       "url": "https://artificialanalysis.ai/leaderboards/models",
       "method": "auto-with-key",
-      "notes": "Official capability indices and component evaluations for Planning and Coding. Set AA_API_KEY to enable the API refresh; public JSON-LD supplies headline planning datasets.",
-      "last_fetched": "2026-09-07T12:32:53+00:00"
+      "notes": "Official capability index and component evaluations for Coding. Set AA_API_KEY to enable the API refresh.",
+      "last_fetched": "2026-09-07T14:29:26+00:00"
     },
     {
       "id": "swebench",
@@ -252,17 +252,6 @@
     }
   ],
   "pillars": [
-    {
-      "id": "planning",
-      "name": "Planning",
-      "benchmarks": [
-        "aa-agentic-index",
-        "gdpval-aa",
-        "tau3-banking"
-      ],
-      "flagship": "aa-agentic-index",
-      "headline": "Who can plan, use tools and finish multi-step real-world work?"
-    },
     {
       "id": "security",
       "name": "Security",
@@ -665,7 +654,7 @@
     {
       "model": "opus-4-8",
       "benchmark": "aa-index",
-      "value": 46.4,
+      "value": 47.8,
       "source_url": "https://artificialanalysis.ai/leaderboards/models",
       "note": "Artificial Analysis API; highest-effort published variant (max)."
     },
@@ -681,7 +670,7 @@
       "benchmark": "aa-index",
       "value": 45.5,
       "source_url": "https://artificialanalysis.ai/leaderboards/models",
-      "note": "Artificial Analysis API; highest-effort published variant (high)."
+      "note": "Artificial Analysis API; best published variant (high)."
     },
     {
       "model": "fable-5",
@@ -730,7 +719,7 @@
       "benchmark": "hle",
       "value": 42.7,
       "source_url": "https://artificialanalysis.ai/leaderboards/models",
-      "note": "Artificial Analysis API; highest-effort published variant (high)."
+      "note": "Artificial Analysis API; best published variant (high)."
     },
     {
       "model": "gemini-3-1-pro",
@@ -932,14 +921,14 @@
       "model": "grok-4-5",
       "benchmark": "terminal-bench",
       "value": 81.6,
-      "note": "Artificial Analysis API; highest-effort published variant (high).",
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"
     },
     {
       "model": "grok-4-5",
       "benchmark": "gpqa-diamond",
       "value": 93.1,
-      "note": "Artificial Analysis API; highest-effort published variant (high).",
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/leaderboards/models"
     },
     {
@@ -952,7 +941,7 @@
     {
       "model": "glm-5-2",
       "benchmark": "aa-index",
-      "value": 42.5,
+      "value": 42.1,
       "note": "Artificial Analysis API; highest-effort published variant (max).",
       "source_url": "https://artificialanalysis.ai/leaderboards/models"
     },
@@ -1214,21 +1203,21 @@
       "model": "grok-4-5",
       "benchmark": "tau3-banking",
       "value": 42.1,
-      "note": "Artificial Analysis API; highest-effort published variant (high).",
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
     },
     {
       "model": "grok-4-5",
       "benchmark": "aa-coding-index",
       "value": 72.4,
-      "note": "Artificial Analysis API; highest-effort published variant (high).",
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/leaderboards/models"
     },
     {
       "model": "grok-4-5",
       "benchmark": "scicode",
       "value": 55.0,
-      "note": "Artificial Analysis API; highest-effort published variant (high).",
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/evaluations/scicode"
     },
     {
@@ -1696,50 +1685,50 @@
     {
       "model": "grok-4-6",
       "benchmark": "tau3-banking",
-      "value": 43.3,
-      "note": "Artificial Analysis API; highest-effort published variant (xhigh).",
+      "value": 50.7,
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/evaluations/tau3-banking"
     },
     {
       "model": "grok-4-6",
       "benchmark": "aa-coding-index",
-      "value": 75.9,
-      "note": "Artificial Analysis API; highest-effort published variant (xhigh).",
+      "value": 76.8,
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/leaderboards/models"
     },
     {
       "model": "grok-4-6",
       "benchmark": "terminal-bench",
-      "value": 88.0,
-      "note": "Artificial Analysis API; highest-effort published variant (xhigh).",
+      "value": 88.4,
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/evaluations/terminalbench-v2-1"
     },
     {
       "model": "grok-4-6",
       "benchmark": "scicode",
-      "value": 53.0,
-      "note": "Artificial Analysis API; highest-effort published variant (xhigh).",
+      "value": 56.5,
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/evaluations/scicode"
     },
     {
       "model": "grok-4-6",
       "benchmark": "aa-index",
-      "value": 49.3,
-      "note": "Artificial Analysis API; highest-effort published variant (xhigh).",
+      "value": 50.6,
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/leaderboards/models"
     },
     {
       "model": "grok-4-6",
       "benchmark": "gpqa-diamond",
-      "value": 93.5,
-      "note": "Artificial Analysis API; highest-effort published variant (xhigh).",
+      "value": 94.9,
+      "note": "Artificial Analysis API; best published variant (high).",
       "source_url": "https://artificialanalysis.ai/leaderboards/models"
     },
     {
       "model": "grok-4-6",
       "benchmark": "hle",
       "value": 44.1,
-      "note": "Artificial Analysis API; highest-effort published variant (xhigh).",
+      "note": "Artificial Analysis API; best published variant (xhigh).",
       "source_url": "https://artificialanalysis.ai/leaderboards/models"
     },
     {
@@ -1922,7 +1911,7 @@
   "insights": [
     {
       "title": "The composites are the headline",
-      "body": "Coding and Planning now lead with Artificial Analysis capability indices. Their two components stay visible beside them so a strong composite cannot hide whether a model is better at terminal execution, code generation, knowledge work or tool use.",
+      "body": "Coding now leads with the Artificial Analysis capability index. Its two components stay visible beside it so a strong composite cannot hide whether a model is better at terminal execution or code generation.",
       "tag": "focus"
     },
     {
@@ -1937,7 +1926,7 @@
     },
     {
       "title": "Compare configurations, not brand names",
-      "body": "Artificial Analysis scores reasoning-effort variants separately. This view keeps one highest-effort published configuration per model; every score links to the exact official evaluation page and missing results remain visible.",
+      "body": "Artificial Analysis scores reasoning-effort variants separately. This view keeps one published configuration per model — the highest effort tier, except where a lower tier scores higher (Grok), in which case the best is shown and the cell note says so. Every score links to the exact official evaluation page and missing results remain visible.",
       "tag": "method"
     }
   ],

@@ -17,17 +17,16 @@ set an `AA_API_KEY` repo secret to enable the Artificial Analysis adapter).
 ```
 data/benchmarks.json    canonical data store (sources, models, pillars, scores, insights)
 scripts/refresh_data.py refresh script — fetches sources, merges, re-injects
-site/index.html         PRIMARY: Planning / Security / Coding comparison (single slide)
-site/headtohead.html    Fable 5 vs Sol Pro (Extra High) across the 3 pillars
+site/index.html         PRIMARY: Coding / Security comparison (single slide)
+site/headtohead.html    Fable 5 vs Sol Pro (Extra High), pillar by pillar
 site/solar-benchmark.html  Solar Bench scoring, all 10 models and 26 criteria
 site/solar.html         Solar Bench top-three visual comparison
 site/solar-field.html   Solar Bench intent-loss gallery
 ```
 
-The primary page groups a deliberately small metric set into three pillars
-(Planning: Artificial Analysis Agentic Index, GDPval-AA v2, τ³-Banking ·
-Security: Cybench defensive, Endor SecPass · Coding: Artificial Analysis Coding
-Index, Terminal-Bench v2.1, SciCode). Every score cell hyperlinks to its data
+The primary page groups a deliberately small metric set into two pillars
+(Coding: Artificial Analysis Coding Index, Terminal-Bench v2.1, SciCode ·
+Security: Cybench defensive, Endor SecPass). Every score cell hyperlinks to its data
 origin (`source_url` per score in the JSON).
 Predecessor-model scores are shown daggered (†, `proxy` field); sourcing and
 comparison caveats are explained inline.
@@ -43,9 +42,8 @@ local files or hosted artifacts with no runtime fetches.
 
 ## Data sourcing per pillar
 
-The goal is one consistent source per pillar. Artificial Analysis now provides
-the complete Planning and Coding views. Security remains the deliberate
-exception because Artificial Analysis does not publish a security capability
+The goal is one consistent source per pillar. Artificial Analysis provides the
+complete Coding view. Security remains the deliberate exception because Artificial Analysis does not publish a security capability
 index and the two retained benchmarks answer genuinely different questions.
 Every individual score links to its own origin, and predecessor-generation
 security scores are daggered (†) with the tested model named.
@@ -55,10 +53,14 @@ security scores are daggered (†) with the tested model named.
   execution and SciCode for scientific code generation. Values are refreshed
   at each model's highest published effort and link to the matching AA page.
 
-- **Planning — single source (Artificial Analysis).** The headline Agentic
-  Index is displayed with both equal-weighted components: GDPval-AA v2 for
-  real-world knowledge-work deliverables and τ³-Banking for multi-step tool use
-  over a large policy knowledge base.
+- **Planning — retired from the overview (2026-09-07).** Artificial Analysis
+  retired the Agentic Index page, so the pillar's flagship metric is no longer
+  published for any model and could never be filled for a newly released one.
+  Rather than show a pillar that is permanently half-empty, the overview now
+  runs on Coding and Security. GDPval-AA v2 and τ³-Banking still refresh and
+  their scores are retained in `data/benchmarks.json`, so restoring the pillar
+  is a matter of putting the entry back in `pillars` — but it needs a flagship
+  that is still published.
 
 - **Security — two references, by design (different questions).** Cybench
   (defensive subset, CoTool) measures offensive/analytic CTF capability; Endor
@@ -92,13 +94,14 @@ python3 scripts/refresh_data.py --only swebench,lmarena
 
 ## Pages
 
-- **Primary comparison** (`index.html`) — three headline charts, a compact
-  sortable matrix of eight key metrics, and focused interpretation on the right
+- **Primary comparison** (`index.html`) — two headline charts, a compact
+  sortable matrix of five key metrics, and focused interpretation on the right
   rail. Every score is a hyperlink to its origin.
 - **Head to head** (`headtohead.html`) — Claude Fable 5 vs GPT-5.6 Sol Pro
-  (xhigh / "Ultra") scored across all three pillars. Coding is the only pillar
-  with real two-sided data (it splits); Planning and Security are largely N/A
-  for both current models, which is the honest headline. Every present score
+  (xhigh / "Ultra") scored pillar by pillar, including Planning, which the
+  overview no longer carries. Coding is the only pillar with real two-sided
+  data (it splits); Planning and Security are largely N/A for both current
+  models, which is the honest headline. Every present score
   links to its origin.
 - **Solar Bench** (`solar-benchmark.html`) — ten implementations of one
   identical simulator brief, scored on 16 required delivery criteria and ten

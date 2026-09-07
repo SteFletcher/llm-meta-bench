@@ -139,6 +139,12 @@ AA_JSON_LD_MAP = {
 # highest-effort variant that actually carries the eval. Ranked best-first.
 AA_EFFORT_ORDER = ["max", "xhigh", "x-high", "high", "medium", "low", "minimal", "default", "non-reasoning", "none"]
 
+# Models whose effort tiers do not rank monotonically, so "highest effort" is not
+# "strongest published configuration". Grok 4.6's `high` beats its `xhigh` on every
+# eval but HLE, so the default rule reports it below what xAI actually publishes.
+# These take the best-scoring variant per eval instead; the per-cell note says so.
+AA_BEST_VARIANT_MODELS = {"grok-4-6", "grok-4-5"}
+
 
 def _aa_effort_rank(name: str) -> int:
     # Variants with no recognized effort suffix (e.g. a bare "(Reasoning)")
@@ -221,11 +227,16 @@ def refresh_artificial_analysis(data: dict) -> int:
             have = [v for v in variants if (v.get("evaluations") or {}).get(field) is not None]
             if not have:
                 continue
-            best = min(have, key=lambda v: _aa_effort_rank(v["name"]))
+            if mid in AA_BEST_VARIANT_MODELS:
+                best = max(have, key=lambda v: float(v["evaluations"][field]))
+                rule = "best published variant"
+            else:
+                best = min(have, key=lambda v: _aa_effort_rank(v["name"]))
+                rule = "highest-effort published variant"
             raw = float(best["evaluations"][field])
             if raw <= 1.0:  # AA reports pass-rate evals (tau2) as 0–1 fractions
                 raw *= 100.0
-            note = f"Artificial Analysis API; highest-effort published variant ({_aa_effort_label(best['name'])})."
+            note = f"Artificial Analysis API; {rule} ({_aa_effort_label(best['name'])})."
             set_score(data, mid, bench_id, round(raw, 1), note=note)
             _pin_score_origin(data, mid, bench_id, url)
             updated += 1
