@@ -128,7 +128,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 4px; }
   .shot { margin: 0; }
-  .shot img { width: 100%; height: auto; display: block; border-radius: 8px;
+  /* Captures differ in aspect (1.94 and 2.09), which left the two captions
+     19px out of line. A shared 2:1 frame aligns the pair; the crop is ~2% a side. */
+  .shot img { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover;
+    display: block; border-radius: 8px;
     border: 1px solid var(--hairline); background: #000; cursor: zoom-in; }
   .shot figcaption { max-width: var(--measure); font-size: 0.78em; color: var(--ink-2); margin-top: 6px; }
   .shot figcaption b { color: var(--ink); }
@@ -254,7 +257,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   "shots": [
     {
       "axis": "A · What shipped",
-      "caption": "Earth, as each build renders it. Same brief, same body, same day.",
+      "lede": true,
+      "title": "The same planet, twice",
+      "caption": "Earth, as each build renders it. Same brief, same body, same day — and the whole argument of this page in one frame.",
       "a": { "src": "./assets/f5-vs-f51-fable5-earth.jpg", "label": "Fable 5", "note": "Procedural continents generated in the fragment shader — no texture to run out of, and no Earth to recognise. The Milky Way carries the frame." },
       "b": { "src": "./assets/fable51-earth.jpg", "label": "Fable 5.1", "note": "Real 2K day map, cloud layer, specular ocean and a lit limb, in photo mode with the UI hidden. Australia and south-east Asia are where they should be. The sky behind it is empty." }
     },
@@ -305,6 +310,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   var host = document.getElementById("axes");
 
+  function shotsHtml(s, eager) {
+    return '<div class="shots">' +
+      ["a", "b"].map(function (k) {
+        return '<figure class="shot ' + k + '"><button class="shot-open" type="button" aria-label="Enlarge the ' +
+          s[k].label + ' capture"><img src="' + s[k].src + '" alt="' + s[k].label + ' &mdash; ' + s.caption +
+          '"' + (eager ? "" : ' loading="lazy"') + '></button><figcaption><b>' + s[k].label + "</b> &mdash; " +
+          s[k].note + "</figcaption></figure>";
+      }).join("") + "</div>";
+  }
+
+  // The Earth pair makes the case before any of the scoring does, so it leads
+  // the page rather than sitting five screens down inside axis A.
+  (h.shots || []).filter(function (s) { return s.lede; }).forEach(function (s) {
+    var sec = document.createElement("section");
+    sec.innerHTML =
+      '<div class="section-head"><span class="p">Evidence</span><h2>' + s.title + "</h2></div>" +
+      '<p class="p-note">' + s.caption + "</p>" +
+      shotsHtml(s, true);
+    host.appendChild(sec);
+  });
+
   h.axes.forEach(function (axis) {
     var sec = document.createElement("section");
     var wins = axis.rows.filter(function (r) { return r.b > r.a; }).length;
@@ -347,15 +373,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
     html += "</div>";
 
-    (h.shots || []).filter(function (s) { return s.axis === axis.name; }).forEach(function (s) {
-      html += '<div class="shots">' +
-        ['a', 'b'].map(function (k) {
-          return '<figure class="shot ' + k + '"><button class="shot-open" type="button" aria-label="Enlarge the ' +
-            s[k].label + ' capture"><img src="' + s[k].src + '" alt="' + s[k].label +
-            ' &mdash; ' + s.caption + '" loading="lazy"></button><figcaption><b>' + s[k].label + "</b> &mdash; " +
-            s[k].note + "</figcaption></figure>";
-        }).join("") + "</div>" +
-        '<p class="p-note">' + s.caption + "</p>";
+    (h.shots || []).filter(function (s) { return s.axis === axis.name && !s.lede; }).forEach(function (s) {
+      html += shotsHtml(s, false) + '<p class="p-note">' + s.caption + "</p>";
     });
 
     sec.innerHTML = html;
