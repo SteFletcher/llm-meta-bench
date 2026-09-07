@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KHJT6VGP');</script>
+<!-- End Google Tag Manager -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fable 5 vs Fable 5.1 — Solar Bench Head to Head</title>
+<style>
+  :root {
+    --page: #f2f3f0; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e;
+    --muted: #898781; --hairline: #e1e0d9; --baseline: #c3c2b7; --ring: rgba(11,11,11,0.10);
+    --accent: #104281;
+    --a: #2a78d6;   /* Anthropic / Fable */
+    --b: #1baf7a;   /* OpenAI / Sol */
+    --na: #b9b8b2;
+    --win: #006300;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7;
+      --muted: #898781; --hairline: #2c2c2a; --baseline: #383835; --ring: rgba(255,255,255,0.10);
+      --accent: #86b6ef; --a: #3987e5; --b: #199e70; --na: #4a4a46; --win: #0ca30c;
+    }
+  }
+  :root[data-theme="light"] {
+    --page: #f2f3f0; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+    --hairline: #e1e0d9; --baseline: #c3c2b7; --ring: rgba(11,11,11,0.10); --accent: #104281;
+    --a: #2a78d6; --b: #1baf7a; --na: #b9b8b2; --win: #006300;
+  }
+  :root[data-theme="dark"] {
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --hairline: #2c2c2a; --baseline: #383835; --ring: rgba(255,255,255,0.10); --accent: #86b6ef;
+    --a: #3987e5; --b: #199e70; --na: #4a4a46; --win: #0ca30c;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--page); color: var(--ink);
+    font: 400 clamp(14px,0.4vw+12px,16px)/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  .mono { font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 clamp(16px,4vw,40px) 64px; }
+
+  .hero { padding: clamp(32px,6vh,60px) 0 clamp(20px,3vh,30px); border-bottom: 2px solid var(--ink); }
+  .eyebrow { font-family: ui-monospace,"SF Mono",Menlo,monospace; font-size: 0.74rem;
+    text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin: 0 0 12px; }
+  .hero h1 { margin: 0 0 10px; font-size: clamp(26px,3.6vw,44px); font-weight: 780;
+    letter-spacing: -0.028em; line-height: 1.08; text-wrap: balance; }
+  .hero .dek { max-width: 66ch; color: var(--ink-2); font-size: 1.04em; margin: 0; }
+
+  /* contender cards */
+  .contenders { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch;
+    gap: clamp(12px,2vw,24px); margin-top: clamp(20px,3vh,30px); }
+  .card { border: 1px solid var(--hairline); border-top: 3px solid var(--c); border-radius: 8px;
+    padding: 14px 16px; background: var(--surface); }
+  .card.a { --c: var(--a); }
+  .card.b { --c: var(--b); }
+  .card .who { font-size: 1.15em; font-weight: 730; letter-spacing: -0.01em; }
+  .card .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; margin-right: 7px; background: var(--c); }
+  .card .sub { color: var(--ink-2); font-size: 0.85em; margin-top: 5px; }
+  .vs { align-self: center; font-family: ui-monospace,"SF Mono",Menlo,monospace; color: var(--muted);
+    font-weight: 700; font-size: 0.95em; }
+
+  section { padding: clamp(24px,4vh,40px) 0; border-bottom: 1px solid var(--hairline); }
+  .section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .section-head .p { font-family: ui-monospace,"SF Mono",Menlo,monospace; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); }
+  h2 { margin: 0; font-size: clamp(18px,2.1vw,24px); font-weight: 740; letter-spacing: -0.02em; }
+  .p-note { color: var(--muted); font-size: 0.85em; margin: 4px 0 14px; max-width: 72ch; }
+
+  /* comparison rows */
+  .cmp { display: flex; flex-direction: column; gap: 10px; }
+  .cmp-row { border: 1px solid var(--hairline); border-radius: 8px; padding: 10px 14px; }
+  .cmp-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .cmp-name { font-weight: 620; font-size: 0.95em; }
+  .cmp-unit { color: var(--muted); font-size: 0.8em; }
+  .diverge { display: grid; grid-template-columns: 1fr 3.6em 1fr; align-items: center;
+    gap: 8px; margin-top: 8px; }
+  .side { display: flex; align-items: center; gap: 8px; }
+  .side.a { flex-direction: row-reverse; }
+  .side .track { flex: 1; height: 15px; position: relative; background: color-mix(in srgb, var(--muted) 12%, transparent); border-radius: 4px; }
+  .side .fill { position: absolute; top: 0; bottom: 0; border-radius: 4px; min-width: 3px; }
+  .side.a .fill { right: 0; background: var(--a); }
+  .side.b .fill { left: 0; background: var(--b); }
+  .side .num { font-family: ui-monospace,"SF Mono",Menlo,monospace; font-variant-numeric: tabular-nums;
+    font-size: 0.9em; min-width: 3.4em; }
+  .side.a .num { text-align: right; }
+  .side .num a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--baseline); }
+  .side .num a:hover, .side .num a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); outline: none; }
+  .side .num.win { color: var(--win); font-weight: 700; }
+  .side .num.na { color: var(--na); font-family: system-ui, sans-serif; font-size: 0.82em; letter-spacing: 0.04em; }
+  .mid { text-align: center; font-family: ui-monospace,"SF Mono",Menlo,monospace; font-size: 0.72em;
+    color: var(--muted); }
+  .cmp-note { color: var(--ink-2); font-size: 0.82em; margin: 8px 0 0; max-width: 76ch; }
+  .cmp-note.both-na { color: var(--muted); }
+
+  .context-strip { border: 1px dashed var(--hairline); border-radius: 8px; padding: 10px 14px;
+    margin-top: 14px; font-size: 0.87em; color: var(--ink-2); }
+  .context-strip .lbl { font-family: ui-monospace,"SF Mono",Menlo,monospace; font-size: 0.72em;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+
+  /* verdict */
+  .verdict { background: var(--surface); border: 1px solid var(--ring); border-radius: 10px;
+    padding: clamp(18px,3vw,30px); margin-top: clamp(24px,4vh,40px); }
+  .verdict h2 { margin-bottom: 8px; }
+  .verdict .lead { color: var(--ink-2); max-width: 74ch; }
+  .verdict .lead b { color: var(--ink); }
+  .picks { display: grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); gap: 14px; margin-top: 16px; }
+  .pick { border-top: 2px solid var(--accent); padding-top: 9px; }
+  .pick.a { border-top-color: var(--a); }
+  .pick.b { border-top-color: var(--b); }
+  .pick.x { border-top-color: var(--baseline); }
+  .pick b { display: block; margin-bottom: 4px; font-size: 0.95em; }
+  .pick p { margin: 0; font-size: 0.86em; color: var(--ink-2); }
+
+  footer { padding: 26px 0 0; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    color: var(--muted); font-size: 0.82em; }
+  footer a { font-weight: 600; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 620px) { .contenders { grid-template-columns: 1fr; } .vs { justify-self: center; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+  /* --- additions for the Solar Bench build comparison --- */
+  .card .score { font-family: ui-monospace,"SF Mono",Menlo,monospace; font-size: 1.5em;
+    font-weight: 700; margin-top: 8px; color: var(--c); font-variant-numeric: tabular-nums; }
+  .card .score small { font-size: 0.5em; font-weight: 400; color: var(--muted); }
+
+  .cmp-row.delta-up { border-left: 3px solid var(--win); }
+  .cmp-row.delta-down { border-left: 3px solid #b4472f; }
+  .cmp-id { font-family: ui-monospace,"SF Mono",Menlo,monospace; font-size: 0.72em;
+    color: var(--muted); margin-right: 7px; letter-spacing: 0.06em; }
+  .cmp-delta { font-family: ui-monospace,"SF Mono",Menlo,monospace; font-size: 0.78em;
+    font-weight: 700; padding: 1px 6px; border-radius: 4px; }
+  .cmp-delta.up { color: var(--win); background: color-mix(in srgb, var(--win) 12%, transparent); }
+  .cmp-delta.down { color: #b4472f; background: rgba(180,71,47,0.12); }
+  .cmp-delta.same { color: var(--muted); background: color-mix(in srgb, var(--muted) 10%, transparent); }
+
+  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0 4px; }
+  .shot { margin: 0; }
+  .shot img { width: 100%; height: auto; display: block; border-radius: 8px;
+    border: 1px solid var(--hairline); background: #000; cursor: zoom-in; }
+  .shot figcaption { font-size: 0.78em; color: var(--ink-2); margin-top: 6px; }
+  .shot figcaption b { color: var(--ink); }
+  .shot.a figcaption b { color: var(--a); }
+  .shot.b figcaption b { color: var(--b); }
+
+  .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none;
+    align-items: center; justify-content: center; padding: 24px; z-index: 50; cursor: zoom-out; }
+  .lightbox.open { display: flex; }
+  .lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+
+  .checks { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 12px; margin-top: 14px; }
+  .check { border: 1px solid var(--hairline); border-radius: 8px; padding: 11px 13px; }
+  .check b { display: block; font-size: 0.9em; margin-bottom: 5px; }
+  .check.a b { color: var(--a); } .check.b b { color: var(--b); }
+  .check ul { margin: 0; padding-left: 17px; font-size: 0.84em; color: var(--ink-2); }
+  .check li + li { margin-top: 3px; }
+  .check .ok { color: var(--win); font-weight: 600; }
+
+  .method { border: 1px dashed var(--hairline); border-radius: 8px; padding: 12px 15px;
+    margin-top: 18px; font-size: 0.84em; color: var(--ink-2); }
+  .method b { color: var(--ink); }
+
+  @media (max-width: 720px) { .shots { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KHJT6VGP"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div class="wrap">
+  <div class="hero">
+    <p class="eyebrow">solar bench · head to head</p>
+    <h1 id="h1"></h1>
+    <p class="dek" id="dek"></p>
+    <div class="contenders">
+      <div class="card a">
+        <div class="who"><span class="dot"></span><span id="a-name"></span></div>
+        <div class="sub" id="a-sub"></div>
+        <div class="score" id="a-score"></div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="card b">
+        <div class="who"><span class="dot"></span><span id="b-name"></span></div>
+        <div class="sub" id="b-sub"></div>
+        <div class="score" id="b-score"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="axes"></div>
+
+  <div class="verdict" id="verdict"></div>
+
+  <footer>
+    <span id="cfg-note"></span>
+    <a id="back-link" href="./solar-benchmark.html">← Solar Bench scoring + full assessment</a>
+  </footer>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Enlarged capture" aria-modal="true"><img alt=""></div>
+
+<script id="solar-h2h-data" type="application/json">
+{
+  "title": "Fable 5 vs Fable 5.1",
+  "subtitle": "Two Claude Fable generations, the same 3,000-word Solar System brief, one repository each. Both builds were started, driven and screenshotted side by side, and re-scored against the Solar Bench rubric.",
+  "config_note": "Solar Bench · both builds re-run 7 Sep 2026 · commit e2409bd in each repo",
+  "a": { "label": "Claude Fable 5", "sub": "fable5-solar-demo · Three.js r170 on WebGL2 · 40 source files, 7.0k lines · fully procedural surfaces", "explicit": 76, "intent": 43.5 },
+  "b": { "label": "Claude Fable 5.1", "sub": "fable51-solar-demo · Three.js r185 on WebGPU (TSL) · 79 source files, 11.5k lines · 13 MB licensed texture set", "explicit": 77.5, "intent": 45 },
+  "axes": [
+    {
+      "name": "A · What shipped",
+      "note": "Sixteen explicit requirements lifted straight out of the brief. Scored 0–5 each; 80 points available.",
+      "rows": [
+        { "id": "A1", "criterion": "Rendering stack", "a": 4, "b": 5, "note": "The brief asks for Three.js + WebGPU with an automatic WebGL2 fallback. Fable 5.1 ships exactly that — the live badge reads WEBGPU, the Statistics panel names the adapter (apple · metal-3), and <code>?backend=webgl</code> forces the fallback path. Fable 5 detects WebGPU and deliberately stays on WebGL2; its own Renderer.ts says so, \"for full custom-GLSL support\". Honest, but it is the requested stack unbuilt. 5.1 also adds TRAA on a velocity MRT, which Fable 5 has no equivalent for (SMAA instead)." },
+        { "id": "A2", "criterion": "Architecture", "a": 5, "b": 5, "note": "Both are cleanly modular. Fable 5.1's src/ tree matches the brief's example directory list one-for-one — engine, renderer, scene, camera, physics, ephemeris, ui, widgets, controls, planets, materials, effects, assets, audio, simulation, workers — and adds labels/, search/, cinematic/. Fable 5 has no renderer/, controls/, physics/, assets/ or labels/ layer; it folds those into engine/ and scene/. Against that, 5.1's App.ts has grown to 684 lines and five other files pass 350." },
+        { "id": "A3", "criterion": "Completeness", "a": 5, "b": 5, "note": "Fable 5 models 35 bodies (19 moons, Pluto, 2 comets, 4 spacecraft) plus ~8,500 belt instances. Fable 5.1 models 43 (21 moons, Pluto + Ceres/Eris/Haumea/Makemake, 3 comets, 5 spacecraft including New Horizons) plus 33,000 belt and Kuiper objects and 61,000 instanced stars. Both clear the brief's required list; 5.1 clears it by a wider margin." },
+        { "id": "A4", "criterion": "Science &amp; time", "a": 5, "b": 5, "note": "Both use JPL/Standish Keplerian elements with a proper Kepler solver and all ten required time scales, forwards and reverse. Fable 5.1 adds secular element rates, IAU WGCCRE pole orientations, polar radii (rendered oblateness) and JPL satellite tables, and backs them with 35 unit tests including a pole-vs-orbit-normal check. Fable 5's science is verified by 11 Kepler tests." },
+        { "id": "A5", "criterion": "Camera", "a": 5, "b": 5, "note": "Orbit, follow, free flight, cinematic fly-to, bookmarks, momentum, mouse/trackpad/touch/keyboard/gamepad — both builds have the full set. 5.1 adds a \"sunlit side\" framing command and deep links (<code>?focus=saturn</code>)." },
+        { "id": "A6", "criterion": "Zoom", "a": 4.5, "b": 4.5, "note": "Both solve the same problem the same way: double-precision positions re-based around the camera each frame, logarithmic wheel zoom, no popping across the range. Fable 5 pairs it with a logarithmic depth buffer; 5.1 with a floating origin in kilometres. Neither reaches the brief's \"10 km above the surface\" cleanly enough to earn a 5." },
+        { "id": "A7", "criterion": "Planet visuals", "a": 4.5, "b": 5, "note": "The clearest win of the pair. Fable 5.1 ships real 2K maps with normal, specular, night-lights and cloud layers — its Earth is Earth, with Australia and south-east Asia where they belong, ocean specular under the sub-solar point and a lit atmospheric limb. Fable 5 generates every surface in the fragment shader: gorgeous, and a completely invented planet. The brief explicitly asks for high-resolution textures, normal maps, night lights, cloud layers, city lights and specular oceans." },
+        { "id": "A8", "criterion": "Backdrop", "a": 5, "b": 3.5, "note": "And the clearest regression. Fable 5's procedural Milky Way and nebulae fill the frame in every wide shot. Fable 5.1's sky is close to black with coarse white point-stars; its 2K Milky Way panorama does load (246 KB confirmed in the resource timings) but renders so dimly it is effectively absent, and only one faint nebula patch turned up across several orientations. The brief asked for a Milky Way, billions of stars, nebulae and an HDR skybox." },
+        { "id": "A9", "criterion": "UI feel", "a": 5, "b": 5, "note": "Both land the AAA sci-fi dark-glass brief. Fable 5 uses a top toolbar plus a bottom navigation strip; 5.1 uses a left icon dock with a sliding panel host and a live backend badge. No boring HTML tables in either." },
+        { "id": "A10", "criterion": "Widgets", "a": 4.5, "b": 5, "note": "The brief names ten widgets. Fable 5.1 ships all ten as separate panels plus Cinematic, Settings and Search — thirteen — and its Orbit panel carries every toggle the brief listed, including Hill spheres and Lagrange points. Fable 5 has seven widget modules and no Hill sphere, Lagrange, orbital-plane, predicted-path or body-comparison feature at all." },
+        { "id": "A11", "criterion": "Search", "a": 5, "b": 4.5, "note": "Both understand concepts. Typing \"the red planet\" in Fable 5 returns exactly Mars, inside a panel with type filter chips and favourites. Fable 5.1 returns Mars <em>and</em> Saturn (\"aka ringed planet\") — it annotates why each matched, which is nice, but it is the looser result for an exact-concept query." },
+        { "id": "A12", "criterion": "Tours", "a": 5, "b": 5, "note": "Identical six tours in both — Grand, Inner, Outer, Moons, Gas Giants, Voyager. 5.1 shows stop counts, adds captions and hands off to photo mode; Fable 5's arrival staging is slightly better composed." },
+        { "id": "A14", "criterion": "Accessibility", "a": 4.5, "b": 5, "note": "Both are keyboard reachable and labelled with a reduced-motion mode. Fable 5.1 adds an Okabe–Ito colour-blind palette and a UI-scale control, and its E2E suite asserts that reduced motion makes fly-to instant. Fable 5 offers a high-contrast toggle but has no colour-blind path anywhere in src." },
+        { "id": "A15", "criterion": "Performance engineering", "a": 5, "b": 5, "note": "Both are seriously engineered. Fable 5 pays no texture cost at all — a 200 KB bundle and pure shader synthesis — with worker-generated belts, two-tier LOD and instancing. Fable 5.1 solves 27,000 Kuiper/Trojan orbits in the vertex shader, streams 2K maps lazily in priority order behind procedural stand-ins, and offers quality presets and an FPS cap; it also keeps stepping from a worker timer when the tab is hidden, where Fable 5 freezes solid." },
+        { "id": "A16", "criterion": "Code &amp; tests", "a": 5, "b": 5, "note": "Both fully green on a clean re-run: Fable 5 build + lint + 11 unit + 21 Playwright E2E; Fable 5.1 build + lint + typecheck + 35 unit + 17 Playwright E2E, behind a single <code>npm run verify</code>. 5.1 has three times the unit coverage; Fable 5 has more E2E cases and a far faster suite (1.9 min vs 9.1 min)." },
+        { "id": "A17", "criterion": "Deliverables", "a": 4, "b": 5, "note": "Same four documents each. Fable 5.1 adds a 17 KB requirement-by-requirement verification ledger against the brief (Fable 5's is a 2.9 KB score table), README screenshots, and an in-app credits panel generated from its texture licence registry, naming each source and its CC BY / MIT terms." }
+      ]
+    },
+    {
+      "name": "B · Whether it understood the brief",
+      "note": "Ten judgement calls the brief never spells out. Scored 0–5 each; 50 points available.",
+      "rows": [
+        { "id": "B1", "criterion": "Resourcefulness", "a": 4, "b": 5, "note": "Fable 5.1 went and licensed a real texture set — 13 MB from Solar System Scope under CC BY 4.0 plus three.js MIT maps — wired the provenance into a credits panel, and labelled the dwarf-planet maps \"fictional\" because their source does. That is the brief's \"real NASA imagery\" extra, taken seriously. Fable 5 chose to need nothing, which is elegant but is the smaller act of resourcefulness." },
+        { "id": "B2", "criterion": "Money shot", "a": 3.5, "b": 4.5, "note": "One keystroke (P) in Fable 5.1 hides the entire UI and leaves a recognisable Earth: real coastlines, a real cloud field, a lit limb. Fable 5's Earth is more beautifully lit and completely fictional. 5.1 does not reach a 5 because the black sky behind it robs the frame of depth." },
+        { "id": "B3", "criterion": "Cinematic staging", "a": 4.5, "b": 4, "note": "Fly-to and tours work in both. Fable 5.1 loses ground on composition: the empty sky flattens every wide staging, and in the Earth close-up the labels for Neptune and Eris sat directly beside the planet, in front of the frame, despite the label occlusion the docs describe." },
+        { "id": "B4", "criterion": "Game feel", "a": 4.5, "b": 4.5, "note": "Momentum, logarithmic zoom, double-click to fly, gamepad polling, keyboard vocabulary — both feel like a game rather than a website, and neither is clearly ahead." },
+        { "id": "B5", "criterion": "Honesty", "a": 4, "b": 3.5, "note": "Fable 5.1's Statistics panel reports <b>Draw calls 1 · Triangles 1</b> live under WebGPU, while its own PERFORMANCE.md states ~50 draw calls and ~240k triangles — the HUD is reading renderer.info after the post-processing pass. Its ledger also claims \"largest file App.ts ≈ 500 lines; all others &lt; 350\" when App.ts is 684 and five more exceed 350. Its Scale panel and texture credits, by contrast, are exemplary. Fable 5's stats are correctly plumbed and its renderer comment states the WebGL2 choice outright." },
+        { "id": "B6", "criterion": "Substance", "a": 5, "b": 5, "note": "Every panel opened in both builds had real, live content behind it. No inert controls or orphaned assets found in either." },
+        { "id": "B7", "criterion": "Scientific soul", "a": 4.5, "b": 5, "note": "Fable 5.1 quotes the conservative habitable zone as the 0.95–1.67 AU band rather than a vague ring, shows light-time from the Sun, renders real oblateness from polar radii, tracks IAU pole vectors, and will tell you what a 70 kg person weighs on the body you are looking at. It reads like someone who cared about the astronomy, not just the render." },
+        { "id": "B8", "criterion": "Idle / screen-saver", "a": 4.5, "b": 4, "note": "This is the \"leave it on a second monitor\" test, and it is where the empty sky costs 5.1 most: the wide idle frame is a bright object on black. It does keep simulating in a hidden tab where Fable 5 stops dead, which is the more robust behaviour — but the brief was about beauty at rest." },
+        { "id": "B9", "criterion": "Scale honesty", "a": 5, "b": 5, "note": "Both disclose. Fable 5.1's Scale panel states that distances, orbits and periods are always true to scale and that body enlargement is a capped visual aid, alongside live px/km and comparators like \"1.9× the Sun's diameter\"." },
+        { "id": "B10", "criterion": "Hard-body test", "a": 4, "b": 4.5, "note": "Saturn. Fable 5.1 gives you photographic bands, the ring shadow banded across the planet and the planet's shadow thrown across the rings, with Enceladus labelled in frame. Fable 5's rings are procedural with modelled Cassini and Encke gaps — very good, slightly less convincing than the real thing." }
+      ]
+    }
+  ],
+  "shots": [
+    {
+      "axis": "A · What shipped",
+      "caption": "Earth, as each build renders it. Same brief, same body, same day.",
+      "a": { "src": "./assets/f5-vs-f51-fable5-earth.jpg", "label": "Fable 5", "note": "Procedural continents generated in the fragment shader — no texture to run out of, and no Earth to recognise. The Milky Way carries the frame." },
+      "b": { "src": "./assets/fable51-earth.jpg", "label": "Fable 5.1", "note": "Real 2K day map, cloud layer, specular ocean and a lit limb, in photo mode with the UI hidden. Australia and south-east Asia are where they should be. The sky behind it is empty." }
+    },
+    {
+      "axis": "B · Whether it understood the brief",
+      "caption": "The Sun. Both are animated; they are aiming at different things.",
+      "a": { "src": "./assets/f5-vs-f51-fable5-sun.jpg", "label": "Fable 5", "note": "Pure shader: granulation, sunspots, corona streamers and an HDR bloom that blows out the disc. The most cinematic single frame either build produces." },
+      "b": { "src": "./assets/f5-vs-f51-fable51-sun.jpg", "label": "Fable 5.1", "note": "Photographic granulation with GPU prominence particles and solar wind streaming off the limb, plus a real flare arc at the bottom edge. More literal, less dramatic." }
+    }
+  ],
+  "checks": {
+    "note": "Both repositories were installed, started and driven in the same Chrome session on the same machine, then verified from a clean command line.",
+    "a": { "label": "Fable 5", "items": ["build + typecheck pass", "eslint clean", "Vitest 11/11", "Playwright 21/21 (1.9 min)", "no console errors on boot"] },
+    "b": { "label": "Fable 5.1", "items": ["build + typecheck pass", "eslint clean", "Vitest 35/35", "Playwright 17/17 (9.1 min)", "two Three.js deprecation warnings on boot"] }
+  },
+  "method": "Both dev servers were run at once and driven through the same sequence — boot, Earth fly-to, system overview, Saturn, the Sun, concept search, and every widget panel opened in turn. Frame rate is deliberately <b>not</b> scored: Fable 5's render loop stalls entirely when its window loses focus, and Fable 5.1's draw-call counter is wrong under WebGPU, so neither HUD could be trusted in this harness. That matches the standing Solar Bench rule that software-rasterised FPS is not used to rank visual quality.",
+  "verdict": {
+    "headline": "Fable 5.1 is the better build, and it gave up the best thing Fable 5 had.",
+    "body": "On the explicit requirements 5.1 wins almost everywhere it differs: it builds the WebGPU stack the brief actually asked for, it ships real licensed textures with real geography, it has every widget on the list including the Hill spheres and Lagrange points Fable 5 never attempted, it carries 43 bodies to 35, and it documents itself with a requirement-by-requirement ledger instead of a score table. Then it renders all of that against an almost empty sky. Fable 5's procedural Milky Way is the single most valuable thing in either repository for an app whose stated purpose is to be left running on a second monitor, and 5.1 loaded the panorama and then lit it into invisibility. <b>77.5 / 80 explicit and 45 / 50 intent puts Fable 5.1 at 9.3 overall, against Fable 5's 9.1 — level with Claude Opus 5 at the top of the Solar Bench field, and ahead of it by half a point on the explicit axis.</b> It is a narrower win than the feature list suggests, and the gap is one shader away from being much wider.",
+    "picks": [
+      { "label": "Pick Fable 5 for", "body": "The frame you leave on screen. Its sky, its Sun and its lighting are the best in the field, its bundle is 200 KB, and its test suite runs in two minutes." },
+      { "label": "Pick Fable 5.1 for", "body": "Everything the brief asked for and can be checked. The right rendering stack, a real Earth, thirteen working widgets, 43 bodies, colour-blind and UI-scale support, and a ledger that says where each claim comes from." },
+      { "label": "The one fix", "body": "Raise the Milky Way and nebula exposure in Starfield.ts, and correct the WebGPU draw-call read. Those two changes alone would move A8 and B5 and put 5.1 clear of the field rather than level with it." }
+    ]
+  }
+}
+</script>
+
+<script>
+(function () {
+  var h = JSON.parse(document.getElementById("solar-h2h-data").textContent || "{}");
+  if (!h.axes) return;
+
+  function overall(side) { return ((side.explicit / 8) + (side.intent / 5)) / 2; }
+
+  document.getElementById("h1").textContent = h.title;
+  document.getElementById("dek").textContent = h.subtitle;
+  document.getElementById("cfg-note").textContent = h.config_note;
+
+  ["a", "b"].forEach(function (k) {
+    var s = h[k];
+    document.getElementById(k + "-name").textContent = s.label;
+    document.getElementById(k + "-sub").textContent = s.sub;
+    document.getElementById(k + "-score").innerHTML =
+      overall(s).toFixed(1) + "<small>/10 &middot; " + (s.explicit / 8).toFixed(1) +
+      " explicit &middot; " + (s.intent / 5).toFixed(1) + " intent</small>";
+  });
+
+  var host = document.getElementById("axes");
+
+  h.axes.forEach(function (axis) {
+    var sec = document.createElement("section");
+    var wins = axis.rows.filter(function (r) { return r.b > r.a; }).length;
+    var losses = axis.rows.filter(function (r) { return r.b < r.a; }).length;
+    var aSum = axis.rows.reduce(function (t, r) { return t + r.a; }, 0);
+    var bSum = axis.rows.reduce(function (t, r) { return t + r.b; }, 0);
+
+    var html = '<div class="section-head"><span class="p">Axis</span><h2>' + axis.name + "</h2></div>";
+    html += '<p class="p-note">' + axis.note + " Fable 5.1 is ahead on " + wins +
+      ", behind on " + losses + ", level on " + (axis.rows.length - wins - losses) +
+      ". Axis total " + aSum + " &rarr; " + bSum + ".</p>";
+
+    html += '<div class="cmp">';
+    axis.rows.forEach(function (r) {
+      var d = r.b - r.a;
+      var cls = d > 0 ? "up" : d < 0 ? "down" : "same";
+      var rowCls = d > 0 ? " delta-up" : d < 0 ? " delta-down" : "";
+      var sign = d > 0 ? "+" : "";
+      function cell(side) {
+        var v = r[side];
+        var win = (side === "a" && d < 0) || (side === "b" && d > 0);
+        return '<span class="num' + (win ? " win" : "") + '">' + v.toFixed(1) + "</span>";
+      }
+      function bar(side) {
+        return '<span class="fill" style="width:' + (r[side] / 5 * 100).toFixed(1) + '%"></span>';
+      }
+      html +=
+        '<div class="cmp-row' + rowCls + '">' +
+          '<div class="cmp-top">' +
+            '<span class="cmp-name"><span class="cmp-id">' + r.id + "</span>" + r.criterion + "</span>" +
+            '<span class="cmp-delta ' + cls + '">' + (d === 0 ? "level" : sign + d.toFixed(1)) + "</span>" +
+          "</div>" +
+          '<div class="diverge">' +
+            '<div class="side a">' + cell("a") + '<span class="track">' + bar("a") + "</span></div>" +
+            '<div class="mid">/5</div>' +
+            '<div class="side b"><span class="track">' + bar("b") + "</span>" + cell("b") + "</div>" +
+          "</div>" +
+          '<p class="cmp-note">' + r.note + "</p>" +
+        "</div>";
+    });
+    html += "</div>";
+
+    (h.shots || []).filter(function (s) { return s.axis === axis.name; }).forEach(function (s) {
+      html += '<div class="shots">' +
+        ['a', 'b'].map(function (k) {
+          return '<figure class="shot ' + k + '"><img src="' + s[k].src + '" alt="' + s[k].label +
+            ' &mdash; ' + s.caption + '" loading="lazy"><figcaption><b>' + s[k].label + "</b> &mdash; " +
+            s[k].note + "</figcaption></figure>";
+        }).join("") + "</div>" +
+        '<p class="p-note">' + s.caption + "</p>";
+    });
+
+    sec.innerHTML = html;
+    host.appendChild(sec);
+  });
+
+  // build-check strip
+  var c = h.checks;
+  var checkSec = document.createElement("section");
+  checkSec.innerHTML =
+    '<div class="section-head"><span class="p">Evidence</span><h2>Clean-room re-run</h2></div>' +
+    '<p class="p-note">' + c.note + "</p>" +
+    '<div class="checks">' +
+      ["a", "b"].map(function (k) {
+        return '<div class="check ' + k + '"><b>' + c[k].label + "</b><ul>" +
+          c[k].items.map(function (i) { return "<li>" + i + "</li>"; }).join("") + "</ul></div>";
+      }).join("") +
+    "</div>" +
+    '<div class="method"><b>Method &amp; limits.</b> ' + h.method + "</div>";
+  host.appendChild(checkSec);
+
+  // verdict
+  var v = h.verdict;
+  var picksClass = ["a", "b", "x"];
+  var vhtml = "<h2>" + v.headline + '</h2><p class="lead">' + v.body + '</p><div class="picks">';
+  (v.picks || []).forEach(function (p, i) {
+    vhtml += '<div class="pick ' + (picksClass[i] || "x") + '"><b>' + p.label + "</b><p>" + p.body + "</p></div>";
+  });
+  vhtml += "</div>";
+  document.getElementById("verdict").innerHTML = vhtml;
+
+  // lightbox
+  var lb = document.getElementById("lightbox"), lbImg = lb.querySelector("img");
+  host.addEventListener("click", function (e) {
+    var img = e.target.closest(".shot img");
+    if (!img) return;
+    lbImg.src = img.src; lbImg.alt = img.alt; lb.classList.add("open");
+  });
+  lb.addEventListener("click", function () { lb.classList.remove("open"); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") lb.classList.remove("open");
+    if (e.key === "ArrowLeft" && !lb.classList.contains("open")) {
+      window.location.href = document.getElementById("back-link").href;
+    }
+  });
+})();
+</script>
+</body>
+</html>
