@@ -10,20 +10,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
 <title>The Intent-Loss Gallery — Eleven Builds, One Earth</title>
 <style>
   :root {
-    --void: #05070d; --panel: #0b0f18; --panel-2: #0f1420;
-    --ink: #eef2fb; --ink-2: #9aa6be; --muted: #5f6b84;
-    --hairline: #1c2434; --ring: rgba(255,255,255,0.08);
-    --accent: #5aa9ff;
+    --void: #05070d; --panel: #0b1019; --panel-2: #101725;
+    --ink: #eef4ff; --ink-2: #a7b3c8; --muted: #78859e;
+    --hairline: #202a3b; --ring: rgba(255,255,255,0.08);
+    --accent: #6bb6ff;
+    /* 1ch ~= 1.26 rendered chars in this stack: 58ch ~= 72 cpl, 62ch ~= 78 cpl */
+    --measure: 58ch; --measure-wide: 62ch;
     --axis-intent: #67e8d1; --axis-note: #ffc466;
     --realized: #46d08a; --mostly: #5aa9ff; --partial: #f0ad4e; --lost: #ef6a5a;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body { background: var(--void); color: var(--ink);
-    font: 400 clamp(14px,0.4vw+12px,16px)/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font: 400 clamp(14px, 0.4vw + 12px, 16px)/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing: antialiased; }
   .mono { font-family: ui-monospace,"SF Mono",Menlo,Consolas,monospace; }
   a { color: var(--accent); }
@@ -38,7 +41,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     letter-spacing: 0.24em; color: var(--accent); margin: 0 0 16px; }
   .hero h1 { margin: 0 0 14px; font-size: clamp(30px,5vw,60px); font-weight: 700;
     letter-spacing: -0.03em; line-height: 1.02; text-wrap: balance; max-width: 16ch; }
-  .hero .dek { max-width: 70ch; color: var(--ink-2); font-size: 1.08em; margin: 0; }
+  .hero .dek { max-width: var(--measure-wide); color: var(--ink-2); font-size: 1.08em; margin: 0; }
   .hero .dek b { color: var(--ink); }
   .axis-primer { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px;
     max-width: 1000px; margin-top: 26px; }
@@ -51,7 +54,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .axis-definition.intent .axis-name { color: var(--axis-intent); }
   .axis-definition b { display: block; margin-bottom: 4px; font-size: 1.05em; }
   .axis-definition p { margin: 0; color: var(--ink-2); font-size: 0.9em; }
-  .why-it-matters { grid-column: 1 / -1; margin: 0; padding: 13px 17px;
+  .why-it-matters { grid-column: 1 / -1; max-width: var(--measure); margin: 0; padding: 13px 17px;
     border-left: 3px solid var(--axis-note); border-radius: 4px 9px 9px 4px;
     background: rgba(255,196,102,0.06); color: var(--ink-2); }
   .why-it-matters strong { color: var(--ink); }
@@ -188,11 +191,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     letter-spacing: 0.16em; color: var(--accent); }
   .final h2 { margin: 8px 0 12px; font-size: clamp(20px,2.8vw,32px); font-weight: 700;
     letter-spacing: -0.02em; text-wrap: balance; max-width: 24ch; }
-  .final p { max-width: 84ch; color: var(--ink-2); margin: 0 0 14px; }
+  .final p { max-width: var(--measure); color: var(--ink-2); margin: 0 0 14px; }
   .final p b { color: var(--ink); }
-  .final .pull { font-size: 1.05em; color: var(--ink); border-left: 2px solid var(--accent);
-    padding-left: 16px; margin: 18px 0 0; font-style: italic; max-width: 70ch; }
+  .final .pull { max-width: var(--measure);
+    font-size: 1.05em; color: var(--ink); border-left: 2px solid var(--accent);
+    padding-left: 16px; margin: 18px 0 0; font-style: italic; }
 
+  footer span { max-width: var(--measure); }
   footer { margin-top: 40px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
     color: var(--muted); font-size: 0.82em; border-top: 1px solid var(--hairline); padding-top: 22px; }
   footer a { font-weight: 600; text-decoration: none; }
@@ -231,6 +236,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
+  <main>
   <div class="gallery" id="gallery"></div>
 
   <div class="insights" id="insights"></div>
@@ -268,6 +274,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       demanding, hard-to-specify finish — and when the goal can't be graded, most of them lose it.
     </p>
   </div>
+  </main>
 
   <footer>
     <span>Same brief: <span class="mono">solar-bench/PROMPT.md</span> · mixed repository captures, assessed through 7 September 2026; dimensions and dates disclosed per card</span>
