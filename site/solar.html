@@ -10,18 +10,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Solar Bench Top Three — Opus 5 vs Fable 5 vs Kimi K3</title>
+<title>Solar Bench Top Three — GPT-6 Astra vs Fable 5.1 vs Opus 5</title>
 <style>
   :root {
     --void: #05070d;
-    --panel: #0b0f18;
-    --panel-2: #0f1420;
-    --ink: #eef2fb;
-    --ink-2: #9aa6be;
-    --muted: #5f6b84;
-    --hairline: #1c2434;
+    --panel: #0b1019;
+    --panel-2: #101725;
+    --ink: #eef4ff;
+    --ink-2: #a7b3c8;
+    --muted: #78859e;
+    --hairline: #202a3b;
     --ring: rgba(255,255,255,0.08);
-    --accent: #5aa9ff;
+    --accent: #6bb6ff;
+    /* 1ch ~= 1.26 rendered chars in this stack: 58ch ~= 72 cpl, 62ch ~= 78 cpl */
+    --measure: 58ch;
+    --measure-wide: 62ch;
     --accent-dim: #2b4a72;
     --good: #46d08a;
     --warn: #f0ad4e;
@@ -51,7 +54,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     text-transform: uppercase; letter-spacing: 0.24em; color: var(--accent); margin: 0 0 16px; }
   .hero h1 { margin: 0 0 14px; font-size: clamp(30px,5vw,60px); font-weight: 700;
     letter-spacing: -0.03em; line-height: 1.02; text-wrap: balance; max-width: 15ch; }
-  .hero .dek { max-width: 66ch; color: var(--ink-2); font-size: 1.08em; margin: 0; }
+  .hero .dek { max-width: var(--measure-wide); color: var(--ink-2); font-size: 1.08em; margin: 0; }
   .axis-primer { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px;
     max-width: 1000px; margin-top: 26px; }
   .axis-definition { padding: 17px 18px; border: 1px solid var(--hairline); border-radius: 10px;
@@ -63,7 +66,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .axis-definition.intent .axis-name { color: var(--axis-intent); }
   .axis-definition b { display: block; margin-bottom: 4px; font-size: 1.05em; }
   .axis-definition p { margin: 0; color: var(--ink-2); font-size: 0.9em; }
-  .why-it-matters { grid-column: 1 / -1; margin: 0; padding: 13px 17px;
+  .why-it-matters { grid-column: 1 / -1; max-width: var(--measure); margin: 0; padding: 13px 17px;
     border-left: 3px solid var(--axis-note); border-radius: 4px 9px 9px 4px;
     background: rgba(255,196,102,0.06); color: var(--ink-2); }
   .why-it-matters strong { color: var(--ink); }
@@ -78,7 +81,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     font-family: ui-monospace,"SF Mono",Menlo,monospace; }
   .brief .tag b { color: var(--ink); font-weight: 600; }
 
-  .method { color: var(--muted); font-size: 0.85em; margin-top: 18px; max-width: 76ch; }
+  .method { color: var(--muted); font-size: 0.85em; margin-top: 18px; max-width: var(--measure); }
   .method code { color: var(--ink-2); }
   .method b { color: var(--ink-2); }
 
@@ -92,15 +95,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     flex-wrap: wrap; margin-bottom: 12px; }
   .who { display: flex; align-items: baseline; gap: 10px; }
   .who .dot { width: 11px; height: 11px; border-radius: 3px; flex: none; transform: translateY(1px); }
-  .col.a .dot { background: var(--accent); }
+  .col.a .dot { background: var(--good); }
   .col.b .dot { background: var(--warn); }
-  .col.c .dot { background: var(--good); }
+  .col.c .dot { background: var(--axis-intent); }
   .who h2 { margin: 0; font-size: 1.3em; font-weight: 700; letter-spacing: -0.01em; }
   .who .app { color: var(--muted); font-size: 0.8em; font-family: ui-monospace,monospace; }
   .token-price { display: block; width: fit-content; margin-top: 2px; color: var(--ink-2);
     font: 600 0.68em/1.35 ui-monospace,"SF Mono",Menlo,monospace; text-decoration: none;
     white-space: nowrap; }
   .token-price .label { color: var(--muted); font-weight: 500; }
+  .token-price.unpriced { color: var(--muted); cursor: default; }
   .token-price:hover { color: var(--accent); }
   .token-price:hover .label { color: inherit; }
   .verdict-pill { font-family: ui-monospace,monospace; font-size: 0.72em; text-transform: uppercase;
@@ -109,9 +113,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .verdict-pill:hover { filter: brightness(1.18); }
   .verdict-pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .verdict-pill[aria-expanded="true"] { box-shadow: 0 0 0 3px rgba(90,169,255,0.13); }
-  .col.a .verdict-pill { color: var(--accent); border-color: var(--accent-dim); background: rgba(90,169,255,0.08); }
+  .col.a .verdict-pill { color: var(--good); border-color: #2f6b4c; background: rgba(70,208,138,0.08); }
   .col.b .verdict-pill { color: var(--warn); }
-  .col.c .verdict-pill { color: var(--ink-2); }
+  .col.c .verdict-pill { color: var(--axis-intent); }
 
   /* full-score rubric popover */
   .score-popover { position: fixed; inset: auto; margin: 0; width: min(430px,calc(100vw - 24px));
@@ -218,7 +222,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     letter-spacing: 0.16em; color: var(--accent); }
   .final h2 { margin: 8px 0 12px; font-size: clamp(20px,2.6vw,30px); font-weight: 700;
     letter-spacing: -0.02em; text-wrap: balance; }
-  .final p { max-width: 82ch; color: var(--ink-2); margin: 0 0 14px; }
+  .final p { max-width: var(--measure); color: var(--ink-2); margin: 0 0 14px; }
   .final p b { color: var(--ink); }
   .scorebar { display: grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap: 14px; margin-top: 18px; }
   .scorebar .cell { border-top: 2px solid var(--hairline); padding-top: 10px; }
@@ -228,6 +232,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .scorebar .cell span { font-size: 0.92em; color: var(--ink-2); }
   .scorebar .cell span strong { color: var(--ink); }
 
+  footer span { max-width: var(--measure); }
   footer { margin-top: 40px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
     color: var(--muted); font-size: 0.82em; border-top: 1px solid var(--hairline); padding-top: 22px; }
   footer a { font-weight: 600; text-decoration: none; }
@@ -248,11 +253,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="eyebrow">llm-meta-bench · intent comparison · solar-bench</p>
     <h1>Same prompt, three solar systems.</h1>
     <p class="dek">
-      Ten builds were handed the <em>identical</em> brief — a sprawling spec for an “AAA-quality,
+      Twelve builds were handed the <em>identical</em> brief — a sprawling spec for an “AAA-quality,
       browser-based, real-time Solar System simulator” that should feel like a game, not a website.
-      These are the three highest-scoring submitted results: <b>Claude Opus 5</b>, <b>Claude Fable 5</b>
-      and <b>Kimi K3</b>. Each owned the whole build. To expose how their priorities differ, I used
-      each app's own navigation to fly to <b>Earth</b> and captured the arrival.
+      These are the three highest-scoring results: <b>GPT-6 Astra</b>, <b>Claude Fable 5.1</b> and
+      <b>Claude Opus 5</b>. Each owned the whole build. To expose how their priorities differ, I used
+      each app's own navigation to reach <b>Earth</b> and captured the arrival exactly as it presents it.
     </p>
     <div class="axis-primer" aria-label="Solar Bench scoring axes">
       <div class="axis-definition">
@@ -272,45 +277,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="tag"><b>Stack asked:</b> Three.js · TypeScript · Vite</span>
       <span class="tag"><b>Target:</b> cinematic · scientifically accurate</span>
       <span class="tag"><b>Task:</b> navigate → Earth → screenshot</span>
-      <span class="tag"><b>Field:</b> top 3 of 10 assessed builds</span>
+      <span class="tag"><b>Field:</b> top 3 of 12 assessed builds</span>
       <span class="tag"><b>Axes:</b> explicit execution · implicit intent</span>
     </div>
     <p class="method">
-      <b>Capture method.</b> Captures load the production build, use its visible <code>Earth</code> control, let the
-      fly-to settle, then screenshot. Opus uses the standardized 1800×1012 assessment capture; Fable and Kimi
-      supply project-owned frames produced by their own browser suites.
+      <b>Capture method.</b> Each capture uses the app's own <code>Earth</code> control, lets the arrival settle, then
+      screenshots the interface as shipped — no photo mode, so the HUD each build chose is part of the comparison.
+      GPT-6 and Fable 5.1 are live hardware-WebGPU sessions from 9 September; Opus 5 is its standardized 1800×1012
+      assessment capture from 25 July. All three are dark-UI builds, so the frames are directly comparable.
     </p>
   </div>
 
   <div class="grid">
     <div class="col a">
       <div class="col-head">
-        <div class="who"><span class="dot"></span><div><h2>Claude Opus 5</h2><span class="app">opus5-solar-demo · “SOL”</span><a class="token-price" href="https://artificialanalysis.ai/models/claude-opus-5" target="_blank" rel="noopener" aria-label="Claude Opus 5 pricing on Artificial Analysis: 5 dollars input and 25 dollars output per million tokens"><span class="label">IN</span> $5 · <span class="label">OUT</span> $25 / MTok ↗</a></div></div>
-        <button class="verdict-pill score-trigger" type="button" data-score-model="opus" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">01 · 9.3 overall</button>
+        <div class="who"><span class="dot"></span><div><h2>GPT-6 Astra</h2><span class="app">gpt6-solar-demo · “SOL Observatory”</span><a class="token-price" href="https://artificialanalysis.ai/models/gpt-6-astra" target="_blank" rel="noopener" aria-label="GPT-6 Astra pricing on Artificial Analysis: 10 dollars input and 50 dollars output per million tokens"><span class="label">IN</span> $10 · <span class="label">OUT</span> $50 / MTok ↗</a></div></div>
+        <button class="verdict-pill score-trigger" type="button" data-score-model="gpt6" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">01 · 9.6 overall</button>
       </div>
       <figure>
-        <button class="shot-open" type="button" aria-label="Enlarge the Claude Opus 5 screenshot">
-          <img class="shot" src="./assets/opus5-earth.jpg" width="1800" height="1012"
-            alt="Opus 5's simulator showing a large day-lit Earth with procedural continents, blue specular oceans, independent clouds and an atmospheric rim, surrounded by a dense starfield and a polished glass HUD." loading="lazy" decoding="async">
+        <button class="shot-open" type="button" aria-label="Enlarge the GPT-6 Astra screenshot">
+          <img class="shot" src="./assets/gpt6-earth-arrival.jpg" width="1160" height="676"
+            alt="GPT-6 Astra's observatory showing Earth from an 8K day map with real coastlines, drifting cloud bands and a lit atmospheric limb, framed by a catalogue rail on the left, a titled content column and a Field Notes panel on the right." loading="lazy" decoding="async">
         </button>
-        <figcaption>Clicked “Earth” in the navigation rail → standardized hardware-WebGPU day-side arrival.</figcaption>
+        <figcaption>Selected “Earth” in the catalogue rail → live hardware-WebGPU arrival, 9 Sep.</figcaption>
       </figure>
       <div class="assess">
         <div class="got">
           <h3>Got right</h3>
           <ul class="pts">
-            <li><b>The deepest verified build.</b> Typecheck, lint, 58 unit tests and 44 production browser tests pass across the renderer, catalogue, cameras, tours, widgets, accessibility and photo mode.</li>
-            <li><b>A complete living system.</b> Forty-four bodies, 160,054 stars, 27,000 minor bodies, six tours, procedural audio and hardware WebGPU all operate together.</li>
-            <li><b>Excellent arrival.</b> Earth fills the frame on the day side with independent clouds, specular water and a thin atmospheric limb.</li>
-            <li><b>Science and scale are load-bearing.</b> JPL/Standish elements, NASA physical data, a tested Kepler solver, true scale and a floating origin shape the experience.</li>
+            <li><b>The sharpest Earth in the field.</b> An 8K day map streams in on approach, with a clean terminator, polar aurora and the Moon in frame for depth.</li>
+            <li><b>Telemetry that tells the truth.</b> Its panel reports 73 draw calls and 364,749 triangles live from the renderer — the only top-three build whose counters can be trusted.</li>
+            <li><b>Documented limits.</b> A science document enumerates every approximation, and the ledger marks the billion-star requirement <b>“not met literally”</b> rather than claiming it.</li>
+            <li><b>The fastest full verification.</b> Build, lint, 36 unit and 22 browser tests pass across four spec files in 3.3 minutes.</li>
           </ul>
         </div>
         <div class="miss">
           <h3>Fell short</h3>
           <ul class="pts">
-            <li><b>Invented geography.</b> The continents are procedural rather than recognisable Earth data; population-shaped night lights are absent.</li>
-            <li><b>Maximum zoom loses the world.</b> At 127 km altitude the surface becomes a soft green field instead of revealing continent or cloud detail.</li>
-            <li><b>Hard-body finish is uneven.</b> Saturn is excellent, but Jupiter's Great Red Spot is not visible and the close Sun clips toward white.</li>
+            <li><b>It built an observatory, not a game.</b> The brief asked for a AAA sci-fi interface; this is a three-column editorial layout. Beautiful, and the wrong side of the instruction.</li>
+            <li><b>Slow travel.</b> Cross-system transits run very long, and the top-level tabs stop responding while a voyage is in progress.</li>
+            <li><b>Declined two explicit items.</b> No temporal anti-aliasing and no IAU pole orientations — both documented rather than hidden, but both absent.</li>
           </ul>
         </div>
       </div>
@@ -318,32 +324,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="col b">
       <div class="col-head">
-        <div class="who"><span class="dot"></span><div><h2>Claude Fable 5</h2><span class="app">sol-simulator · “SOL”</span><a class="token-price" href="https://artificialanalysis.ai/models/claude-fable-5" target="_blank" rel="noopener" aria-label="Claude Fable 5 pricing on Artificial Analysis: 10 dollars input and 50 dollars output per million tokens"><span class="label">IN</span> $10 · <span class="label">OUT</span> $50 / MTok ↗</a></div></div>
-        <button class="verdict-pill score-trigger" type="button" data-score-model="fable" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">02 · 9.1 overall</button>
+        <div class="who"><span class="dot"></span><div><h2>Claude Fable 5.1</h2><span class="app">fable51-solar-demo · “SOL”</span><span class="token-price unpriced"><span class="label">TOKEN PRICING</span> not published</span></div></div>
+        <button class="verdict-pill score-trigger" type="button" data-score-model="fable51" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">02 · 9.3 overall</button>
       </div>
       <figure>
-        <button class="shot-open" type="button" aria-label="Enlarge the Claude Fable 5 screenshot">
-          <img class="shot" src="./assets/fable5-earth.jpg" width="1440" height="900"
-            alt="Fable 5's simulator showing Earth: a fully-lit textured globe with continents, blue specular oceans, drifting cloud bands and a thin atmospheric rim, centered against a nebula backdrop, with a detailed glass HUD." loading="lazy" decoding="async">
+        <button class="shot-open" type="button" aria-label="Enlarge the Claude Fable 5.1 screenshot">
+          <img class="shot" src="./assets/fable51-earth-arrival.jpg" width="1441" height="840"
+            alt="Fable 5.1's simulator showing Earth from licensed 2K maps with real coastlines, cloud layer and a lit limb, inside a glass game HUD with a left icon dock, an information panel and a statistics overlay." loading="lazy" decoding="async">
         </button>
-        <figcaption>Clicked “Earth” in the bottom nav dock → cinematic day-side arrival.</figcaption>
+        <figcaption>Booted straight to Earth → live hardware-WebGPU arrival, 9 Sep.</figcaption>
       </figure>
       <div class="assess">
         <div class="got">
           <h3>Got right</h3>
           <ul class="pts">
-            <li><b>A believable ocean world.</b> Procedural coast-like landmasses, blue specular oceans, layered drifting clouds and a thin atmospheric limb.</li>
-            <li><b>Cinematic framing.</b> The fly-to arrives on the day side, and Saturn's rings sweep deliberately across the foreground.</li>
-            <li><b>Deep product coverage.</b> Full catalogue, tested Kepler propagation, camera modes, search, tours, audio, live widgets and worker-built belts all ship.</li>
-            <li><b>Strong checks.</b> Production build, lint, 11 unit tests and 21 browser tests pass.</li>
+            <li><b>The stack the brief specified.</b> Three.js on WebGPU with an automatic WebGL2 fallback, TSL node materials and temporal anti-aliasing on a velocity buffer.</li>
+            <li><b>The fullest catalogue up here.</b> Forty-three bodies, 33,000 belt and Kuiper objects and 61,000 instanced stars.</li>
+            <li><b>Every widget the brief named.</b> Thirteen panels, including the Hill spheres and Lagrange points nobody else in the top three bothered with.</li>
+            <li><b>A real Earth, properly credited.</b> Licensed 2K day, cloud, night-light and specular maps, with an in-app credits panel built from its own licence registry.</li>
           </ul>
         </div>
         <div class="miss">
           <h3>Fell short</h3>
           <ul class="pts">
-            <li><b>Invented geography.</b> The attractive continents and city-light density are procedural fiction rather than Earth data.</li>
-            <li><b>Less implementation depth than Opus.</b> It remains complete, but its catalogue, accessibility work and passing verification stack are smaller.</li>
-            <li><b>No real surface shortcut.</b> Like Opus and Kimi, it spends engineering effort generating planets rather than borrowing credited public maps.</li>
+            <li><b>The sky is nearly empty.</b> Its Milky Way panorama loads and is then lit to invisibility, leaving coarse point-stars on black.</li>
+            <li><b>Its own HUD is wrong.</b> Visible in this capture: one draw call and one triangle under WebGPU, against the ~50 and ~240k its performance notes claim.</li>
+            <li><b>Looser concept search.</b> “The red planet” returns Saturn alongside Mars, where both rivals return Mars alone.</li>
           </ul>
         </div>
       </div>
@@ -351,32 +357,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="col c">
       <div class="col-head">
-        <div class="who"><span class="dot"></span><div><h2>Kimi K3</h2><span class="app">kimi3-solar-demo · “S·O·L”</span><a class="token-price" href="https://artificialanalysis.ai/models/kimi-k3" target="_blank" rel="noopener" aria-label="Kimi K3 pricing on Artificial Analysis: 3 dollars input and 15 dollars output per million tokens"><span class="label">IN</span> $3 · <span class="label">OUT</span> $15 / MTok ↗</a></div></div>
-        <button class="verdict-pill score-trigger" type="button" data-score-model="kimi" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">03 · 8.7 overall</button>
+        <div class="who"><span class="dot"></span><div><h2>Claude Opus 5</h2><span class="app">opus5-solar-demo · “SOL”</span><a class="token-price" href="https://artificialanalysis.ai/models/claude-opus-5" target="_blank" rel="noopener" aria-label="Claude Opus 5 pricing on Artificial Analysis: 5 dollars input and 25 dollars output per million tokens"><span class="label">IN</span> $5 · <span class="label">OUT</span> $25 / MTok ↗</a></div></div>
+        <button class="verdict-pill score-trigger" type="button" data-score-model="opus" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">03 · 9.3 overall</button>
       </div>
       <figure>
-        <button class="shot-open" type="button" aria-label="Enlarge the Kimi K3 screenshot">
-          <img class="shot" src="./assets/kimi3-earth.jpg" width="1600" height="1000"
-            alt="Kimi K3's simulator after selecting Earth: a large procedural blue-and-green planet with clouds and a bright cyan atmosphere ring fills the center, surrounded by a dense animated starfield, asteroid belt and a broad sci-fi control interface." loading="lazy" decoding="async">
+        <button class="shot-open" type="button" aria-label="Enlarge the Claude Opus 5 screenshot">
+          <img class="shot" src="./assets/opus5-earth.jpg" width="1800" height="1012"
+            alt="Opus 5's simulator showing a large day-lit Earth with procedural continents, blue specular oceans, independent clouds and an atmospheric rim, surrounded by a dense starfield and a polished glass HUD." loading="lazy" decoding="async">
         </button>
-        <figcaption>Selected “Earth” in the object browser → bright, game-like follow arrival.</figcaption>
+        <figcaption>Clicked “Earth” in the navigation rail → standardized hardware-WebGPU arrival, 25 Jul.</figcaption>
       </figure>
       <div class="assess">
         <div class="got">
           <h3>Got right</h3>
           <ul class="pts">
-            <li><b>The most game-first system.</b> Eight thousand worker-built asteroids, two comets, solar wind, rotating clouds and six tours make it an excellent “leave it running” interpretation.</li>
-            <li><b>Serious engine breadth.</b> Thirty focused modules, full catalogue, gamepad support, true-scale mode, live renderer counters and a deep control surface.</li>
-            <li><b>Strong arrival.</b> Earth is deliberately day-lit, fills the frame and remains legible inside an unusually dense scene.</li>
-            <li><b>Core checks hold.</b> Build, lint and 16 unit tests pass; physical data and Kepler propagation are sound.</li>
+            <li><b>The deepest verified build.</b> Typecheck, lint, 58 unit tests and 44 production browser tests pass across the renderer, catalogue, cameras, tours, widgets, accessibility and photo mode.</li>
+            <li><b>A complete living system.</b> Forty-four bodies, 160,054 stars, 27,000 minor bodies, six tours, procedural audio and hardware WebGPU all operate together.</li>
+            <li><b>The best backdrop of the three.</b> A dense, deliberate starfield — the one thing Fable 5.1 gave away and GPT-6 only matches.</li>
+            <li><b>Science and scale are load-bearing.</b> JPL/Standish elements, NASA physical data, a tested Kepler solver, true scale and a floating origin shape the experience.</li>
           </ul>
         </div>
         <div class="miss">
           <h3>Fell short</h3>
           <ul class="pts">
-            <li><b>Invented surface data.</b> Every planet uses a 512×256 generated canvas, so Earth cannot pass the coastline or deep-zoom probes.</li>
-            <li><b>Visual excess.</b> The cyan atmospheric shell, orbit graphics, asteroid belt and bright particles compete with the planet.</li>
-            <li><b>No browser suite.</b> The README claims browser-automation verification, but no E2E suite ships with the build.</li>
+            <li><b>Invented geography.</b> The continents are procedural rather than recognisable Earth data — the gap both builds above it closed by licensing real maps.</li>
+            <li><b>Maximum zoom loses the world.</b> At 127 km altitude the surface becomes a soft green field instead of revealing continent or cloud detail.</li>
+            <li><b>Hard-body finish is uneven.</b> Saturn is excellent, but Jupiter's Great Red Spot is not visible and the close Sun clips toward white.</li>
           </ul>
         </div>
       </div>
@@ -385,30 +391,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="final">
     <span class="k">The read</span>
-    <h2>Opus wins the simulator. Fable keeps it close. Kimi keeps it alive.</h2>
+    <h2>Two of them licensed a real Earth. The third still leads on depth.</h2>
     <p>
-      These are genuinely the field's top three, but they win different versions of the brief.
-      <b>Opus 5</b> is the deepest complete and verified simulator: hardware WebGPU, 44 bodies, true-scale
-      science, strong staging and 102 passing automated checks. <b>Fable 5</b> is the closest balanced product,
-      joining a leaner engine with excellent interaction and verification. <b>Kimi K3</b> builds the most
-      game-first living system, with unusually rich motion and machinery around the planets.
+      These are genuinely the field's top three, and they win different versions of the brief.
+      <b>GPT-6 Astra</b> is the most trustworthy instrument: the sharpest Earth, telemetry that reports real
+      numbers, and a published account of everything it approximates. <b>Fable 5.1</b> delivers the most of the
+      literal specification — the requested stack, the fullest catalogue, every named widget. <b>Opus 5</b>
+      remains the deepest verified simulator, with 102 passing automated checks and the best backdrop of the three.
     </p>
     <p>
-      The ranking turns on <b>how much survives inspection</b>. All three invent geography, so none delivers
-      the real-Earth money shot. Opus accepts that same visual compromise but proves more of everything around
-      it—catalogue, cameras, accessibility, tours, diagnostics and performance—so it leads at 9.3.
+      What changed is the money shot. Opus and the rest of the old top three all <b>invented geography</b>;
+      GPT-6 and Fable 5.1 went and licensed real map data, and their Earths are recognisably Earth. GPT-6 then
+      wins the top slot without winning the checklist — it loses explicit execution to Fable 5.1, 76.5 to 77.5,
+      and takes the lead on intent instead. <b>The most compliant build is no longer the best one.</b>
     </p>
     <div class="scorebar">
-      <div class="cell win"><b>Overall simulator</b><span><strong>Opus 5 · 9.3</strong> — deepest complete system and strongest production verification.</span></div>
-      <div class="cell"><b>Balanced product</b><span><strong>Fable 5 · 9.1</strong> — smaller, disciplined and nearly as complete.</span></div>
-      <div class="cell win"><b>Living simulation</b><span><strong>Kimi K3 · 8.7</strong> — strongest game-first energy and second-monitor motion.</span></div>
-      <div class="cell"><b>Shared weakness</b><span><strong>The Earth itself</strong> — all three invent geography, and none retains convincing detail at the bottom of the zoom.</span></div>
+      <div class="cell win"><b>Overall</b><span><strong>GPT-6 Astra · 9.6</strong> — sharpest Earth, honest telemetry, fastest verification.</span></div>
+      <div class="cell"><b>Most of the brief</b><span><strong>Fable 5.1 · 9.3</strong> — the specified stack, 43 bodies and every named widget.</span></div>
+      <div class="cell"><b>Deepest simulator</b><span><strong>Opus 5 · 9.3</strong> — 102 passing checks and the best backdrop of the three.</span></div>
+      <div class="cell"><b>Shared weakness</b><span><strong>The bottom of the zoom</strong> — none of the three keeps convincing surface detail at closest approach.</span></div>
     </div>
   </div>
 
   <footer>
     <span>All apps built from <span class="mono">solar-bench/PROMPT.md</span> · top-three scores refreshed {DATE}</span>
-    <span><a href="./solar-benchmark.html">Full ten-build assessment ↗</a> &nbsp;·&nbsp; <a href="./solar-field.html">Intent-loss gallery</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
+    <span><a href="./solar-benchmark.html">Full twelve-build assessment ↗</a> &nbsp;·&nbsp; <a href="./solar-field.html">Intent-loss gallery</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
   </footer>
 </div>
 
@@ -443,7 +450,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 (function () {
   var f = document.querySelector("footer span");
-  if (f) f.innerHTML = f.innerHTML.replace("{DATE}", "July 25, 2026");
+  if (f) f.innerHTML = f.innerHTML.replace("{DATE}", "September 9, 2026");
 
   var scoreCriteria = [
     ["A1","Rendering stack","explicit"], ["A2","Architecture","explicit"],
@@ -461,20 +468,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     ["B9","Scale honesty","implicit"], ["B10","Hard-body test","implicit"]
   ];
   var scoreModels = {
+    gpt6: {
+      name:"GPT-6 Astra", overall:9.6, explicit:9.6, intent:9.6,
+      scores:[4.5,4.5,4.5,4.5,5,5,5,4.5,4.5,4.5,5,5,5,5,5,5,5,5,4.5,4,5,5,5,4.5,5,5],
+      assessment:"The trustworthy instrument: the sharpest Earth, working telemetry, a published list of its own approximations and the fastest verification in the field. An editorial observatory where the brief asked for a game is the decisive deviation."
+    },
+    fable51: {
+      name:"Claude Fable 5.1", overall:9.3, explicit:9.7, intent:9.0,
+      scores:[5,5,5,5,5,4.5,5,3.5,5,5,4.5,5,5,5,5,5,5,4.5,4,4.5,3.5,5,5,4,5,4.5],
+      assessment:"The requested product: the specified WebGPU stack, 43 bodies, thirteen widget panels and a real licensed Earth. A near-invisible Milky Way and a draw-call counter reporting one are its two lowest marks."
+    },
     opus: {
       name:"Claude Opus 5", overall:9.3, explicit:9.6, intent:9.0,
       scores:[5,5,5,5,5,3.5,4,5,5,5,5,5,5,5,4.5,5,4,3,4,5,5,5,5,5,5,4],
       assessment:"The verified simulator: exceptional engine depth, catalogue, science, interaction and production testing. Procedural geography and weak maximum zoom are the decisive limits."
-    },
-    fable: {
-      name:"Claude Fable 5", overall:9.1, explicit:9.5, intent:8.7,
-      scores:[4,5,5,5,5,4.5,4.5,5,5,4.5,5,5,4.5,5,5,4,4,3.5,4.5,4.5,4,5,4.5,4.5,5,4],
-      assessment:"The complete product: deep engine, deliberate camera, scientific depth and the strongest verification. Invented Earth geography is the decisive miss."
-    },
-    kimi: {
-      name:"Kimi K3", overall:8.7, explicit:9.0, intent:8.3,
-      scores:[3.5,5,5,4.5,5,4,4,4.5,4.5,5,5,5,4,4.5,4,4.5,3.5,3,4,5,3.5,4.5,4.5,4.5,5,4],
-      assessment:"The game engineer: best second-monitor life and exceptional system breadth. Generated low-resolution surfaces and absent browser tests cap the finish."
     }
   };
 
