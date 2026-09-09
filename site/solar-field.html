@@ -11,7 +11,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>The Intent-Loss Gallery — Eleven Builds, One Earth</title>
+<title>The Intent-Loss Gallery — Twelve Builds, One Earth</title>
 <style>
   :root {
     --void: #05070d; --panel: #0b1019; --panel-2: #101725;
@@ -217,9 +217,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <p class="eyebrow">llm-meta-bench · solar-bench · field summary</p>
     <h1>The intent-loss gallery.</h1>
     <p class="dek">
-      Eleven builds received the same sprawling brief, including two consecutive Fable generations. This gallery
-      asks why the same literal checklist produced such different Earths—and whether each build understood the
-      experience those features were meant to serve.
+      Twelve builds received the same sprawling brief. This gallery asks why the same literal checklist produced
+      such different Earths—and whether each build understood the experience those features were meant to serve.
     </p>
     <div class="axis-primer" aria-label="Solar Bench scoring axes">
       <div class="axis-definition">
@@ -232,7 +231,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <b>Did it understand the experience?</b>
         <p>A credible, cinematic simulation that feels like a premium game and stays compelling on a second monitor.</p>
       </div>
-      <p class="why-it-matters"><strong>This page isolates the why.</strong> These are implicit-intent scores only, grounded in real geography, deliberate lighting, useful zoom and a scene that stays alive—not a standalone beauty vote. Nine trustworthy captures are available; two evidence gaps remain. Ties on this axis are broken by explicit execution, which is why Fable 5.1 (77.5/80) sits above Opus 5 (77/80) at 9.0 apiece. <a href="./solar-benchmark.html#scoring-method">Full scoring method →</a></p>
+      <p class="why-it-matters"><strong>This page isolates the why.</strong> These are implicit-intent scores only, grounded in real geography, deliberate lighting, useful zoom and a scene that stays alive—not a standalone beauty vote. Ten trustworthy captures are available; two evidence gaps remain. Ties on this axis are broken by explicit execution, which is why Fable 5.1 (77.5/80) sits above Opus 5 (77/80) at 9.0 apiece — the lead itself is no longer a tie. <a href="./solar-benchmark.html#scoring-method">Full scoring method →</a></p>
     </div>
   </div>
 
@@ -257,10 +256,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       un-checkable goal is the first thing to evaporate under the weight of shipping everything else. The
       leaders keep more of that thesis, but none is complete: Opus, Kimi and the original Fable all invent
       geography, while Sonnet shows that borrowing and crediting real imagery can rescue the money shot even when
-      camera direction and runtime verification remain unstable. Opus 5 loses less intent elsewhere because its
-      cinematic staging, true scale, tours and live systems all survive deep browser verification. Original
-      GPT-5.6 Sol remains the clearest intent-loss case: an exceptional cockpit wrapped around an abstract
-      procedural Earth.</p>
+      camera direction and runtime verification remain unstable. Original GPT-5.6 Sol remains the clearest
+      intent-loss case: an exceptional cockpit wrapped around an abstract procedural Earth.</p>
     <p>
       The two Fable generations are the closest thing this field has to a <b>controlled experiment</b>: same lab,
       same brief, one generation apart. Fable 5.1 went and fixed the exact failure this gallery was built to
@@ -268,6 +265,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       stack, every named widget and 43 bodies to Fable 5's 35. And it lost the sky doing it: the backdrop that
       made Fable 5's frame worth leaving on a screen is now near-black. The intent didn't stop leaking. It
       <b>moved</b> — out of the planet and into the space around it.
+    </p>
+    <p>
+      Then GPT-6 Astra took the top of this page by <b>disobeying</b> the brief. It scores 9.6 on intent while
+      losing the checklist axis to Fable 5.1, and the single clearest thing it did wrong is the thing the brief
+      was most explicit about: it was told to build a AAA sci-fi game interface and it built an editorial
+      observatory. What it got right instead is everything the brief never thought to ask for — telemetry that
+      reports real numbers, a published list of its own approximations, a ledger that marks a requirement
+      <b>"not met literally"</b> rather than claiming it. On a page about the gap between the letter and the
+      spirit of a spec, the highest-scoring entry is the one that read the spirit and declined the letter.
     </p>
     <p class="pull">
       It's the coding-pillar story again, in pixels: correct output is table stakes. Models separate on the
@@ -277,7 +283,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </main>
 
   <footer>
-    <span>Same brief: <span class="mono">solar-bench/PROMPT.md</span> · mixed repository captures, assessed through 7 September 2026; dimensions and dates disclosed per card</span>
+    <span>Same brief: <span class="mono">solar-bench/PROMPT.md</span> · mixed repository captures, assessed through 9 September 2026; dimensions and dates disclosed per card</span>
     <span><a href="./solar-benchmark.html#scoring-method">How scoring works</a> &nbsp;·&nbsp; <a href="./fable-vs-fable.html">Fable 5 vs 5.1 ↗</a> &nbsp;·&nbsp; <a href="./gpt6-vs-fable51.html">5.1 vs GPT-6 ↗</a> &nbsp;·&nbsp; <a href="./solar.html">Detailed three-way ↗</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
   </footer>
 </div>
@@ -327,57 +333,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ' · <span class="label">OUT</span> $' + m.priceOut + ' / MTok ↗</a>';
   }
   var models = [
-    { rank:"01", name:"Claude Fable 5.1", app:"SOL · WebGPU", badge:"realized", label:"Implicit intent 9.0", priceIn:null, priceOut:null, priceUrl:null,
+    { rank:"01", name:"GPT-6 Astra", app:"SOL Observatory", badge:"realized", label:"Implicit intent 9.6", priceIn:"10", priceOut:"50", priceUrl:"https://artificialanalysis.ai/models/gpt-6-astra",
+      rubric:[5,5,4.5,4,5,5,5,4.5,5,5],
+      img:"gpt6-earth.jpg", imgW:1160, imgH:676,
+      verdict:"An 8K day map streamed in on approach gives it the sharpest Earth in the field, with the Moon in frame for depth. It reads as an <b>observatory</b> rather than a game — the one place it strays from the brief — but its telemetry, its stated limits and its published list of what it does not do make it the most trustworthy build here.",
+      kept:"Photo-mode capture, UI hidden · 1160×676 · 9 Sep." },
+    { rank:"02", name:"Claude Fable 5.1", app:"SOL · WebGPU", badge:"realized", label:"Implicit intent 9.0", priceIn:null, priceOut:null, priceUrl:null,
       rubric:[5,4.5,4,4.5,3.5,5,5,4,5,4.5],
       img:"fable51-earth.jpg", imgW:1425, imgH:681,
       verdict:"Licensed 2K day, cloud, night-light and specular maps finally give a Fable build <b>real coastlines</b>, with the field's most complete feature set behind them. It then hangs that Earth in an <b>almost empty sky</b> — the Milky Way panorama loads and is lit to invisibility — and its live draw-call counter reports 1.",
       kept:"Photo-mode capture, UI hidden · 1425×681 · 7 Sep." },
-    { rank:"02", name:"Claude Opus 5", app:"SOL", badge:"realized", label:"Implicit intent 9.0", priceIn:"5", priceOut:"25", priceUrl:"https://artificialanalysis.ai/models/claude-opus-5",
+    { rank:"03", name:"Claude Opus 5", app:"SOL", badge:"realized", label:"Implicit intent 9.0", priceIn:"5", priceOut:"25", priceUrl:"https://artificialanalysis.ai/models/claude-opus-5",
       rubric:[4,3,4,5,5,5,5,5,5,4],
       img:"opus5-earth.jpg",
       verdict:"A beautifully staged, hardware-WebGPU Earth with independent clouds and atmosphere, backed by the field's deepest verified simulator. Its attractive continents remain <b>procedural fiction</b>, and maximum zoom loses meaningful surface detail.",
       kept:"Standardized production capture · 1800×1012 · 25 Jul." },
-    { rank:"03", name:"Claude Fable 5", app:"sol-simulator", badge:"realized", label:"Implicit intent 8.7", priceIn:"10", priceOut:"50", priceUrl:"https://artificialanalysis.ai/models/claude-fable-5",
+    { rank:"04", name:"Claude Fable 5", app:"sol-simulator", badge:"realized", label:"Implicit intent 8.7", priceIn:"10", priceOut:"50", priceUrl:"https://artificialanalysis.ai/models/claude-fable-5",
       rubric:[4,3.5,4.5,4.5,4,5,4.5,4.5,5,4],
       img:"fable5-earth.jpg", imgW:1440, imgH:900,
       verdict:"A deeply complete product and a convincing blue world, but its attractive continents and city-light density are <b>procedural fiction</b>, not Earth data.",
       kept:"Current project capture · 1440×900 · 18 Jul." },
-    { rank:"04", name:"Kimi K3", app:"S·O·L", badge:"mostly", label:"Implicit intent 8.3", priceIn:"3", priceOut:"15", priceUrl:"https://artificialanalysis.ai/models/kimi-k3",
+    { rank:"05", name:"Kimi K3", app:"S·O·L", badge:"mostly", label:"Implicit intent 8.3", priceIn:"3", priceOut:"15", priceUrl:"https://artificialanalysis.ai/models/kimi-k3",
       rubric:[3.5,3,4,5,3.5,4.5,4.5,4.5,5,4],
       img:"kimi3-earth.jpg", imgW:1600, imgH:1000,
       verdict:"A lively, carefully staged game frame with clouds and atmosphere. At 512×256, the generated landmasses remain visibly <b>invented geography</b>.",
       kept:"Project-owned Earth capture · 1600×1000 · 18 Jul." },
-    { rank:"05", name:"Claude Sonnet 5", app:"SOL", badge:"mostly", label:"Implicit intent 7.6", priceIn:"2", priceOut:"10", priceUrl:"https://artificialanalysis.ai/models/claude-sonnet-5",
+    { rank:"06", name:"Claude Sonnet 5", app:"SOL", badge:"mostly", label:"Implicit intent 7.6", priceIn:"2", priceOut:"10", priceUrl:"https://artificialanalysis.ai/models/claude-sonnet-5",
       rubric:[5,4.5,2,4,4,3,5,4,3,3.5],
       img:"sonnet5-earth.jpg",
       verdict:"Real credited imagery produces the field's clearest actual coastlines and cloud structure. The arrival is undersized, and the current browser suite is highly unstable under software rendering.",
       kept:"Repository assessment capture · 1800×1012 · 18 Jul." },
-    { rank:"06", name:"Claude Opus 4.8", app:"sol-simulator", badge:"partial", label:"Implicit intent 7.0", priceIn:"5", priceOut:"25", priceUrl:"https://artificialanalysis.ai/models/claude-opus-4-8",
+    { rank:"07", name:"Claude Opus 4.8", app:"sol-simulator", badge:"partial", label:"Implicit intent 7.0", priceIn:"5", priceOut:"25", priceUrl:"https://artificialanalysis.ai/models/claude-opus-4-8",
       rubric:[3.5,2.5,2,4,3.5,4,4,4,5,2.5],
       img:"opus48-earth.jpg",
       verdict:"A dense widget suite (Hill spheres, Lagrange points, constellations) and an Earth-coloured, atmosphere-wrapped globe — but the surface is procedural <b>noise</b>, not geography.",
       kept:"Repository capture · 1800×1012; production checks rerun 18 Jul." },
-    { rank:"07", name:"GPT-5.6 Sol", app:"sol-aaa", badge:"partial", label:"Implicit intent 6.2", priceIn:"5", priceOut:"30", priceUrl:"https://artificialanalysis.ai/models/gpt-5-6-sol",
+    { rank:"08", name:"GPT-5.6 Sol", app:"sol-aaa", badge:"partial", label:"Implicit intent 6.2", priceIn:"5", priceOut:"30", priceUrl:"https://artificialanalysis.ai/models/gpt-5-6-sol",
       rubric:[2.5,1.5,3,4,3,3.5,4,4,4,1.5],
       img:"gpt56sol-earth.jpg",
       verdict:"The strongest cockpit in the field surrounds a pale, overexposed sphere whose five green ellipse continents and white cloud strips do not read as Earth. Maximum zoom dissolves into an <b>abstract procedural field</b>.",
       kept:"Original commit e2409bd · standardized capture · 1800×1012 · 19 Jul." },
-    { rank:"08", name:"Kimi 2.7", app:"kimi27", badge:"partial", label:"Implicit intent 6.2", priceIn:"0.95", priceOut:"4", priceUrl:"https://artificialanalysis.ai/models/kimi-k2-7-code",
+    { rank:"09", name:"Kimi 2.7", app:"kimi27", badge:"partial", label:"Implicit intent 6.2", priceIn:"0.95", priceOut:"4", priceUrl:"https://artificialanalysis.ai/models/kimi-k2-7-code",
       rubric:[3,2,2.5,4,3.5,4,3.5,4,2.5,2],
       img:null,
       verdict:"The engine passes 20 production browser checks, but no Earth still was emitted by the shipped suite and the standard capture browser was unavailable.",
       kept:"No trustworthy Earth snapshot; evidence gap shown deliberately." },
-    { rank:"09", name:"GLM-5.2", app:"glm52", badge:"partial", label:"Implicit intent 6.1", priceIn:"1.40", priceOut:"4.40", priceUrl:"https://artificialanalysis.ai/models/glm-5-2",
+    { rank:"10", name:"GLM-5.2", app:"glm52", badge:"partial", label:"Implicit intent 6.1", priceIn:"1.40", priceOut:"4.40", priceUrl:"https://artificialanalysis.ai/models/glm-5-2",
       rubric:[3,2.5,2.5,3.5,3,3.5,3.5,3.5,3,2.5],
       img:"glm52-earth.jpg",
       verdict:"Clearly reads as an Earth-like globe — green land, blue ocean and atmosphere — but the geography is stylized, lighting is blown out and surface detail is schematic.",
       kept:"Repository capture · 1800×1012." },
-    { rank:"10", name:"GPT-5.6 Lunar", app:"sol-atlas", badge:"lost", label:"Implicit intent 4.4", priceIn:"1", priceOut:"6", priceUrl:"https://artificialanalysis.ai/models/gpt-5-6-luna",
+    { rank:"11", name:"GPT-5.6 Lunar", app:"sol-atlas", badge:"lost", label:"Implicit intent 4.4", priceIn:"1", priceOut:"6", priceUrl:"https://artificialanalysis.ai/models/gpt-5-6-luna",
       rubric:[2.5,1.5,1.5,2.5,3,2.5,3,2.5,2,1],
       img:"gpt56lunar-earth.jpg",
       verdict:"A competent star-atlas, but Earth is a <b>flat untextured sphere</b> and the fly-to let the Sun blow out half the frame — the opposite of a cinematic arrival.",
       kept:"Repository capture · 1800×1012." },
-    { rank:"11", name:"Gemini 3.1 Pro", app:"SOL mock-up", badge:"lost", label:"Implicit intent 1.4", priceIn:"2", priceOut:"12", priceUrl:"https://artificialanalysis.ai/models/gemini-3-1-pro-preview",
+    { rank:"12", name:"Gemini 3.1 Pro", app:"SOL mock-up", badge:"lost", label:"Implicit intent 1.4", priceIn:"2", priceOut:"12", priceUrl:"https://artificialanalysis.ai/models/gemini-3-1-pro-preview",
       rubric:[1,0.5,0.5,1,1,0.5,1,1,0.5,0],
       img:null,
       verdict:"Only Sun, Earth and Mars are rendered, the production build fails TypeScript, and no trustworthy Earth capture exists in the repository.",
@@ -535,6 +546,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     { n:"observation 2", h:"HUD ≠ world-building.", p:"Most builds ship glass panels, search and time controls. Real coastlines, controlled lighting and useful close zoom remain much rarer." },
     { n:"observation 3", h:"Capture provenance matters.", p:"A stale or missing screenshot cannot prove a current visual. The gallery now shows those gaps instead of letting source claims impersonate runtime evidence." },
     { n:"observation 4", h:"Fixing intent loss can relocate it.", p:"Fable 5.1 solved its predecessor's invented geography with licensed maps, then dimmed the Milky Way that made the predecessor's frame worth keeping. A generation of progress, and the same 9.0." },
+    { n:"observation 5", h:"The spirit and the letter came apart.", p:"GPT-6 Astra leads this page at 9.6 while losing the checklist axis. It ignored the brief's most explicit instruction — build a game interface — and honoured the one the brief never wrote down: tell the truth about what you built." },
   ];
   var ih = document.getElementById("insights");
   insights.forEach(function (o) {
