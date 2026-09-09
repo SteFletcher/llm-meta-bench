@@ -134,7 +134,7 @@
       "id": "fable-5-1",
       "name": "Claude Fable 5.1",
       "vendor": "anthropic",
-      "note": "Released 2026-09-01. Mythos-class successor to Fable 5; highest-effort published configuration shown."
+      "note": "Released 2026-09-01. Mythos-class successor to Fable 5; highest-effort published configuration shown. $10/$50 per MTok."
     },
     {
       "id": "fable-5",
@@ -164,7 +164,7 @@
       "id": "gpt-6-astra",
       "name": "GPT-6 Astra",
       "vendor": "openai",
-      "note": "Released 2026-09-03. OpenAI's GPT-6 flagship; highest-effort published configuration shown."
+      "note": "Released 2026-09-03. OpenAI's GPT-6 flagship; highest-effort published configuration shown. $10/$50 per MTok."
     },
     {
       "id": "gpt-5-6-sol",
