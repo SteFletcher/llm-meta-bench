@@ -10,7 +10,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- End Google Tag Manager -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Solar Bench Top Three — GPT-6 Astra vs Fable 5.1 vs Opus 5</title>
+<title>Solar Bench Earth Comparison — GPT-6 Astra vs Fable 5.1 vs Fable 5</title>
 <style>
   :root {
     --void: #05070d;
@@ -100,7 +100,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .who .dot { width: 11px; height: 11px; border-radius: 3px; flex: none; transform: translateY(1px); }
   .col.a .dot { background: var(--good); }
   .col.b .dot { background: var(--warn); }
-  .col.c .dot { background: var(--axis-intent); }
+  .col.c .dot { background: var(--accent); }
   .who h2 { margin: 0; font-size: 1.3em; font-weight: 700; letter-spacing: -0.01em; }
   .who .app { color: var(--muted); font-size: 0.8em; font-family: ui-monospace,monospace; }
   .token-price { display: block; width: fit-content; margin-top: 2px; color: var(--ink-2);
@@ -118,7 +118,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .verdict-pill[aria-expanded="true"] { box-shadow: 0 0 0 3px rgba(90,169,255,0.13); }
   .col.a .verdict-pill { color: var(--good); border-color: #2f6b4c; background: rgba(70,208,138,0.08); }
   .col.b .verdict-pill { color: var(--warn); }
-  .col.c .verdict-pill { color: var(--axis-intent); }
+  .col.c .verdict-pill { color: var(--accent); }
 
   /* full-score rubric popover */
   .score-popover { position: fixed; inset: auto; margin: 0; width: min(430px,calc(100vw - 24px));
@@ -214,7 +214,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .assess .got h3 { color: var(--good); }
   .assess .miss h3 { color: var(--warn); }
   ul.pts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-  ul.pts li { position: relative; padding-left: 22px; font-size: 0.9em; color: var(--ink-2); }
+  /* In three columns these sit near 55 cpl, but the single-column layout gives
+     each column 720px and pushed them to 95. The cap only bites when stacked. */
+  ul.pts li { position: relative; padding-left: 22px; max-width: var(--measure);
+    font-size: 0.9em; color: var(--ink-2); }
   ul.pts li b { color: var(--ink); font-weight: 600; }
   ul.pts li::before { position: absolute; left: 0; top: 0.05em; font-family: ui-monospace,monospace; font-size: 0.9em; }
   .got li::before { content: "+"; color: var(--good); }
@@ -257,13 +260,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="hero">
     <canvas id="stars" aria-hidden="true"></canvas>
     <p class="eyebrow">llm-meta-bench · intent comparison · solar-bench</p>
-    <h1>Same prompt, three solar systems.</h1>
+    <h1>Same prompt, three Earths.</h1>
     <p class="dek">
       Twelve builds were handed the <em>identical</em> brief — a sprawling spec for an “AAA-quality,
       browser-based, real-time Solar System simulator” that should feel like a game, not a website.
-      These are the three highest-scoring results: <b>GPT-6 Astra</b>, <b>Claude Fable 5.1</b> and
-      <b>Claude Opus 5</b>. Each owned the whole build. To expose how their priorities differ, I used
-      each app's own navigation to reach <b>Earth</b> and captured the arrival exactly as it presents it.
+      This is not the top three; it is a deliberate three. <b>GPT-6 Astra</b> leads the field, and
+      <b>Claude Fable 5.1</b> and <b>Claude Fable 5</b> are one model generation apart on the same brief.
+      Put side by side they show the money shot moving: an invented planet, then a licensed one, then a
+      sharp one. I used each app's own navigation to reach <b>Earth</b> and captured the arrival exactly
+      as it presents it. Claude Opus 5, third in the field, sits out so the two Fable generations can be
+      read against each other.
     </p>
     <div class="axis-primer" aria-label="Solar Bench scoring axes">
       <div class="axis-definition">
@@ -283,14 +289,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="tag"><b>Stack asked:</b> Three.js · TypeScript · Vite</span>
       <span class="tag"><b>Target:</b> cinematic · scientifically accurate</span>
       <span class="tag"><b>Task:</b> navigate → Earth → screenshot</span>
-      <span class="tag"><b>Field:</b> top 3 of 12 assessed builds</span>
+      <span class="tag"><b>Selection:</b> field leader + both Fable generations</span>
       <span class="tag"><b>Axes:</b> explicit execution · implicit intent</span>
     </div>
     <p class="method">
       <b>Capture method.</b> Each capture uses the app's own <code>Earth</code> control, lets the arrival settle, then
       screenshots the interface as shipped — no photo mode, so the HUD each build chose is part of the comparison.
-      GPT-6 and Fable 5.1 are live hardware-WebGPU sessions from 9 September; Opus 5 is its standardized 1800×1012
-      assessment capture from 25 July. All three are dark-UI builds, so the frames are directly comparable.
+      All three are live sessions of my own — GPT-6 and Fable 5.1 on hardware WebGPU on 9 September, Fable 5 on its
+      WebGL2 path on 7 September. All three are dark-UI builds, so the frames are directly comparable. Ranks on each
+      card are positions in the full twelve-build field, which is why they read 01, 02 and 04.
     </p>
   </div>
 
@@ -363,32 +370,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="col c">
       <div class="col-head">
-        <div class="who"><span class="dot"></span><div><h2>Claude Opus 5</h2><span class="app">opus5-solar-demo · “SOL”</span><a class="token-price" href="https://artificialanalysis.ai/models/claude-opus-5" target="_blank" rel="noopener" aria-label="Claude Opus 5 pricing on Artificial Analysis: 5 dollars input and 25 dollars output per million tokens"><span class="label">IN</span> $5 · <span class="label">OUT</span> $25 / MTok ↗</a></div></div>
-        <button class="verdict-pill score-trigger" type="button" data-score-model="opus" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">03 · 9.3 overall</button>
+        <div class="who"><span class="dot"></span><div><h2>Claude Fable 5</h2><span class="app">fable5-solar-demo · “SOL”</span><a class="token-price" href="https://artificialanalysis.ai/models/claude-fable-5" target="_blank" rel="noopener" aria-label="Claude Fable 5 pricing on Artificial Analysis: 10 dollars input and 50 dollars output per million tokens"><span class="label">IN</span> $10 · <span class="label">OUT</span> $50 / MTok ↗</a></div></div>
+        <button class="verdict-pill score-trigger" type="button" data-score-model="fable5" aria-expanded="false" aria-haspopup="dialog" aria-controls="score-popover">04 · 9.1 overall</button>
       </div>
       <figure>
-        <button class="shot-open" type="button" aria-label="Enlarge the Claude Opus 5 screenshot">
-          <img class="shot" src="./assets/opus5-earth.jpg" width="1800" height="1012"
-            alt="Opus 5's simulator showing a large day-lit Earth with procedural continents, blue specular oceans, independent clouds and an atmospheric rim, surrounded by a dense starfield and a polished glass HUD." loading="lazy" decoding="async">
+        <button class="shot-open" type="button" aria-label="Enlarge the Claude Fable 5 screenshot">
+          <img class="shot" src="./assets/f5-vs-f51-fable5-earth.jpg" width="1381" height="713"
+            alt="Fable 5's simulator showing Earth as a fully procedural globe with invented continents, blue specular oceans and drifting cloud bands, set against a bright procedural Milky Way and nebulae, with floating body labels and a glass time-control bar." loading="lazy" decoding="async">
         </button>
-        <figcaption>Clicked “Earth” in the navigation rail → standardized hardware-WebGPU arrival, 25 Jul.</figcaption>
+        <figcaption>Flew to “Earth” from the object browser → live WebGL2 arrival, 7 Sep.</figcaption>
       </figure>
       <div class="assess">
         <div class="got">
           <h3>Got right</h3>
           <ul class="pts">
-            <li><b>The deepest verified build.</b> Typecheck, lint, 58 unit tests and 44 production browser tests pass across the renderer, catalogue, cameras, tours, widgets, accessibility and photo mode.</li>
-            <li><b>A complete living system.</b> Forty-four bodies, 160,054 stars, 27,000 minor bodies, six tours, procedural audio and hardware WebGPU all operate together.</li>
-            <li><b>The best backdrop of the three.</b> A dense, deliberate starfield — the one thing Fable 5.1 gave away and GPT-6 only matches.</li>
-            <li><b>Science and scale are load-bearing.</b> JPL/Standish elements, NASA physical data, a tested Kepler solver, true scale and a floating origin shape the experience.</li>
+            <li><b>The best sky anyone produced.</b> A procedural Milky Way and nebulae fill every wide frame — the single thing its own successor gave away, and still unmatched in the field.</li>
+            <li><b>Nothing to download.</b> Every surface is synthesised in the fragment shader, so the whole build is a 200 KB bundle with no texture budget at all.</li>
+            <li><b>Diagnostics you can trust.</b> Its statistics panel reports real draw calls and triangles, and its renderer comment states the WebGL2 decision outright rather than implying the newer stack.</li>
+            <li><b>Fast, complete verification.</b> Build, lint, 11 unit and 21 browser tests pass in 1.9 minutes — the quickest full suite of the three.</li>
           </ul>
         </div>
         <div class="miss">
           <h3>Fell short</h3>
           <ul class="pts">
-            <li><b>Invented geography.</b> The continents are procedural rather than recognisable Earth data — the gap both builds above it closed by licensing real maps.</li>
-            <li><b>Maximum zoom loses the world.</b> At 127 km altitude the surface becomes a soft green field instead of revealing continent or cloud detail.</li>
-            <li><b>Hard-body finish is uneven.</b> Saturn is excellent, but Jupiter's Great Red Spot is not visible and the close Sun clips toward white.</li>
+            <li><b>Invented geography.</b> The continents are convincing and they are not Earth's — the gap both newer builds closed by licensing real map data.</li>
+            <li><b>The requested stack, unbuilt.</b> It detects WebGPU and deliberately stays on WebGL2. Honest, and still not what the brief asked for.</li>
+            <li><b>Fewer instruments.</b> Seven widget modules, with no Hill spheres, Lagrange points, orbital planes or body comparisons at all.</li>
           </ul>
         </div>
       </div>
@@ -397,30 +404,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="final">
     <span class="k">The read</span>
-    <h2>Two of them licensed a real Earth. The third still leads on depth.</h2>
+    <h2>The planet got real. The sky got worse.</h2>
     <p>
-      These are genuinely the field's top three, and they win different versions of the brief.
-      <b>GPT-6 Astra</b> is the most trustworthy instrument: the sharpest Earth, telemetry that reports real
-      numbers, and a published account of everything it approximates. <b>Fable 5.1</b> delivers the most of the
-      literal specification — the requested stack, the fullest catalogue, every named widget. <b>Opus 5</b>
-      remains the deepest verified simulator, with 102 passing automated checks and the best backdrop of the three.
+      Read left to right these are three answers to the same question, and read right to left they are a
+      history. <b>Fable 5</b> invented its Earth in a shader and hung it in front of the best sky anyone
+      produced. <b>Fable 5.1</b>, one generation later, licensed real map data and got a recognisable planet —
+      then lit its Milky Way into invisibility. <b>GPT-6 Astra</b> streams an 8K day map and puts the Moon in
+      frame for depth, and reports honest telemetry while doing it.
     </p>
     <p>
-      What changed is the money shot. Opus and the rest of the old top three all <b>invented geography</b>;
-      GPT-6 and Fable 5.1 went and licensed real map data, and their Earths are recognisably Earth. GPT-6 then
-      wins the top slot without winning the checklist — it loses explicit execution to Fable 5.1, 76.5 to 77.5,
-      and takes the lead on intent instead. <b>The most compliant build is no longer the best one.</b>
+      The trade is the point. Every build that fixed the Earth paid for it somewhere in the sky: Fable 5.1's
+      backdrop fell from 5 to 3.5 in the generation that gained real coastlines, and GPT-6 only claws that back
+      to 4.5. Nobody has yet shipped Fable 5's sky <em>and</em> a real planet. <b>The money shot and the backdrop
+      are still being traded against each other, one generation at a time.</b>
     </p>
     <div class="scorebar">
-      <div class="cell win"><b>Overall</b><span><strong>GPT-6 Astra · 9.6</strong> — sharpest Earth, honest telemetry, fastest verification.</span></div>
+      <div class="cell win"><b>Best Earth</b><span><strong>GPT-6 Astra · 9.6</strong> — an 8K day map, honest telemetry and the fastest verification in the field.</span></div>
       <div class="cell"><b>Most of the brief</b><span><strong>Fable 5.1 · 9.3</strong> — the specified stack, 43 bodies and every named widget.</span></div>
-      <div class="cell"><b>Deepest simulator</b><span><strong>Opus 5 · 9.3</strong> — 102 passing checks and the best backdrop of the three.</span></div>
+      <div class="cell"><b>Best sky</b><span><strong>Fable 5 · 9.1</strong> — a procedural Milky Way its own successor gave away and nobody has matched.</span></div>
       <div class="cell"><b>Shared weakness</b><span><strong>The bottom of the zoom</strong> — none of the three keeps convincing surface detail at closest approach.</span></div>
     </div>
   </div>
 
   <footer>
-    <span>All apps built from <span class="mono">solar-bench/PROMPT.md</span> · top-three scores refreshed {DATE}</span>
+    <span>All apps built from <span class="mono">solar-bench/PROMPT.md</span> · scores refreshed {DATE}</span>
     <span><a href="./solar-benchmark.html">Full twelve-build assessment ↗</a> &nbsp;·&nbsp; <a href="./solar-field.html">Intent-loss gallery</a> &nbsp;·&nbsp; <a href="./index.html">← Scoreboard</a></span>
   </footer>
 </div>
@@ -484,10 +491,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       scores:[5,5,5,5,5,4.5,5,3.5,5,5,4.5,5,5,5,5,5,5,4.5,4,4.5,3.5,5,5,4,5,4.5],
       assessment:"The requested product: the specified WebGPU stack, 43 bodies, thirteen widget panels and a real licensed Earth. A near-invisible Milky Way and a draw-call counter reporting one are its two lowest marks."
     },
-    opus: {
-      name:"Claude Opus 5", overall:9.3, explicit:9.6, intent:9.0,
-      scores:[5,5,5,5,5,3.5,4,5,5,5,5,5,5,5,4.5,5,4,3,4,5,5,5,5,5,5,4],
-      assessment:"The verified simulator: exceptional engine depth, catalogue, science, interaction and production testing. Procedural geography and weak maximum zoom are the decisive limits."
+    fable5: {
+      name:"Claude Fable 5", overall:9.1, explicit:9.5, intent:8.7,
+      scores:[4,5,5,5,5,4.5,4.5,5,5,4.5,5,5,4.5,5,5,4,4,3.5,4.5,4.5,4,5,4.5,4.5,5,4],
+      assessment:"The predecessor: a deeply complete engine with the best backdrop in the field and correctly plumbed diagnostics. Invented Earth geography and a deliberately unbuilt WebGPU path are its decisive misses."
     }
   };
 
