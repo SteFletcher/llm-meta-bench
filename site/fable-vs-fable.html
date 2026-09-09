@@ -11,7 +11,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>Fable 5 vs Fable 5.1 — Solar Bench Head to Head</title>
+<title>Fable 5 → Fable 5.1 — What Changed Between Generations</title>
 <style>
   :root {
     /* Solar Bench family palette — see solar-benchmark.html / solar-field.html */
@@ -81,7 +81,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .side.a .num { text-align: right; }
   .side .num a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--baseline); }
   .side .num a:hover, .side .num a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); outline: none; }
-  .side .num.win { color: var(--win); font-weight: 700; }
+  .side.b .num.up { color: var(--win); font-weight: 700; }
+  .side.b .num.down { color: var(--down); font-weight: 700; }
   .mid { text-align: center; font-family: ui-monospace,"SF Mono",Menlo,monospace; font-size: 0.72em;
     color: var(--muted); }
   .cmp-note { color: var(--ink-2); font-size: 0.82em; margin: 8px 0 0; max-width: var(--measure); }
@@ -170,7 +171,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="wrap">
   <div class="hero">
-    <p class="eyebrow">solar bench · head to head</p>
+    <p class="eyebrow">solar bench · generational review</p>
     <h1 id="h1"></h1>
     <p class="dek" id="dek"></p>
     <div class="contenders">
@@ -179,7 +180,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="sub" id="a-sub"></div>
         <div class="score" id="a-score"></div>
       </div>
-      <div class="vs">VS</div>
+      <div class="vs" aria-label="becomes">&rarr;</div>
       <div class="card b">
         <div class="who"><span class="dot"></span><span id="b-name"></span></div>
         <div class="sub" id="b-sub"></div>
@@ -210,11 +211,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script id="solar-h2h-data" type="application/json">
 {
-  "title": "Fable 5 vs Fable 5.1",
-  "subtitle": "Two Claude Fable generations, the same 3,000-word Solar System brief, one repository each. Both builds were started, driven and screenshotted side by side, and re-scored against the Solar Bench rubric.",
-  "config_note": "Solar Bench · both builds re-run 7 Sep 2026 · commit e2409bd in each repo",
-  "a": { "label": "Claude Fable 5", "sub": "fable5-solar-demo · Three.js r170 on WebGL2 · 40 source files, 7.0k lines · fully procedural surfaces", "explicit": 76, "intent": 43.5 },
-  "b": { "label": "Claude Fable 5.1", "sub": "fable51-solar-demo · Three.js r185 on WebGPU (TSL) · 79 source files, 11.5k lines · 13 MB licensed texture set", "explicit": 77.5, "intent": 45 },
+  "title": "Fable 5 \u2192 Fable 5.1",
+  "subtitle": "One model generation apart, on the same 3,000-word Solar System brief. 5.1 supersedes 5, so this is not a choice between them \u2014 it is a record of what a generation actually changed, where it improved, and the five places it went backwards.",
+  "config_note": "Solar Bench · generational review · both builds re-run 7 Sep 2026 · commit e2409bd in each repo",
+  "a": { "label": "Claude Fable 5", "sub": "the predecessor · fable5-solar-demo · Three.js r170 on WebGL2 · 40 source files, 7.0k lines · fully procedural surfaces", "explicit": 76, "intent": 43.5 },
+  "b": { "label": "Claude Fable 5.1", "sub": "the successor · fable51-solar-demo · Three.js r185 on WebGPU (TSL) · 79 source files, 11.5k lines · 13 MB licensed texture set", "explicit": 77.5, "intent": 45 },
   "axes": [
     {
       "name": "A · What shipped",
@@ -226,7 +227,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         { "id": "A4", "criterion": "Science &amp; time", "a": 5, "b": 5, "note": "Both use JPL/Standish Keplerian elements with a proper Kepler solver and all ten required time scales, forwards and reverse. Fable 5.1 adds secular element rates, IAU WGCCRE pole orientations, polar radii (rendered oblateness) and JPL satellite tables, and backs them with 35 unit tests including a pole-vs-orbit-normal check. Fable 5's science is verified by 11 Kepler tests." },
         { "id": "A5", "criterion": "Camera", "a": 5, "b": 5, "note": "Orbit, follow, free flight, cinematic fly-to, bookmarks, momentum, mouse/trackpad/touch/keyboard/gamepad — both builds have the full set. 5.1 adds a \"sunlit side\" framing command and deep links (<code>?focus=saturn</code>)." },
         { "id": "A6", "criterion": "Zoom", "a": 4.5, "b": 4.5, "note": "Both solve the same problem the same way: double-precision positions re-based around the camera each frame, logarithmic wheel zoom, no popping across the range. Fable 5 pairs it with a logarithmic depth buffer; 5.1 with a floating origin in kilometres. Neither reaches the brief's \"10 km above the surface\" cleanly enough to earn a 5." },
-        { "id": "A7", "criterion": "Planet visuals", "a": 4.5, "b": 5, "note": "The clearest win of the pair. Fable 5.1 ships real 2K maps with normal, specular, night-lights and cloud layers — its Earth is Earth, with Australia and south-east Asia where they belong, ocean specular under the sub-solar point and a lit atmospheric limb. Fable 5 generates every surface in the fragment shader: gorgeous, and a completely invented planet. The brief explicitly asks for high-resolution textures, normal maps, night lights, cloud layers, city lights and specular oceans." },
+        { "id": "A7", "criterion": "Planet visuals", "a": 4.5, "b": 5, "note": "The single largest gain of the generation. Fable 5.1 ships real 2K maps with normal, specular, night-lights and cloud layers — its Earth is Earth, with Australia and south-east Asia where they belong, ocean specular under the sub-solar point and a lit atmospheric limb. Fable 5 generates every surface in the fragment shader: gorgeous, and a completely invented planet. The brief explicitly asks for high-resolution textures, normal maps, night lights, cloud layers, city lights and specular oceans." },
         { "id": "A8", "criterion": "Backdrop", "a": 5, "b": 3.5, "note": "And the clearest regression. Fable 5's procedural Milky Way and nebulae fill the frame in every wide shot. Fable 5.1's sky is close to black with coarse white point-stars; its 2K Milky Way panorama does load (246 KB confirmed in the resource timings) but renders so dimly it is effectively absent, and only one faint nebula patch turned up across several orientations. The brief asked for a Milky Way, billions of stars, nebulae and an HDR skybox." },
         { "id": "A9", "criterion": "UI feel", "a": 5, "b": 5, "note": "Both land the AAA sci-fi dark-glass brief. Fable 5 uses a top toolbar plus a bottom navigation strip; 5.1 uses a left icon dock with a sliding panel host and a live backend badge. No boring HTML tables in either." },
         { "id": "A10", "criterion": "Widgets", "a": 4.5, "b": 5, "note": "The brief names ten widgets. Fable 5.1 ships all ten as separate panels plus Cinematic, Settings and Search — thirteen — and its Orbit panel carries every toggle the brief listed, including Hill spheres and Lagrange points. Fable 5 has seven widget modules and no Hill sphere, Lagrange, orbital-plane, predicted-path or body-comparison feature at all." },
@@ -260,13 +261,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       "axis": "A · What shipped",
       "lede": true,
       "title": "The same planet, twice",
-      "caption": "Earth, as each build renders it. Same brief, same body, same day — and the whole argument of this page in one frame.",
+      "caption": "Earth, before and after. Same brief, same body, same day \u2014 one generation apart, and the whole story of this page in one frame.",
       "a": { "src": "./assets/f5-vs-f51-fable5-earth.jpg", "label": "Fable 5", "note": "Procedural continents generated in the fragment shader — no texture to run out of, and no Earth to recognise. The Milky Way carries the frame." },
       "b": { "src": "./assets/fable51-earth.jpg", "label": "Fable 5.1", "note": "Real 2K day map, cloud layer, specular ocean and a lit limb, in photo mode with the UI hidden. Australia and south-east Asia are where they should be. The sky behind it is empty." }
     },
     {
       "axis": "B · Whether it understood the brief",
-      "caption": "The Sun. Both are animated; they are aiming at different things.",
+      "caption": "The Sun, before and after. Both are animated; the generation changed what it was aiming at.",
       "a": { "src": "./assets/f5-vs-f51-fable5-sun.jpg", "label": "Fable 5", "note": "Pure shader: granulation, sunspots, corona streamers and an HDR bloom that blows out the disc. The most cinematic single frame either build produces." },
       "b": { "src": "./assets/f5-vs-f51-fable51-sun.jpg", "label": "Fable 5.1", "note": "Photographic granulation with GPU prominence particles and solar wind streaming off the limb, plus a real flare arc at the bottom edge. More literal, less dramatic." }
     }
@@ -278,12 +279,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   },
   "method": "Both dev servers were run at once and driven through the same sequence — boot, Earth fly-to, system overview, Saturn, the Sun, concept search, and every widget panel opened in turn. Frame rate is deliberately <b>not</b> scored: Fable 5's render loop stalls entirely when its window loses focus, and Fable 5.1's draw-call counter is wrong under WebGPU, so neither HUD could be trusted in this harness. That matches the standing Solar Bench rule that software-rasterised FPS is not used to rank visual quality.",
   "verdict": {
-    "headline": "Fable 5.1 is the better build, and it gave up the best thing Fable 5 had.",
-    "body": "On the explicit requirements 5.1 wins almost everywhere it differs: it builds the WebGPU stack the brief actually asked for, it ships real licensed textures with real geography, it has every widget on the list including the Hill spheres and Lagrange points Fable 5 never attempted, it carries 43 bodies to 35, and it documents itself with a requirement-by-requirement ledger instead of a score table. Then it renders all of that against an almost empty sky. Fable 5's procedural Milky Way is the single most valuable thing in either repository for an app whose stated purpose is to be left running on a second monitor, and 5.1 loaded the panorama and then lit it into invisibility. <b>77.5 / 80 explicit and 45 / 50 intent puts Fable 5.1 at 9.3 overall, against Fable 5's 9.1 — level with Claude Opus 5 at the top of the Solar Bench field, and ahead of it by half a point on the explicit axis.</b> It is a narrower win than the feature list suggests, and the gap is one shader away from being much wider.",
+    "headline": "Nine criteria improved, five regressed \u2014 and three of the five are the same shader.",
+    "body": "Across the 26 criteria the generation improved 9, regressed 5 and left 12 unchanged: <b>9.1 to 9.3 overall</b>, 76 to 77.5 explicit and 43.5 to 45 intent. The gains are the ones you would hope for from a version bump \u2014 it builds the WebGPU stack the brief specified where 5 detected it and deliberately stayed on WebGL2, it licenses real texture data where 5 invented geography, it adds the Hill spheres, Lagrange points and body comparisons 5 never attempted, and it replaces a 2.9 KB score table with a requirement-by-requirement ledger. The interesting part is the regressions. <b>Three of the five \u2014 backdrop, cinematic staging and idle life \u2014 are not three faults but one:</b> the 2K Milky Way panorama loads and is then lit to near-invisibility, which empties the sky, flattens every wide staging and ruins the frame you would leave on a second monitor. A fourth, honesty, is a single wrong line reading renderer.info after the post-processing pass. Only the fifth, a looser concept search, is unrelated. A generation of real progress, with most of its cost concentrated in one shader.",
     "picks": [
-      { "label": "Pick Fable 5 for", "body": "The frame you leave on screen. Its sky, its Sun and its lighting are the best in the field, its bundle is 200 KB, and its test suite runs in two minutes." },
-      { "label": "Pick Fable 5.1 for", "body": "Everything the brief asked for and can be checked. The right rendering stack, a real Earth, thirteen working widgets, 43 bodies, colour-blind and UI-scale support, and a ledger that says where each claim comes from." },
-      { "label": "The one fix", "body": "Raise the Milky Way and nebula exposure in Starfield.ts, and correct the WebGPU draw-call read. Those two changes alone would move A8 and B5 and put 5.1 clear of the field rather than level with it." }
+      { "label": "What improved · 9 criteria", "body": "Rendering stack 4\u21925, deliverables 4\u21925 and resourcefulness 4\u21925 are the full points. Planet visuals, widgets, accessibility, scientific soul and the hard-body test each gain a half, and the money shot climbs a full point to 4.5 on the strength of a real, licensed Earth." },
+      { "label": "What regressed · 5 criteria", "body": "Backdrop 5\u21923.5, search 5\u21924.5, cinematic staging 4.5\u21924, honesty 4\u21923.5, idle life 4.5\u21924. The backdrop is the largest single move on the page in either direction, and it drags staging and idle life down with it." },
+      { "label": "What to fix next", "body": "Raise the Milky Way and nebula exposure in Starfield.ts, and correct the WebGPU draw-call read. Between them those two changes address four of the five regressions \u2014 everything except the search precision \u2014 and would take 5.1 clear of the field rather than level with it." }
     ]
   }
 }
@@ -340,9 +341,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var bSum = axis.rows.reduce(function (t, r) { return t + r.b; }, 0);
 
     var html = '<div class="section-head"><span class="p">Axis</span><h2>' + axis.name + "</h2></div>";
-    html += '<p class="p-note">' + axis.note + " Fable 5.1 is ahead on " + wins +
-      ", behind on " + losses + ", level on " + (axis.rows.length - wins - losses) +
-      ". Axis total " + aSum + " &rarr; " + bSum + ".</p>";
+    html += '<p class="p-note">' + axis.note + " Across this axis 5.1 improved on " + wins +
+      " criteria, regressed on " + losses + " and left " + (axis.rows.length - wins - losses) +
+      " unchanged. Axis total " + aSum + " &rarr; " + bSum + ".</p>";
 
     html += '<div class="cmp">';
     axis.rows.forEach(function (r) {
@@ -351,9 +352,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       var rowCls = d > 0 ? " delta-up" : d < 0 ? " delta-down" : "";
       var sign = d > 0 ? "+" : "";
       function cell(side) {
-        var v = r[side];
-        var win = (side === "a" && d < 0) || (side === "b" && d > 0);
-        return '<span class="num' + (win ? " win" : "") + '">' + v.toFixed(1) + "</span>";
+        // Only the successor carries a tint, and it means direction of change.
+        var mark = side === "b" && d !== 0 ? (d > 0 ? " up" : " down") : "";
+        return '<span class="num' + mark + '">' + r[side].toFixed(1) + "</span>";
       }
       function bar(side) {
         return '<span class="fill" style="width:' + (r[side] / 5 * 100).toFixed(1) + '%"></span>';
